@@ -1,17 +1,14 @@
 import torch
 import clip
-import os
 from PIL import Image, ImageDraw
 from dataset_builders.coco_dataset_builders.coco_dataset_builder import CocoDatasetBuilder
 import random
-
-image_dir = '/cs/labs/oabend/uriber/datasets/COCO/train2014'
 
 dataset_builder = CocoDatasetBuilder('/cs/labs/oabend/uriber/datasets/COCO', 'None', 1)
 print('Generating caption data...')
 caption_data = dataset_builder.get_caption_data()
 print('Generating bboxes data...')
-gt_bboxes_data = dataset_builder.get_gt_classes_bboxes_data()
+_, gt_bboxes_data = dataset_builder.get_gt_classes_bboxes_data()
 image_path_finder = dataset_builder.get_image_path_finder()
 
 def hide_obj(image_id, bbox):
