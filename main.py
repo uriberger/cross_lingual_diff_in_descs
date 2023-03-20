@@ -3,6 +3,7 @@ import clip
 import os
 from PIL import Image, ImageDraw
 from dataset_builders.coco_dataset_builders.coco_dataset_builder import CocoDatasetBuilder
+import random
 
 image_dir = '/cs/labs/oabend/uriber/datasets/COCO/train2014'
 
@@ -22,25 +23,37 @@ def hide_obj(image_id, bbox):
     return image_obj
 
 image_ids = list(set([x['image_id'] for x in caption_data]))
-assert False
+images_with_multiple_objects = [x for x in image_ids if x in gt_bboxes_data and len(gt_bboxes_data[x]) > 1]
+selected_image_ids = random.sample(images_with_multiple_objects, 3)
 
-image_obj1 = hide_obj(480023, [116.95, 305.86, 285.3, 266.03])
-image_obj2 = hide_obj(480023, [75.23, 134.7, 203.17, 215.63])
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model, preprocess = clip.load("ViT-B/32", device=device)
 
-orig_image = preprocess(Image.open(image_path_finder.get_image_path(480023))).unsqueeze(0).to(device)
-image1 = preprocess(image_obj1).unsqueeze(0).to(device)
-image2 = preprocess(image_obj2).unsqueeze(0).to(device)
-captions = ['A hand holding a hot dog in a paper container covered in mustard and ketchup.', 'A person holding a hot dog with yellow mustard and onions on it, at a sports stadium.', 'A hand holds a traditional loaded ballgame hotdog.', 'A person holding up a hot dog at a ball park.', 'A close-up of a person holding hot dog to the camera.']
-text = clip.tokenize(captions).to(device)
+image_id_to_logits = {}
+count = 0
 
-with torch.no_grad():
-    orig_logits, _ = model(orig_image, text)
-    logits1, _ = model(image1, text)
-    logits2, _ = model(image2, text)
+for image_id in selected_image_ids:
+    count += 1
+    print('Starting image ' + str(count) + ' out of ' + str(len(selected_image_ids)))
+    image_id_to_logits[image_id] = {}
+    orig_image = preprocess(Image.open(image_path_finder.get_image_path(image_id))).unsqueeze(0).to(device)
+    captions = [x['caption'] for x in caption_data if x['image_id'] == image_id]
+    text = clip.tokenize(captions).to(device)
 
-print(orig_logits)
-print(logits1)
-print(logits2)
+    with torch.no_grad():
+        orig_logits, _ = model(orig_image, text)
+
+    image_id_to_logits[image_id]['orig'] = orig_logits
+    image_id_to_logits[image_id]['adjusted'] = []
+
+    for bbox in gt_bboxes_data[image_id]:
+        cur_image_obj = hide_obj(480023, bbox)
+        adjusted_image = preprocess(cur_image_obj).unsqueeze(0).to(device)
+
+        with torch.no_grad():
+            adjusted_logits, _ = model(adjusted_image, text)
+
+        image_id_to_logits[image_id]['adjusted'].append(adjusted_logits)
+
+torch.save(image_id_to_logits, 'image_id_to_logits')
     
