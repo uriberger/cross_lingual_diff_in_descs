@@ -34,7 +34,7 @@ count = 0
 
 for image_id in selected_image_ids:
     count += 1
-    print('Starting image ' + str(count) + ' out of ' + str(len(selected_image_ids)))
+    print('Starting image ' + str(count) + ' out of ' + str(len(selected_image_ids)), flush=True)
     image_id_to_logits[image_id] = {}
     orig_image = preprocess(Image.open(image_path_finder.get_image_path(image_id))).unsqueeze(0).to(device)
     captions = [x['caption'] for x in caption_data if x['image_id'] == image_id]
