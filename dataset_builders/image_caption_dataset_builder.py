@@ -15,7 +15,7 @@ class ImageCaptionDatasetBuilder(LoggableObject):
     """ This is the dataset builder class for all datasets of image, caption pairs. """
 
     def __init__(self, root_dir_path, name, language, struct_property, indent):
-        super(ImageCaptionDatasetBuilder, self).__init__(name, language, struct_property, indent)
+        super(ImageCaptionDatasetBuilder, self).__init__(indent)
         # This is the directory in which we will keep the cached files of the datasets we create
         self.cached_dataset_files_dir = os.path.join(project_root_dir, 'cached_dataset_files')
         if not os.path.isdir(self.cached_dataset_files_dir):
@@ -31,6 +31,7 @@ class ImageCaptionDatasetBuilder(LoggableObject):
 
         self.root_dir_path = root_dir_path
         self.language = language
+        self.extended_name = f'{name}_{language}'
 
         self.struct_data_file_path = os.path.join(
             self.cached_dataset_files_dir,
