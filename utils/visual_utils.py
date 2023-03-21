@@ -1,5 +1,7 @@
 from PIL import Image, ImageDraw
 
+color_list = ['red', 'green', 'orange', 'blue', 'yellow', 'purple', 'brown']
+
 class VisualUtils:
     def __init__(self, dataset_builder):
         self.dataset_builder = dataset_builder
@@ -17,6 +19,7 @@ class VisualUtils:
             for bbox_ind in range(len(bboxes)):
                 bbox = bboxes[bbox_ind]
                 class_name = class_names[bbox_ind]
-                draw_obj.rectangle([bbox[0], bbox[1], bbox[0] + bbox[2], bbox[1] + bbox[3]], outline='red')
-                draw_obj.text((bbox[0], bbox[1]), str(bbox_ind) + '. ' + class_name, fill='red')
+                color_name = color_list[bbox_ind % len(color_list)]
+                draw_obj.rectangle([bbox[0], bbox[1], bbox[0] + bbox[2], bbox[1] + bbox[3]], outline=color_name)
+                draw_obj.text((bbox[0], bbox[1]), str(bbox_ind) + '. ' + class_name, fill=color_name)
         image_obj.save(str(image_id) + '.jpg')
