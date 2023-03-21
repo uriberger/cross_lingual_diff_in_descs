@@ -21,7 +21,7 @@ def hide_obj(image_id, bbox):
 
 image_ids = list(set([x['image_id'] for x in caption_data]))
 images_with_multiple_objects = [x for x in image_ids if x in gt_bboxes_data and len(gt_bboxes_data[x]) > 1]
-selected_image_ids = random.sample(images_with_multiple_objects, 3)
+selected_image_ids = random.sample(images_with_multiple_objects, 20)
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model, preprocess = clip.load("ViT-B/32", device=device)
@@ -44,7 +44,7 @@ for image_id in selected_image_ids:
     image_id_to_logits[image_id]['adjusted'] = []
 
     for bbox in gt_bboxes_data[image_id]:
-        cur_image_obj = hide_obj(480023, bbox)
+        cur_image_obj = hide_obj(image_id, bbox)
         adjusted_image = preprocess(cur_image_obj).unsqueeze(0).to(device)
 
         with torch.no_grad():
