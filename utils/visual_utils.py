@@ -8,7 +8,7 @@ class VisualUtils:
         self.class_mapping = dataset_builder.get_class_mapping()
 
     def draw_image(self, image_id):
-        image_path = self.path_finder(image_id)
+        image_path = self.path_finder.get_image_path(image_id)
         image_obj = Image.open(image_path)
         if image_id in self.gt_bbox_data:
             bboxes = self.gt_bbox_data[image_id]
