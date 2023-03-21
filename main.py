@@ -15,7 +15,7 @@ def hide_obj(image_id, bbox):
     image_path = image_path_finder.get_image_path(image_id)
     image_obj = Image.open(image_path)
     draw_obj = ImageDraw.Draw(image_obj)
-    draw_obj.rectangle([bbox[0], bbox[1], bbox[0] + bbox[2], bbox[1] + bbox[3]], fill='black', outline='black')
+    draw_obj.rectangle([bbox[0], bbox[1], bbox[2], bbox[3]], fill='black', outline='black')
 
     return image_obj
 
