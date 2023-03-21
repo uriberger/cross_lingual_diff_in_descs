@@ -21,5 +21,6 @@ class VisualUtils:
                 class_name = class_names[bbox_ind]
                 color_name = color_list[bbox_ind % len(color_list)]
                 draw_obj.rectangle([bbox[0], bbox[1], bbox[2], bbox[3]], outline=color_name)
-                draw_obj.text((bbox[0], bbox[1]), str(bbox_ind) + '. ' + class_name, fill=color_name)
-        image_obj.save(str(image_id) + '.jpg')
+                draw_obj.text((bbox[0]+3, bbox[1]+3), str(bbox_ind) + '. ' + class_name, fill=color_name)
+        image_obj = image_obj.convert('RGB')
+        image_obj.save(str(image_id) + '.png', format='PNG')
