@@ -2,3 +2,4 @@
 *~
 Recognizers-Text
 cached_dataset_files/*
+image_id_to_logits
