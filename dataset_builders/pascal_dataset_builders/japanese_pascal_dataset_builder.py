@@ -1,9 +1,7 @@
 import os
 import csv
-from dataset_builders.single_dataset_builders.external_dataset_builders.image_caption_dataset_builders.english_dataset_based_dataset_builder import \
-    EnglishBasedDatasetBuilder
-from dataset_builders.single_dataset_builders.external_dataset_builders.image_caption_dataset_builders.pascal_dataset_builders.pascal_sentences_builder import \
-    PascalSentencesDatasetBuilder
+from dataset_builders.english_dataset_based_dataset_builder import EnglishBasedDatasetBuilder
+from dataset_builders.pascal_dataset_builders.pascal_sentences_builder import PascalSentencesDatasetBuilder
 
 
 class JapanesePascalDatasetBuilder(EnglishBasedDatasetBuilder):

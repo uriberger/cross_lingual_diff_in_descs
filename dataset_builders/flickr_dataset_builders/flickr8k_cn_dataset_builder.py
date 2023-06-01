@@ -1,10 +1,8 @@
 import os
 from Levenshtein import distance
 from collections import defaultdict
-from dataset_builders.single_dataset_builders.external_dataset_builders.image_caption_dataset_builders.english_dataset_based_dataset_builder import \
-    EnglishBasedDatasetBuilder
-from dataset_builders.single_dataset_builders.external_dataset_builders.image_caption_dataset_builders.flickr_dataset_builders.flickr30k_dataset_builder import \
-    Flickr30kDatasetBuilder
+from dataset_builders.english_dataset_based_dataset_builder import EnglishBasedDatasetBuilder
+from dataset_builders.flickr_dataset_builders.flickr30k_dataset_builder import Flickr30kDatasetBuilder
 
 
 class Flickr8kCNDatasetBuilder(EnglishBasedDatasetBuilder):
