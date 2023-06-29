@@ -85,12 +85,11 @@ class FlickrReferingExpressionDatasetBuilder:
                 t = time.time()
             count += 1
             image_id = int(image_ref_exp_file.split('.')[0])
-            ref_exps = []
             with open(os.path.join(self.ref_exp_dir, image_ref_exp_file)) as fp:
                 for line in fp:
                     if len(line.strip()) == 0:
                         continue
-                    ref_exps.append([])
+                    ref_exps = []
                     line_parts = line.split('[/EN#')
                     for part in line_parts[1:]:
                         ref_exp = part.split(']')[0]
@@ -99,8 +98,8 @@ class FlickrReferingExpressionDatasetBuilder:
                         chain_id_and_types = ref_exp_parts[0].split('/')
                         chain_id = chain_id_and_types[0]
                         types = chain_id_and_types[1:]
-                        ref_exps[-1].append({'text': text, 'chain_id': chain_id, 'types': types})
-            image_id_to_ref_exp[image_id].append(ref_exps)
+                        ref_exps.append({'text': text, 'chain_id': chain_id, 'types': types})
+                    image_id_to_ref_exp[image_id].append(ref_exps)
 
         return image_id_to_chains, image_id_to_ref_exp
     
