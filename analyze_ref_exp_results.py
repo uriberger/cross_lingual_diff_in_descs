@@ -46,7 +46,7 @@ def find_word_classes(synset):
 def get_referred_classes(caption, referred_spans):
     doc = nlp(caption)
     token_lists = [[x.to_dict() for x in y.tokens] for y in doc.sentences]
-    if len(token_lists) > 0:
+    if len(token_lists) > 1:
         return None
     token_list = token_lists[0]
     depths = get_depths(token_list)
@@ -65,13 +65,13 @@ def get_referred_classes(caption, referred_spans):
         if lowest_noun_ind != -1:
             cur_word = token_list[lowest_noun_ind][0]['text']
             synsets = wn.synsets(cur_word)
-            classes = []
+            cur_classes = []
             for synset in synsets:
-                classes += find_word_classes(synset)
-            if len(classes) == 0:
+                cur_classes += find_word_classes(synset)
+            if len(cur_classes) == 0:
                 cur_class = None
-            assert len(classes) == 1, f'Word {cur_word} has multiple classes'
-            cur_class = classes[0]
+            assert len(cur_classes) == 1, f'Word {cur_word} has multiple classes'
+            cur_class = cur_classes[0]
         else:
             cur_class = None
         classes.append(cur_class)
