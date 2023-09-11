@@ -8,10 +8,10 @@ word_classes = [
     'tie', 'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove',
     'skateboard', 'surfboard', 'tennis racket', 'bottle', 'glass', 'cup', 'fork', 'knife', 'spoon',
     'bowl', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'vegetable', 'fruit', 'hot dog', 'pizza', 'donut',
-    'cake', 'chair', 'couch', 'plant', 'bed', 'table', 'toilet', 'television', 'laptop', 'mouse', 'remote',
+    'cake', 'chair', 'couch', 'plant', 'bed', 'table', 'toilet', 'television', 'laptop', 'computer', 'mouse', 'remote',
     'keyboard', 'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock',
     'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush', 'wall', 'sidewalk', 'mountain', 'beach', 'kitchen',
-    'kitchen utensil'
+    'kitchen utensil', 'graffiti', 'tree', 'sky', 'camera'
     ]
 
 known_mappings = {
@@ -63,8 +63,9 @@ def find_phrase_class(phrase):
     else:
         synsets = wn.synsets(phrase)
         classes = []
+        all_synsets_count = sum([get_synset_count(x) for x in synsets])
         for synset in synsets:
-            if get_synset_count(synset) > 0:
+            if all_synsets_count > 0 and get_synset_count(synset)/all_synsets_count > 0.2:
                 classes += find_synset_classes(synset)
         classes = list(set(classes))
         if len(classes) == 0:
