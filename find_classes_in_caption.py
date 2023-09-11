@@ -2,10 +2,10 @@ import stanza
 from nltk.corpus import wordnet as wn
 
 word_classes = [
-    'man', 'woman', 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat',
-    'traffic light', 'fire hydrant', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 'horse',
-    'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag', 'tie',
-    'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove',
+    'man', 'woman', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck',
+    'boat', 'traffic light', 'fire hydrant', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog',
+    'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag',
+    'tie', 'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove',
     'skateboard', 'surfboard', 'tennis racket', 'bottle', 'glass', 'cup', 'fork', 'knife', 'spoon',
     'bowl', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut',
     'cake', 'chair', 'couch', 'plant', 'bed', 'table', 'toilet', 'television', 'laptop', 'mouse', 'remote',
