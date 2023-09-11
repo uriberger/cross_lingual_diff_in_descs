@@ -92,15 +92,17 @@ def find_classes(caption):
     classes = []
 
     for start_ind, end_ind in noun_spans:
-        pharse = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)])
-        synsets = wn.synsets(pharse)
+        phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)])
+        synsets = wn.synsets(phrase)
         cur_classes = []
         for synset in synsets:
             cur_classes += find_word_classes(synset)
+        cur_classes = list(set(classes))
         if len(cur_classes) == 0:
             cur_class = None
-        assert len(cur_classes) == 1, f'Word {pharse} has multiple classes'
-        cur_class = cur_classes[0]
+        else:
+            assert len(cur_classes) == 1, f'Phrase "{phrase}" has multiple classes'
+            cur_class = cur_classes[0]
         classes.append((start_ind, end_ind, cur_class))
     
     return classes
