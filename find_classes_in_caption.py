@@ -14,7 +14,7 @@ word_classes = [
     ]
 
 known_mappings = {
-    'rail road track': 'railroad track', 'tv': 'television'
+    'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
@@ -36,7 +36,15 @@ def get_depths(token_list):
             depths = get_depth_at_ind(token_list, i, depths)
     return depths
 
+def get_synset_count(synset):
+    count = 0
+    for lemma in synset.lemmas():
+        count += lemma.count()
+    return count
+
 def find_synset_classes(synset):
+    if get_synset_count(synset) == 0:
+        return []
     word = synset.name().lower().split('.')[0]
     if word in word_classes:
         return [word]
