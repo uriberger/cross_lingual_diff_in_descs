@@ -10,11 +10,12 @@ word_classes = [
     'bowl', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut',
     'cake', 'chair', 'couch', 'plant', 'bed', 'table', 'toilet', 'television', 'laptop', 'mouse', 'remote',
     'keyboard', 'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock',
-    'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush', 'wall', 'sidewalk'
+    'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush', 'wall', 'sidewalk', 'mountain'
     ]
 
 known_mappings = {
-    'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard', 'cats': 'cat'
+    'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard', 'cats': 'cat',
+    'snowboarder': 'person'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
