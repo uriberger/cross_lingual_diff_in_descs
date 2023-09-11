@@ -2,16 +2,17 @@ import stanza
 from nltk.corpus import wordnet as wn
 
 word_classes = [
-    'man', 'woman', 'boy', 'girl', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck',
-    'boat', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird', 'cat', 'dog',
-    'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag',
-    'tie', 'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove',
-    'skateboard', 'surfboard', 'tennis racket', 'bottle', 'glass', 'cup', 'fork', 'knife', 'spoon',
-    'bowl', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'vegetable', 'fruit', 'hot dog', 'pizza', 'donut',
-    'cake', 'chair', 'couch', 'plant', 'bed', 'table', 'toilet', 'television', 'laptop', 'computer', 'mouse', 'remote',
-    'keyboard', 'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock',
-    'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush', 'wall', 'sidewalk', 'mountain', 'beach', 'kitchen',
-    'kitchen utensil', 'graffiti', 'tree', 'sky', 'camera'
+    'man', 'woman', 'boy', 'girl', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus',
+    'train', 'truck', 'boat', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird', 
+    'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella',
+    'handbag', 'tie', 'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat',
+    'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'bottle', 'glass', 'cup', 'fork', 'knife',
+    'spoon', 'bowl', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'vegetable', 'fruit',
+    'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch', 'plant', 'bed', 'table', 'toilet', 'television',
+    'laptop', 'computer', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven', 'toaster',
+    'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush',
+    'wall', 'sidewalk', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti', 'tree', 'sky',
+    'camera', 'mirror'
     ]
 
 known_mappings = {
@@ -65,7 +66,7 @@ def find_phrase_class(phrase):
         classes = []
         all_synsets_count = sum([get_synset_count(x) for x in synsets])
         for synset in synsets:
-            if all_synsets_count > 0 and get_synset_count(synset)/all_synsets_count > 0.2:
+            if all_synsets_count == 0 or get_synset_count(synset)/all_synsets_count > 0.2:
                 classes += find_synset_classes(synset)
         classes = list(set(classes))
         if len(classes) == 0:
