@@ -8,13 +8,13 @@ word_classes = [
     'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove',
     'skateboard', 'surfboard', 'tennis racket', 'bottle', 'glass', 'cup', 'fork', 'knife', 'spoon',
     'bowl', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut',
-    'cake', 'chair', 'couch', 'plant', 'bed', 'table', 'toilet', 'tv', 'laptop', 'mouse', 'remote',
+    'cake', 'chair', 'couch', 'plant', 'bed', 'table', 'toilet', 'television', 'laptop', 'mouse', 'remote',
     'keyboard', 'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock',
     'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush'
     ]
 
 known_mappings = {
-    'rail road track': 'railroad track'
+    'rail road track': 'railroad track', 'tv': 'television'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
@@ -36,7 +36,7 @@ def get_depths(token_list):
             depths = get_depth_at_ind(token_list, i, depths)
     return depths
 
-def find_word_classes(synset):
+def find_synset_classes(synset):
     word = synset.name().lower().split('.')[0]
     if word in word_classes:
         return [word]
@@ -44,8 +44,26 @@ def find_word_classes(synset):
         classes = []
         hypernyms = synset.hypernyms()
         for hypernym in hypernyms:
-            classes += find_word_classes(hypernym)
+            classes += find_synset_classes(hypernym)
         return list(set(classes))
+
+def find_phrase_class(phrase):
+    if phrase in word_classes:
+        phrase_class = phrase
+    else:
+        if phrase in known_mappings:
+            phrase = known_mappings[phrase]
+        synsets = wn.synsets(phrase)
+        classes = []
+        for synset in synsets:
+            classes += find_synset_classes(synset)
+        classes = list(set(classes))
+        if len(classes) == 0:
+            return None
+        else:
+            assert len(classes) == 1, f'Phrase "{phrase}" has multiple classes'
+            phrase_class = classes[0]
+    return phrase_class
     
 def extract_noun_spans(token_list):
     noun_spans = []
@@ -78,10 +96,10 @@ def extract_noun_spans(token_list):
         cur_highest_ancestor = highest_ancestors[0]
         for i in range(1, len(highest_ancestors)):
             if highest_ancestors[i] != cur_highest_ancestor:
-                noun_spans.append((noun_sequence_start, sequence_start + i))
+                noun_spans.append((noun_sequence_start, sequence_start + i, cur_highest_ancestor))
                 noun_sequence_start = sequence_start + i
                 cur_highest_ancestor = highest_ancestors[i]
-        noun_spans.append((noun_sequence_start, sequence_end))
+        noun_spans.append((noun_sequence_start, sequence_end, cur_highest_ancestor))
 
     return noun_spans
 
@@ -95,23 +113,12 @@ def find_classes(caption):
     noun_spans = extract_noun_spans(token_list)
     classes = []
 
-    for start_ind, end_ind in noun_spans:
+    for start_ind, end_ind, highest_ancestor_ind in noun_spans:
         phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)])
-        if phrase in word_classes:
-            cur_class = phrase
-        else:
-            if phrase in known_mappings:
-                phrase = known_mappings[phrase]
-            synsets = wn.synsets(phrase)
-            cur_classes = []
-            for synset in synsets:
-                cur_classes += find_word_classes(synset)
-            cur_classes = list(set(cur_classes))
-            if len(cur_classes) == 0:
-                cur_class = None
-            else:
-                assert len(cur_classes) == 1, f'Phrase "{phrase}" has multiple classes'
-                cur_class = cur_classes[0]
-        classes.append((start_ind, end_ind, cur_class))
+        phrase_class = find_phrase_class(phrase)
+        if phrase_class is None:
+            phrase = token_list[highest_ancestor_ind][0]['test']
+            phrase_class = find_phrase_class(phrase)
+        classes.append((start_ind, end_ind, phrase_class))
     
     return classes
