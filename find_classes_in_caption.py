@@ -13,6 +13,10 @@ word_classes = [
     'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush'
     ]
 
+known_mappings = {
+    'rail road track': 'railroad track'
+}
+
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
 
 def get_depth_at_ind(token_list, i, depths):
@@ -97,7 +101,7 @@ def find_classes(caption):
         cur_classes = []
         for synset in synsets:
             cur_classes += find_word_classes(synset)
-        cur_classes = list(set(classes))
+        cur_classes = list(set(cur_classes))
         if len(cur_classes) == 0:
             cur_class = None
         else:
