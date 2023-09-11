@@ -43,8 +43,6 @@ def get_synset_count(synset):
     return count
 
 def find_synset_classes(synset):
-    if get_synset_count(synset) == 0:
-        return []
     word = synset.name().lower().split('.')[0]
     if word in word_classes:
         return [word]
@@ -64,7 +62,8 @@ def find_phrase_class(phrase):
         synsets = wn.synsets(phrase)
         classes = []
         for synset in synsets:
-            classes += find_synset_classes(synset)
+            if get_synset_count(synset) > 0:
+                classes += find_synset_classes(synset)
         classes = list(set(classes))
         if len(classes) == 0:
             return None
