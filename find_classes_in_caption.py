@@ -97,16 +97,21 @@ def find_classes(caption):
 
     for start_ind, end_ind in noun_spans:
         phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)])
-        synsets = wn.synsets(phrase)
-        cur_classes = []
-        for synset in synsets:
-            cur_classes += find_word_classes(synset)
-        cur_classes = list(set(cur_classes))
-        if len(cur_classes) == 0:
-            cur_class = None
+        if phrase in word_classes:
+            cur_class = phrase
         else:
-            assert len(cur_classes) == 1, f'Phrase "{phrase}" has multiple classes'
-            cur_class = cur_classes[0]
+            if phrase in known_mappings:
+                phrase = known_mappings[phrase]
+            synsets = wn.synsets(phrase)
+            cur_classes = []
+            for synset in synsets:
+                cur_classes += find_word_classes(synset)
+            cur_classes = list(set(cur_classes))
+            if len(cur_classes) == 0:
+                cur_class = None
+            else:
+                assert len(cur_classes) == 1, f'Phrase "{phrase}" has multiple classes'
+                cur_class = cur_classes[0]
         classes.append((start_ind, end_ind, cur_class))
     
     return classes
