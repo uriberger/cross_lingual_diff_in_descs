@@ -117,7 +117,7 @@ def find_classes(caption):
         phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)])
         phrase_class = find_phrase_class(phrase)
         if phrase_class is None:
-            phrase = token_list[highest_ancestor_ind][0]['test']
+            phrase = token_list[highest_ancestor_ind][0]['text']
             phrase_class = find_phrase_class(phrase)
         classes.append((start_ind, end_ind, phrase_class))
     
