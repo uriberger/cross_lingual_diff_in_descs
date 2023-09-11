@@ -54,11 +54,11 @@ def find_synset_classes(synset):
         return list(set(classes))
 
 def find_phrase_class(phrase):
+    if phrase in known_mappings:
+        phrase = known_mappings[phrase]
     if phrase in word_classes:
         phrase_class = phrase
     else:
-        if phrase in known_mappings:
-            phrase = known_mappings[phrase]
         synsets = wn.synsets(phrase)
         classes = []
         for synset in synsets:
@@ -121,7 +121,7 @@ def find_classes(caption):
     classes = []
 
     for start_ind, end_ind, highest_ancestor_ind in noun_spans:
-        phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)])
+        phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
         phrase_class = find_phrase_class(phrase)
         if phrase_class is None:
             phrase = token_list[highest_ancestor_ind][0]['text']
