@@ -16,7 +16,7 @@ word_classes = [
 
 known_mappings = {
     'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard', 'cats': 'cat',
-    'snowboarder': 'person'
+    'snowboarder': 'person', 'surfer': 'person'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
