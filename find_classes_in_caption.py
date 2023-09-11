@@ -7,10 +7,11 @@ word_classes = [
     'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag',
     'tie', 'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove',
     'skateboard', 'surfboard', 'tennis racket', 'bottle', 'glass', 'cup', 'fork', 'knife', 'spoon',
-    'bowl', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut',
+    'bowl', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'vegetable', 'fruit', 'hot dog', 'pizza', 'donut',
     'cake', 'chair', 'couch', 'plant', 'bed', 'table', 'toilet', 'television', 'laptop', 'mouse', 'remote',
     'keyboard', 'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock',
-    'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush', 'wall', 'sidewalk', 'mountain', 'beach'
+    'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush', 'wall', 'sidewalk', 'mountain', 'beach', 'kitchen',
+    'kitchen utensil'
     ]
 
 known_mappings = {
