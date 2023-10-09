@@ -12,7 +12,7 @@ word_classes = [
     'laptop', 'computer', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven', 'toaster',
     'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush',
     'wall', 'sidewalk', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti', 'tree', 'sky',
-    'camera', 'mirror'
+    'camera', 'mirror', 'teeth', 'bathtub'
     ]
 
 known_mappings = {
