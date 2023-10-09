@@ -7,17 +7,17 @@ word_classes = [
     'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella',
     'handbag', 'tie', 'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat',
     'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'bottle', 'glass', 'cup', 'fork', 'knife',
-    'spoon', 'bowl', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'vegetable', 'fruit',
-    'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch', 'plant', 'bed', 'table', 'toilet', 'television',
-    'laptop', 'computer', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven', 'toaster',
-    'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush',
-    'wall', 'sidewalk', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti', 'tree', 'sky',
-    'camera', 'mirror', 'teeth', 'bathtub'
+    'spoon', 'bowl', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'corn', 'vegetable',
+    'fruit', 'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch', 'plant', 'bed', 'table', 'toilet',
+    'television', 'laptop', 'computer', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven',
+    'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier',
+    'toothbrush', 'wall', 'sidewalk', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti', 'tree',
+    'sky', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake'
     ]
 
 known_mappings = {
     'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard', 'cats': 'cat',
-    'snowboarder': 'person', 'surfer': 'person'
+    'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
