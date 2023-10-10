@@ -17,7 +17,7 @@ word_classes = [
     ]
 
 known_mappings = {
-    'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard', 'cats': 'cat',
+    'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard',
     'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote-control': 'remote'
 }
 
@@ -75,6 +75,11 @@ def find_phrase_class(phrase):
         else:
             assert len(classes) == 1, f'Phrase "{phrase}" has multiple classes'
             phrase_class = classes[0]
+
+    # Check for plural
+    if phrase_class is None and phrase.endswith('s'):
+        phrase_class = find_phrase_class(phrase[:-1])
+
     return phrase_class
     
 def extract_noun_spans(token_list):
