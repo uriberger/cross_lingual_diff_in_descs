@@ -4,16 +4,16 @@ from nltk.corpus import wordnet as wn
 word_classes = [
     'man', 'woman', 'boy', 'girl', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus',
     'train', 'truck', 'boat', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird', 
-    'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella',
+    'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'groundhog', 'backpack', 'umbrella',
     'handbag', 'tie', 'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat',
     'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can',
     'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'corn',
     'vegetable', 'fruit', 'hot dog', 'pizza', 'donut', 'cake', 'coffee', 'chair', 'couch', 'plant', 'bed', 'table',
-    'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'keyboard', 'cell phone',
+    'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'keyboard', 'cell phone',
     'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear',
     'hair drier', 'toothbrush', 'wall', 'sidewalk', 'building', 'mountain', 'beach', 'kitchen', 'kitchen utensil',
     'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake',
-    'mouth', 'ears', 'eyes', 'nose', 'platform', 'box', 'uniform'
+    'mouth', 'ears', 'eyes', 'nose', 'platform', 'box', 'uniform', 'towel'
     ]
 
 known_mappings = {
@@ -79,6 +79,8 @@ def find_phrase_class(phrase):
     # Check for plural
     if phrase_class is None and phrase.endswith('s'):
         phrase_class = find_phrase_class(phrase[:-1])
+    if phrase_class is None and phrase.endswith('es'):
+        phrase_class = find_phrase_class(phrase[:-2])
 
     return phrase_class
     
