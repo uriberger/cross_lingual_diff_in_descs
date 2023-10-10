@@ -9,16 +9,16 @@ word_classes = [
     'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can',
     'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'corn',
     'vegetable', 'fruit', 'hot dog', 'pizza', 'donut', 'cake', 'coffee', 'chair', 'couch', 'plant', 'bed', 'table',
-    'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'keyboard', 'cell phone',
+    'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'keyboard', 'phone',
     'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear',
     'hair drier', 'toothbrush', 'wall', 'sidewalk', 'building', 'mountain', 'beach', 'kitchen', 'kitchen utensil',
     'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake',
-    'mouth', 'ears', 'eyes', 'nose', 'platform', 'box', 'uniform', 'towel'
+    'mouth', 'ears', 'eyes', 'nose', 'platform', 'box', 'uniform', 'towel', 'stone'
     ]
 
 known_mappings = {
-    'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard',
-    'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote-control': 'remote'
+    'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard', 'roller blades': 'rollerblade',
+    'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote-control': 'remote', 'rock': 'stone'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
