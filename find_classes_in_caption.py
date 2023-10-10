@@ -7,12 +7,13 @@ word_classes = [
     'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella',
     'handbag', 'tie', 'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat',
     'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can',
-    'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'corn',
-    'vegetable', 'fruit', 'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch', 'plant', 'bed', 'table',
-    'toilet', 'television', 'laptop', 'computer', 'mouse', 'remote', 'keyboard', 'cell phone',
+    'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'corn',
+    'vegetable', 'fruit', 'hot dog', 'pizza', 'donut', 'cake', 'coffee', 'chair', 'couch', 'plant', 'bed', 'table',
+    'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'keyboard', 'cell phone',
     'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear',
-    'hair drier', 'toothbrush', 'wall', 'sidewalk', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti',
-    'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake'
+    'hair drier', 'toothbrush', 'wall', 'sidewalk', 'building', 'mountain', 'beach', 'kitchen', 'kitchen utensil',
+    'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake',
+    'mouth', 'ears', 'eyes', 'nose', 'platform', 'box', 'uniform'
     ]
 
 known_mappings = {
