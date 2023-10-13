@@ -5,12 +5,12 @@ word_classes = [
     'man', 'woman', 'boy', 'girl', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus',
     'train', 'truck', 'boat', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird', 
     'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'groundhog', 'backpack', 'umbrella',
-    'handbag', 'tie', 'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat',
+    'handbag', 'tie', 'hat', 'shirt', 'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat',
     'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can',
     'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'corn',
     'vegetable', 'fruit', 'hot dog', 'pizza', 'donut', 'cake', 'coffee', 'chair', 'couch', 'plant', 'bed', 'table',
     'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'keyboard', 'phone',
-    'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear',
+    'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear',
     'hair drier', 'toothbrush', 'wall', 'sidewalk', 'building', 'mountain', 'beach', 'kitchen', 'kitchen utensil',
     'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake',
     'mouth', 'ears', 'eyes', 'nose', 'platform', 'box', 'uniform', 'towel', 'stone'
@@ -47,15 +47,18 @@ def get_synset_count(synset):
     return count
 
 def find_synset_classes(synset):
-    word = synset.name().lower().split('.')[0]
-    if word in word_classes:
-        return [word]
-    else:
-        classes = []
-        hypernyms = synset.hypernyms()
-        for hypernym in hypernyms:
-            classes += find_synset_classes(hypernym)
-        return list(set(classes))
+    classes = []
+    for lemma in synset.lemmas():
+        word = lemma.name().lower()
+        if word in word_classes:
+            return [word]
+        else:
+            cur_classes = []
+            hypernyms = synset.hypernyms()
+            for hypernym in hypernyms:
+                cur_classes += find_synset_classes(hypernym)
+            classes += list(set(cur_classes))
+    return classes
 
 def find_phrase_class(phrase):
     if phrase in known_mappings:
