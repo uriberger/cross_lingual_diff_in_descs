@@ -88,6 +88,18 @@ def find_phrase_class(phrase):
         phrase_class = find_phrase_class(phrase[:-2])
 
     return phrase_class
+
+def is_noun(token_list, ind):
+    if token_list[ind][0]['upos'] == 'NOUN':
+        return True
+    
+    # "remote" edge cases: in many cases, when people say "remote" they mean "remote controller", i.e., a noun. But the
+    #  parser treats it as an adjective. To identify these cases, we'll find "remote" with non-noun heads
+    head_ind = token_list[ind][0]['head'] - 1
+    if token_list[ind][0]['text'].lower() == 'remote' and token_list[head_ind][0]['upos'] != 'NOUN':
+        return True
+    
+    return False
     
 def extract_noun_spans(token_list):
     noun_spans = []
@@ -96,10 +108,10 @@ def extract_noun_spans(token_list):
     noun_sequences = []
     in_sequence = False
     for i in range(len(token_list)):
-        if token_list[i][0]['upos'] == 'NOUN' and (not in_sequence):
+        if is_noun(token_list, i) and (not in_sequence):
             sequence_start = i
             in_sequence = True
-        if token_list[i][0]['upos'] != 'NOUN' and in_sequence:
+        if (not is_noun(token_list, i)) and in_sequence:
             in_sequence = False
             noun_sequences.append((sequence_start, i))
     if in_sequence:
@@ -134,7 +146,7 @@ def preprocess(caption):
     # 'control', which isn't what we want. So we'll change it to 'remote'
     remote_control_start = caption.find('remote control')
     if remote_control_start != -1:
-        caption = caption[:remote_control_start] + 'remote-control' + caption[remote_control_start+14:]
+        caption = caption[:remote_control_start] + 'remote' + caption[remote_control_start+14:]
 
     return caption
 
