@@ -3,22 +3,24 @@ from nltk.corpus import wordnet as wn
 
 word_classes = [
     'man', 'woman', 'boy', 'girl', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train',
-    'truck', 'boat', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird',  'cat', 'dog', 'horse',
-    'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'groundhog', 'backpack', 'umbrella', 'handbag', 'tie', 'hat',
-    'shirt', 'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard',
-    'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray',
-    'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'corn', 'vegetable', 'fruit', 'hot dog', 'pizza',
-    'donut', 'cake', 'coffee', 'chair', 'couch', 'plant', 'bed', 'pillow', 'blanket', 'table', 'counter', 'toilet',
-    'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave',
-    'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'doll',
-    'hair drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'mountain', 'beach', 'kitchen',
-    'kitchen utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea',
-    'lake', 'mouth', 'ears', 'eyes', 'nose', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle'
+    'truck', 'boat', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird', 'fish', 'cat', 'dog',
+    'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'groundhog', 'pig', 'animal', 'backpack', 'umbrella',
+    'handbag', 'tie', 'hat', 'shirt', 'pants', 'dress', 'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite',
+    'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup',
+    'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'brussel sprout',
+    'carrot', 'corn', 'vegetable', 'fruit', 'hot dog', 'pizza', 'donut', 'cake', 'coffee', 'chair', 'couch', 'plant',
+    'bed', 'pillow', 'blanket', 'table', 'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse',
+    'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book',
+    'clock', 'vase', 'scissors', 'teddy bear', 'doll', 'hair drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk',
+    'building', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera',
+    'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ears', 'eyes', 'nose', 'platform', 'box', 'uniform',
+    'towel', 'stone', 'statue', 'candle', 'rope', 'nut',' bag'
     ]
 
 known_mappings = {
     'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard', 'roller blades': 'rollerblade',
-    'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote-control': 'remote', 'scooter': 'motorcycle'
+    'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote-control': 'remote', 'scooter': 'motorcycle',
+    'hay': 'plant', 'van': 'car',' walnut': 'nut', 
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
