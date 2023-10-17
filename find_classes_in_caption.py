@@ -2,7 +2,7 @@ import stanza
 from nltk.corpus import wordnet as wn
 
 word_classes = [
-    'man', 'woman', 'boy', 'girl', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train',
+    'man', 'woman', 'boy', 'girl', 'child', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train',
     'truck', 'boat', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird', 'fish', 'cat', 'dog',
     'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'groundhog', 'pig', 'deer', 'gazelle', 'animal',
     'backpack', 'umbrella', 'handbag', 'tie', 'hat', 'shirt', 'pants', 'dress', 'suitcase', 'frisbee', 'skis', 'snowboard',
@@ -13,14 +13,14 @@ word_classes = [
     'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster',
     'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'doll', 'hair drier', 'toothbrush', 'wall',
     'door', 'windows', 'sidewalk', 'building', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti', 'tree',
-    'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ears', 'eyes', 'nose',
+    'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye', 'nose',
     'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut',' bag'
     ]
 
 known_mappings = {
     'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard', 'roller blades': 'rollerblade',
     'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote-control': 'remote', 'scooter': 'motorcycle',
-    'hay': 'plant', 'van': 'car',' walnut': 'nut', 
+    'hay': 'plant', 'van': 'car',' walnut': 'nut', 'children': 'child'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
