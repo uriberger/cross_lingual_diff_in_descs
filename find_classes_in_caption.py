@@ -4,17 +4,17 @@ from nltk.corpus import wordnet as wn
 word_classes = [
     'man', 'woman', 'boy', 'girl', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train',
     'truck', 'boat', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird', 'fish', 'cat', 'dog',
-    'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'groundhog', 'pig', 'animal', 'backpack', 'umbrella',
-    'handbag', 'tie', 'hat', 'shirt', 'pants', 'dress', 'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite',
-    'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup',
-    'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'brussel sprout',
-    'carrot', 'corn', 'vegetable', 'fruit', 'hot dog', 'pizza', 'donut', 'cake', 'coffee', 'chair', 'couch', 'plant',
-    'bed', 'pillow', 'blanket', 'table', 'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse',
-    'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book',
-    'clock', 'vase', 'scissors', 'teddy bear', 'doll', 'hair drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk',
-    'building', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera',
-    'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ears', 'eyes', 'nose', 'platform', 'box', 'uniform',
-    'towel', 'stone', 'statue', 'candle', 'rope', 'nut',' bag'
+    'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'groundhog', 'pig', 'deer', 'gazelle', 'animal',
+    'backpack', 'umbrella', 'handbag', 'tie', 'hat', 'shirt', 'pants', 'dress', 'suitcase', 'frisbee', 'skis', 'snowboard',
+    'ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle',
+    'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'sandwich', 'orange', 'broccoli',
+    'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'vegetable', 'fruit', 'hotdog', 'pizza', 'donut', 'cake',
+    'coffee', 'chair', 'couch', 'plant', 'bed', 'pillow', 'blanket', 'table', 'counter', 'toilet', 'television', 'laptop',
+    'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster',
+    'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'doll', 'hair drier', 'toothbrush', 'wall',
+    'door', 'windows', 'sidewalk', 'building', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti', 'tree',
+    'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ears', 'eyes', 'nose',
+    'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut',' bag'
     ]
 
 known_mappings = {
@@ -141,12 +141,18 @@ def extract_noun_spans(token_list):
 
 def preprocess(caption):
     # Just solving some known issues
+    
+    # Replace phrases to make the parser's job easier
+    replace_dict = {
+        # 1. Every time we have 'remote control' in a sentence, 'remote' is an adjective so the identified noun span is
+        # 'control', which isn't what we want. So we'll change it to 'remote'
+        'remote control': 'remote',
+        # 2. "hot dog": hot is considered an adjective, and the only identified noun is "dog"
+        'hot dog': 'hotdog'
+        }
 
-    # 1. Every time we have 'remote control' in a sentence, 'remote' is an adjective so the identified noun span is
-    # 'control', which isn't what we want. So we'll change it to 'remote'
-    remote_control_start = caption.find('remote control')
-    if remote_control_start != -1:
-        caption = caption[:remote_control_start] + 'remote' + caption[remote_control_start+14:]
+    for orig_str, new_str in replace_dict.items():
+        caption = caption.replace(orig_str, new_str)
 
     return caption
 
