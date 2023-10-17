@@ -164,9 +164,22 @@ def find_classes(caption):
     for start_ind, end_ind, highest_ancestor_ind in noun_spans:
         phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
         phrase_class = find_phrase_class(phrase)
+
+        # Check only the highest ancestor in the noun span
         if phrase_class is None:
             phrase = token_list[highest_ancestor_ind][0]['text']
             phrase_class = find_phrase_class(phrase)
+
+        # 2. We have a problem when there's a sport named the same as its ball (baseball, basketball etc.).
+        # The more common synset is the game, and when someone talks about the ball the algorithm always thinks it's the game.
+        # We'll try identifying these cases by checking if it's a single noun and there's an identifier before it
+        if phrase_class is None \
+            and end_ind - start_ind == 1 \
+            and start_ind > 0 \
+            and token_list[start_ind-1][0]['upos'] == 'DET' \
+            and token_list[start_ind][0]['text'].endswith('ball'):
+            phrase_class = 'ball'
+
         classes.append((start_ind, end_ind, phrase_class))
     
     return classes
