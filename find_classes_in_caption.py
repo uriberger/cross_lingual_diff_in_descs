@@ -21,7 +21,8 @@ word_classes = [
 known_mappings = {
     'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard', 'roller blades': 'rollerblade',
     'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote-control': 'remote', 'scooter': 'motorcycle',
-    'hay': 'plant', 'van': 'car',' walnut': 'nut', 'children': 'child', 'diner': 'restaurant', 'guy': 'man'
+    'hay': 'plant', 'van': 'car',' walnut': 'nut', 'children': 'child', 'diner': 'restaurant', 'guy': 'man',
+    'tennis racquet': 'tennis racket'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
@@ -55,13 +56,29 @@ def find_synset_classes(synset):
         word = lemma.name().lower()
         if word in word_classes:
             return [word]
-        else:
-            cur_classes = []
-            hypernyms = synset.hypernyms()
-            for hypernym in hypernyms:
-                cur_classes += find_synset_classes(hypernym)
-            classes += list(set(cur_classes))
+    classes = []
+    hypernyms = synset.hypernyms()
+    for hypernym in hypernyms:
+        classes += find_synset_classes(hypernym)
     return classes
+
+def is_phrase_hypernym_of_synset(synset, phrase):
+    for lemma in synset.lemmas():
+        word = lemma.name().lower()
+        if word == phrase:
+            return True
+    hypernyms = synset.hypernyms()
+    for hypernym in hypernyms:
+        if is_phrase_hypernym_of_synset(hypernym, phrase):
+            return True
+    return False
+
+def is_phrase_hypernym_of_phrase(phrase1, phrase2):
+    synsets = wn.synsets(phrase1)
+    for synset in synsets:
+        if is_phrase_hypernym_of_synset(synset, phrase2.lower()):
+            return True
+    return False
 
 def find_phrase_class(phrase):
     if phrase in known_mappings:
@@ -81,7 +98,13 @@ def find_phrase_class(phrase):
         else:
             # If you have a word that can be refered to both as a fruit and as plant (e.g., 'raspberry') choose a fruit
             if len(classes) == 2 and 'fruit' in classes and 'plant' in classes:
-                classes = 'fruit'
+                classes = ['fruit']
+
+            # If we got 2 classes, one of which is a hypernym of the other, we'll take the lower one
+            if len(classes) == 2 and is_phrase_hypernym_of_phrase(classes[0], classes[1]):
+                classes = [classes[0]]
+            elif len(classes) == 2 and is_phrase_hypernym_of_phrase(classes[1], classes[0]):
+                classes = [classes[1]]
 
             # Else, we can't except more than one class
             assert len(classes) == 1, f'Phrase "{phrase}" has multiple classes'
