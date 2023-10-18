@@ -78,6 +78,11 @@ def find_phrase_class(phrase):
         if len(classes) == 0:
             return None
         else:
+            # If you have a word that can be refered to both as a fruit and as plant (e.g., 'raspberry') choose a fruit
+            if len(classes) == 2 and 'fruit' in classes and 'plant' in classes:
+                classes = 'fruit'
+
+            # Else, we can't except more than one class
             assert len(classes) == 1, f'Phrase "{phrase}" has multiple classes'
             phrase_class = classes[0]
 
@@ -152,7 +157,8 @@ def preprocess(caption):
         }
 
     for orig_str, new_str in replace_dict.items():
-        caption = caption.replace(orig_str, new_str)
+        if caption.startswith(orig_str + ' ') or caption.endswith(' ' + orig_str) or ' ' + orig_str + ' ' in caption:
+            caption = caption.replace(orig_str, new_str)
 
     return caption
 
