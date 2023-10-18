@@ -8,14 +8,14 @@ word_classes = [
     'backpack', 'umbrella', 'handbag', 'tie', 'hat', 'shirt', 'pants', 'dress', 'suitcase', 'frisbee', 'skis', 'snowboard',
     'ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle',
     'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'sandwich', 'orange', 'broccoli',
-    'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'sausage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'donut',
-    'cake', 'burrito', 'bread', 'coffee', 'chair', 'couch', 'plant', 'bed', 'pillow', 'blanket', 'table', 'counter',
-    'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone',
-    'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear',
-    'doll', 'hair drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain',
-    'beach', 'kitchen', 'kitchen utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth',
-    'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box', 'uniform', 'towel', 'stone',
-    'statue', 'candle', 'rope', 'nut',' bag'
+    'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'sausage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'fries',
+    'donut', 'cake', 'burrito', 'bread', 'coffee', 'chair', 'couch', 'plant', 'bed', 'pillow', 'blanket', 'table',
+    'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard',
+    'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',
+    'teddy bear', 'doll', 'hair drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'restaurant',
+    'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror',
+    'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box', 'uniform', 'towel',
+    'stone', 'statue', 'candle', 'rope', 'nut',' bag', 'pole', 'toothpick'
     ]
 
 known_mappings = {
@@ -77,7 +77,7 @@ def find_phrase_class(phrase):
                 classes += find_synset_classes(synset)
         classes = list(set(classes))
         if len(classes) == 0:
-            return None
+            phrase_class = None
         else:
             # If you have a word that can be refered to both as a fruit and as plant (e.g., 'raspberry') choose a fruit
             if len(classes) == 2 and 'fruit' in classes and 'plant' in classes:
