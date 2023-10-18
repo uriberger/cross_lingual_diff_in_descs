@@ -9,12 +9,13 @@ word_classes = [
     'ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle',
     'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'sandwich', 'orange', 'broccoli',
     'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'vegetable', 'fruit', 'hotdog', 'pizza', 'donut', 'cake',
-    'coffee', 'chair', 'couch', 'plant', 'bed', 'pillow', 'blanket', 'table', 'counter', 'toilet', 'television', 'laptop',
-    'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster',
-    'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'doll', 'hair drier', 'toothbrush', 'wall',
-    'door', 'windows', 'sidewalk', 'building', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti', 'tree',
-    'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye', 'nose',
-    'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut',' bag'
+    'burrito', 'bread', 'coffee', 'chair', 'couch', 'plant', 'bed', 'pillow', 'blanket', 'table', 'counter', 'toilet',
+    'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave',
+    'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'doll',
+    'hair drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'mountain', 'beach', 'kitchen',
+    'kitchen utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea',
+    'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope',
+    'nut',' bag'
     ]
 
 known_mappings = {
@@ -72,7 +73,7 @@ def find_phrase_class(phrase):
         classes = []
         all_synsets_count = sum([get_synset_count(x) for x in synsets])
         for synset in synsets:
-            if all_synsets_count == 0 or get_synset_count(synset)/all_synsets_count > 0.2:
+            if synset.pos() == 'n' and (all_synsets_count == 0 or get_synset_count(synset)/all_synsets_count > 0.2):
                 classes += find_synset_classes(synset)
         classes = list(set(classes))
         if len(classes) == 0:
