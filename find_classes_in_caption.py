@@ -87,10 +87,11 @@ def find_phrase_class(phrase):
         phrase_class = phrase
     else:
         synsets = wn.synsets(phrase)
+        synsets = [synset for synset in synsets if synset.pos() == 'n']
         classes = []
         all_synsets_count = sum([get_synset_count(x) for x in synsets])
         for synset in synsets:
-            if synset.pos() == 'n' and (all_synsets_count == 0 or get_synset_count(synset)/all_synsets_count > 0.2):
+            if all_synsets_count == 0 or get_synset_count(synset)/all_synsets_count > 0.2:
                 classes += find_synset_classes(synset)
         classes = list(set(classes))
         if len(classes) == 0:
