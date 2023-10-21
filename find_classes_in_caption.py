@@ -22,7 +22,7 @@ known_mappings = {
     'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard', 'roller blades': 'rollerblade',
     'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote-control': 'remote', 'scooter': 'motorcycle',
     'hay': 'plant', 'van': 'car',' walnut': 'nut', 'children': 'child', 'diner': 'restaurant', 'guy': 'man',
-    'tennis racquet': 'tennis racket'
+    'tennis racquet': 'tennis racket', 'male': 'man', 'female': 'woman'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
