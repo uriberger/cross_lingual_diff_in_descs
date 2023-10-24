@@ -1,23 +1,28 @@
 import stanza
 from nltk.corpus import wordnet as wn
+import inflect
 
 word_classes = [
     'man', 'woman', 'boy', 'girl', 'child', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train',
     'truck', 'boat', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird', 'fish', 'cat', 'dog',
     'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'groundhog', 'pig', 'deer', 'gazelle', 'animal',
-    'backpack', 'umbrella', 'tie', 'hat', 'shirt', 'pants', 'diaper', 'dress', 'coat', 'cloathing', 'suitcase', 'frisbee',
-    'skis', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket',
-    'plate', 'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'sandwich',
-    'orange', 'broccoli', 'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'sausage', 'vegetable', 'fruit', 'hotdog',
-    'pizza', 'fries', 'donut', 'cake', 'burrito', 'bread', 'coffee', 'chair', 'couch', 'plant', 'bed', 'pillow', 'blanket',
-    'sheets', 'mattress', 'table', 'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote',
-    'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock',
-    'vase', 'scissors', 'teddy bear', 'doll', 'hair drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk',
-    'building', 'restaurant', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon',
-    'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box',
-    'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut',' bag', 'pole', 'toothpick', 'wheel', 'basket',' nail',
-    'hammer', 'shovel', 'hand tool'
+    'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'shirt', 'pants', 'diaper', 'dress', 'coat', 'cloathing',
+    'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard',
+    'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray',
+    'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'sausage',
+    'vegetable', 'fruit', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'burrito', 'bread', 'coffee', 'chair', 'couch',
+    'plant', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table', 'counter', 'toilet', 'television', 'laptop',
+    'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster',
+    'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'doll', 'hair drier', 'toothbrush', 'wall',
+    'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti',
+    'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye',
+    'nose', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut',' bag', 'pole', 'toothpick',
+    'wheel', 'basket',' nail', 'hammer', 'shovel', 'hand tool', 'guitar', 'piano', 'musical instrument', 'newspaper'
     ]
+
+non_word_classes = [
+    'sport'
+]
 
 known_mappings = {
     'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard', 'roller blades': 'rollerblade',
@@ -27,6 +32,7 @@ known_mappings = {
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
+inflect_engine = inflect.engine()
 
 def get_depth_at_ind(token_list, i, depths):
     head_ind = token_list[i][0]['head'] - 1
@@ -82,10 +88,15 @@ def is_phrase_hypernym_of_phrase(phrase1, phrase2):
     return False
 
 def find_phrase_class(phrase):
+    if inflect_engine.singular_noun(phrase) != False:
+        phrase = inflect_engine.singular_noun(phrase)
+
     if phrase in known_mappings:
         phrase = known_mappings[phrase]
     if phrase in word_classes:
         phrase_class = phrase
+    elif phrase in non_word_classes:
+        return None
     else:
         synsets = wn.synsets(phrase)
         synsets = [synset for synset in synsets if synset.pos() == 'n']
@@ -111,12 +122,6 @@ def find_phrase_class(phrase):
             # Else, we can't except more than one class
             assert len(classes) == 1, f'Phrase "{phrase}" has multiple classes'
             phrase_class = classes[0]
-
-    # Check for plural
-    if phrase_class is None and phrase.endswith('s'):
-        phrase_class = find_phrase_class(phrase[:-1])
-    if phrase_class is None and phrase.endswith('es'):
-        phrase_class = find_phrase_class(phrase[:-2])
 
     return phrase_class
 
