@@ -5,24 +5,25 @@ word_classes = [
     'man', 'woman', 'boy', 'girl', 'child', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train',
     'truck', 'boat', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird', 'fish', 'cat', 'dog',
     'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'groundhog', 'pig', 'deer', 'gazelle', 'animal',
-    'backpack', 'umbrella', 'tie', 'hat', 'shirt', 'pants', 'dress', 'coat', 'cloathing', 'suitcase', 'frisbee', 'skis',
-    'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'plate',
-    'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'sandwich', 'orange',
-    'broccoli', 'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'sausage', 'vegetable', 'fruit', 'hotdog', 'pizza',
-    'fries', 'donut', 'cake', 'burrito', 'bread', 'coffee', 'chair', 'couch', 'plant', 'bed', 'pillow', 'blanket',
+    'backpack', 'umbrella', 'tie', 'hat', 'shirt', 'pants', 'diaper', 'dress', 'coat', 'cloathing', 'suitcase', 'frisbee',
+    'skis', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket',
+    'plate', 'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'sandwich',
+    'orange', 'broccoli', 'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'sausage', 'vegetable', 'fruit', 'hotdog',
+    'pizza', 'fries', 'donut', 'cake', 'burrito', 'bread', 'coffee', 'chair', 'couch', 'plant', 'bed', 'pillow', 'blanket',
     'sheets', 'mattress', 'table', 'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote',
     'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock',
     'vase', 'scissors', 'teddy bear', 'doll', 'hair drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk',
     'building', 'restaurant', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon',
     'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box',
-    'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut',' bag', 'pole', 'toothpick', 'wheel', 'basket'
+    'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut',' bag', 'pole', 'toothpick', 'wheel', 'basket',' nail',
+    'hammer', 'shovel', 'hand tool'
     ]
 
 known_mappings = {
     'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard', 'roller blades': 'rollerblade',
     'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote-control': 'remote', 'scooter': 'motorcycle',
     'hay': 'plant', 'van': 'car',' walnut': 'nut', 'children': 'child', 'diner': 'restaurant', 'guy': 'man',
-    'tennis racquet': 'tennis racket', 'male': 'man', 'female': 'woman'
+    'tennis racquet': 'tennis racket', 'male': 'man', 'female': 'woman', 'adult': 'person'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
