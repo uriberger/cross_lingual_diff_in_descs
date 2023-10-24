@@ -175,32 +175,52 @@ def extract_noun_spans(token_list):
 
     return noun_spans
 
-def preprocess(caption):
+def preprocess(token_list):
     # Just solving some known issues
     
     # Replace phrases to make the parser's job easier
-    replace_dict = {
+    replace_dict = [
         # 1. Every time we have 'remote control' in a sentence, 'remote' is an adjective so the identified noun span is
         # 'control', which isn't what we want. So we'll change it to 'remote'
-        'remote control': 'remote',
+        (['remote', 'control'], 'remote'),
         # 2. "hot dog": hot is considered an adjective, and the only identified noun is "dog"
-        'hot dog': 'hotdog',
-        'hot dogs': 'hotdogs'
-        }
+        (['hot', 'dog'], 'hotdog'),
+        (['hot', 'dogs'], 'hotdogs')
+    ]
 
-    for orig_str, new_str in replace_dict.items():
-        if caption.startswith(orig_str + ' ') or caption.endswith(' ' + orig_str) or ' ' + orig_str + ' ' in caption:
-            caption = caption.replace(orig_str, new_str)
+    tokens = [x[0]['text'].lower() for x in token_list]
+    inds_in_orig_strs = [0]*len(replace_dict)
+    to_replace = []
+    for i in range(len(tokens)):
+        token = tokens[i]
+        for j in range(len(replace_dict)):
+            if token == replace_dict[j][0][inds_in_orig_strs[j]]:
+                inds_in_orig_strs[j] += 1
+                if inds_in_orig_strs[j] == len(replace_dict[j][0]):
+                    to_replace.append((i - len(replace_dict[j][0]) + 1, i + 1, replace_dict[j][1]))
+                    inds_in_orig_strs[j] = 0
+            else:
+                inds_in_orig_strs[j] = 0
 
-    return caption
+    if len(to_replace) > 0:
+        for start_ind, end_ind, new_str in to_replace:
+            tokens[start_ind] = new_str
+            tokens[start_ind+1:end_ind] = ['[BLANK]']*(end_ind-(start_ind+1))
+        tokens = [x for x in tokens if x != '[BLANK]']
+        preprocessed_sentence = ' '.join(tokens)
+        doc = nlp(preprocessed_sentence)
+        token_lists = [[x.to_dict() for x in y.tokens] for y in doc.sentences]
+        token_list = token_lists[0]
+
+    return token_list
 
 def find_classes(caption):
-    caption = preprocess(caption)
     doc = nlp(caption)
     token_lists = [[x.to_dict() for x in y.tokens] for y in doc.sentences]
     if len(token_lists) > 1:
         return None
     token_list = token_lists[0]
+    token_list = preprocess(token_list)
 
     noun_spans = extract_noun_spans(token_list)
     classes = []
