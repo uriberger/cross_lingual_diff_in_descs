@@ -4,22 +4,62 @@ import inflect
 
 word_classes = [
     'man', 'woman', 'boy', 'girl', 'child', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train',
-    'truck', 'boat', 'watercraft', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird', 'fish',
-    'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'groundhog', 'pig', 'deer', 'gazelle',
-    'animal', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants', 'diaper', 'dress', 'coat',
-    'clothing', 'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard',
-    'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray',
-    'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'sausage',
-    'vegetable', 'fruit', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'burrito', 'bread', 'coffee', 'chair', 'couch',
-    'plant', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table', 'counter', 'toilet', 'television', 'laptop',
-    'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster',
-    'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'doll', 'hair drier', 'toothbrush', 'wall',
-    'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti',
-    'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye',
-    'nose', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut',' bag', 'pole', 'toothpick',
-    'wheel', 'basket',' nail', 'hammer', 'shovel', 'hand tool', 'guitar', 'piano', 'musical instrument', 'newspaper',
-    'helmet'
+    'truck', 'boat', 'ship', 'watercraft', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird',
+    'fish', 'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'groundhog', 'pig', 'deer',
+    'gazelle', 'animal', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants', 'diaper',
+    'dress', 'coat', 'clothing', 'suitcase', 'frisbee', 'ski', 'snowboard', 'ball', 'kite', 'baseball bat',
+    'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can', 'fork',
+    'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'brussel sprout', 'carrot',
+    'corn', 'garlic', 'onion', 'sausage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'burrito',
+    'bread', 'coffee', 'chair', 'couch', 'plant', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table', 'counter',
+    'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone',
+    'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear',
+    'doll', 'hair drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain',
+    'beach', 'kitchen', 'kitchen utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth',
+    'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box', 'uniform', 'towel', 'stone',
+    'statue', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel',
+    'hand tool', 'guitar', 'piano', 'musical instrument', 'newspaper', 'helmet', 'carrier'
     ]
+
+parent_to_children = {
+    'person': ['man', 'woman', 'boy', 'girl', 'child', 'people'],
+    'vehicle': ['bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'watercraft'],
+    'watercraft': ['boat', 'ship'],
+    'seat': ['bench', 'chair', 'couch'],
+    'furniture': ['bed', 'seat', 'table', 'counter'],
+    'bedding accessories': ['pillow', 'blanket', 'sheets', 'mattress'],
+    'animal': ['bird', 'fish', 'mammal'],
+    'mammal': ['cat', 'dog', 'horse', 'sheep', 'cow', 'wild mammal', 'groundhog', 'pig', 'deer', 'gazelle'],
+    'wild mammal': ['elephant', 'bear', 'zebra', 'giraffe'],
+    'bag': ['backpack', 'suitcase', 'basket'],
+    'clothing': ['tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants', 'diaper', 'dress', 'coat', 'helmet'],
+    'riding device': ['skis', 'surfboard', 'snowboard', 'skateboard'],
+    'game': ['frisbee', 'sport instrument', 'kite'],
+    'sport instrument': ['ball', 'baseball bat', 'baseball glove', 'tennis racket'],
+    'kitchen utensil': ['plate', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray'],
+    'food': ['fruit', 'vegetable', 'sandwich', 'corn', 'sausage', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'burrito',
+             'bread', 'nut'],
+    'fruit': ['banana', 'apple', 'orange'],
+    'vegetable': ['cucumber', 'tomato', 'broccoli', 'brussel sprout', 'carrot', 'garlic', 'onion'],
+    'plant': ['tree'],
+    'electornics': ['television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone',
+    'microwave', 'oven', 'stove', 'toaster', 'refrigerator'],
+    'body part': ['mouth', 'ear', 'eye', 'nose'],
+    'hand tool': ['hammer', 'shovel'],
+    'musical instrument': ['guitar', 'piano']
+}
+
+child_to_parent = {}
+for parent, children in parent_to_children.items():
+    for child in children:
+        child_to_parent[child] = parent
+
+def is_hyponym_of(class1, class2):
+    if class1 == class2:
+        return True
+    while class1 in child_to_parent:
+        return is_hyponym_of(child_to_parent[class1], class2)
+    return False
 
 non_word_classes = [
     'sport'
@@ -29,7 +69,8 @@ known_mappings = {
     'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard', 'roller blades': 'rollerblade',
     'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote-control': 'remote', 'scooter': 'motorcycle',
     'hay': 'plant', 'van': 'car',' walnut': 'nut', 'children': 'child', 'diner': 'restaurant', 'guy': 'man',
-    'tennis racquet': 'tennis racket', 'male': 'man', 'female': 'woman', 'adult': 'person'
+    'tennis racquet': 'tennis racket', 'male': 'man', 'female': 'woman', 'adult': 'person', 'plantain': 'banana',
+    'racer': 'person'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
@@ -111,16 +152,15 @@ def find_phrase_class(phrase):
             phrase_class = None
         else:
             # If you have a word that can be refered to both as a fruit and as plant (e.g., 'raspberry') choose a fruit
-            if len(classes) == 2 and 'fruit' in classes and 'plant' in classes:
-                classes = ['fruit']
-            # Same with trees
-            if len(classes) == 2 and 'fruit' in classes and 'tree' in classes:
-                classes = ['fruit']
+            if len(classes) == 2 and is_hyponym_of(classes[0], 'fruit') and is_hyponym_of(classes[1], 'plant'):
+                classes = [classes[0]]
+            if len(classes) == 2 and is_hyponym_of(classes[1], 'fruit') and is_hyponym_of(classes[0], 'plant'):
+                classes = [classes[1]]
 
             # If we got 2 classes, one of which is a hypernym of the other, we'll take the lower one
-            if len(classes) == 2 and is_phrase_hypernym_of_phrase(classes[0], classes[1]):
+            if len(classes) == 2 and is_hyponym_of(classes[0], classes[1]):
                 classes = [classes[0]]
-            elif len(classes) == 2 and is_phrase_hypernym_of_phrase(classes[1], classes[0]):
+            elif len(classes) == 2 and is_hyponym_of(classes[1], classes[0]):
                 classes = [classes[1]]
 
             # Else, we can't except more than one class
