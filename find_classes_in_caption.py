@@ -17,7 +17,8 @@ word_classes = [
     'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti',
     'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye',
     'nose', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut',' bag', 'pole', 'toothpick',
-    'wheel', 'basket',' nail', 'hammer', 'shovel', 'hand tool', 'guitar', 'piano', 'musical instrument', 'newspaper'
+    'wheel', 'basket',' nail', 'hammer', 'shovel', 'hand tool', 'guitar', 'piano', 'musical instrument', 'newspaper',
+    'helmet'
     ]
 
 non_word_classes = [
