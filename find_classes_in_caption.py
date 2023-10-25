@@ -6,7 +6,7 @@ word_classes = [
     'man', 'woman', 'boy', 'girl', 'child', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train',
     'truck', 'boat', 'ship', 'watercraft', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird',
     'fish', 'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'groundhog', 'pig', 'deer',
-    'gazelle', 'animal', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants', 'diaper',
+    'gazelle', 'goose', 'animal', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants', 'diaper',
     'dress', 'coat', 'clothing', 'suitcase', 'frisbee', 'ski', 'snowboard', 'ball', 'kite', 'baseball bat',
     'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can', 'fork',
     'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'brussel sprout', 'carrot',
@@ -28,7 +28,7 @@ parent_to_children = {
     'seat': ['bench', 'chair', 'couch'],
     'furniture': ['bed', 'seat', 'table', 'counter'],
     'bedding accessories': ['pillow', 'blanket', 'sheets', 'mattress'],
-    'animal': ['bird', 'fish', 'mammal'],
+    'animal': ['bird', 'fish', 'mammal', 'goose'],
     'mammal': ['cat', 'dog', 'horse', 'sheep', 'cow', 'wild mammal', 'groundhog', 'pig', 'deer', 'gazelle'],
     'wild mammal': ['elephant', 'bear', 'zebra', 'giraffe'],
     'bag': ['backpack', 'suitcase', 'basket'],
@@ -151,6 +151,16 @@ def find_phrase_class(phrase):
         if len(classes) == 0:
             phrase_class = None
         else:
+            # First, reduce classes to hyponyms only
+            to_remove = {}
+            for i in range(len(classes)):
+                for j in range(i+1, len(classes)):
+                    if is_hyponym_of(classes[i], classes[j]):
+                        to_remove[j] = True
+                    elif is_hyponym_of(classes[j], classes[i]):
+                        to_remove[i] = True
+            classes = [classes[i] for i in range(len(classes)) if i not in to_remove]
+
             # If you have a word that can be refered to both as a fruit and as plant (e.g., 'raspberry') choose a fruit
             if len(classes) == 2 and is_hyponym_of(classes[0], 'fruit') and is_hyponym_of(classes[1], 'plant'):
                 classes = [classes[0]]
