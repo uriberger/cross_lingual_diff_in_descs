@@ -4,10 +4,10 @@ import inflect
 
 word_classes = [
     'man', 'woman', 'boy', 'girl', 'child', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train',
-    'truck', 'boat', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird', 'fish', 'cat', 'dog',
-    'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'groundhog', 'pig', 'deer', 'gazelle', 'animal',
-    'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'shirt', 'pants', 'diaper', 'dress', 'coat', 'cloathing',
-    'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard',
+    'truck', 'boat', 'watercraft', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird', 'fish',
+    'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'groundhog', 'pig', 'deer', 'gazelle',
+    'animal', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants', 'diaper', 'dress', 'coat',
+    'clothing', 'suitcase', 'frisbee', 'skis', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard',
     'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray',
     'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'sausage',
     'vegetable', 'fruit', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'burrito', 'bread', 'coffee', 'chair', 'couch',
@@ -112,6 +112,9 @@ def find_phrase_class(phrase):
             # If you have a word that can be refered to both as a fruit and as plant (e.g., 'raspberry') choose a fruit
             if len(classes) == 2 and 'fruit' in classes and 'plant' in classes:
                 classes = ['fruit']
+            # Same with trees
+            if len(classes) == 2 and 'fruit' in classes and 'tree' in classes:
+                classes = ['fruit']
 
             # If we got 2 classes, one of which is a hypernym of the other, we'll take the lower one
             if len(classes) == 2 and is_phrase_hypernym_of_phrase(classes[0], classes[1]):
@@ -185,7 +188,9 @@ def preprocess(token_list):
         (['remote', 'control'], 'remote'),
         # 2. "hot dog": hot is considered an adjective, and the only identified noun is "dog"
         (['hot', 'dog'], 'hotdog'),
-        (['hot', 'dogs'], 'hotdogs')
+        (['hot', 'dogs'], 'hotdogs'),
+        # 2. "olive green": olive is considered a noun
+        (['olive', 'green'], 'green')
     ]
 
     tokens = [x[0]['text'].lower() for x in token_list]
