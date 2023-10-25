@@ -6,7 +6,7 @@ word_classes = [
     'man', 'woman', 'boy', 'girl', 'child', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train',
     'truck', 'boat', 'ship', 'watercraft', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird',
     'fish', 'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'groundhog', 'pig', 'deer',
-    'gazelle', 'goose', 'shrimp', 'animal', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'shirt', 'sweater',
+    'gazelle', 'goose', 'shrimp', 'worm', 'animal', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'shirt', 'sweater',
     'pants', 'diaper', 'dress', 'coat', 'clothing', 'suitcase', 'frisbee', 'ski', 'snowboard', 'ball', 'kite',
     'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can',
     'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'brussel sprout',
@@ -18,7 +18,7 @@ word_classes = [
     'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror',
     'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box', 'uniform', 'towel',
     'stone', 'statue', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel',
-    'hand tool', 'guitar', 'piano', 'musical instrument', 'newspaper', 'helmet', 'carrier'
+    'hand tool', 'guitar', 'piano', 'musical instrument', 'newspaper', 'helmet', 'carrier', 'slicer'
     ]
 
 parent_to_children = {
@@ -28,7 +28,7 @@ parent_to_children = {
     'seat': ['bench', 'chair', 'couch'],
     'furniture': ['bed', 'seat', 'table', 'counter'],
     'bedding accessories': ['pillow', 'blanket', 'sheets', 'mattress'],
-    'animal': ['bird', 'fish', 'mammal', 'goose', 'shrimp'],
+    'animal': ['bird', 'fish', 'mammal', 'goose', 'shrimp', 'worm'],
     'mammal': ['cat', 'dog', 'horse', 'sheep', 'cow', 'wild mammal', 'groundhog', 'pig', 'deer', 'gazelle'],
     'wild mammal': ['elephant', 'bear', 'zebra', 'giraffe'],
     'bag': ['backpack', 'suitcase', 'basket'],
@@ -162,9 +162,16 @@ def find_phrase_class(phrase):
             classes = [classes[i] for i in range(len(classes)) if i not in to_remove]
 
             # If you have a word that can be refered to both as a fruit and as plant (e.g., 'raspberry') choose a fruit
-            if len(classes) == 2 and is_hyponym_of(classes[0], 'fruit') and is_hyponym_of(classes[1], 'plant'):
+            strong_classes = ['fruit', 'vegetable']
+            def is_hyponym_of_strong_class(phrase):
+                for strong_class in strong_classes:
+                    if is_hyponym_of(phrase, strong_class):
+                        return True
+                return False
+            
+            if len(classes) == 2 and is_hyponym_of_strong_class(classes[0]) and is_hyponym_of(classes[1], 'plant'):
                 classes = [classes[0]]
-            if len(classes) == 2 and is_hyponym_of(classes[1], 'fruit') and is_hyponym_of(classes[0], 'plant'):
+            if len(classes) == 2 and is_hyponym_of_strong_class(classes[1]) and is_hyponym_of(classes[0], 'plant'):
                 classes = [classes[1]]
 
             # If we got 2 classes, one of which is a hypernym of the other, we'll take the lower one
