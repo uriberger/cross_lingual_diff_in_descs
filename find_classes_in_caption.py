@@ -5,21 +5,21 @@ import inflect
 word_classes = [
     'man', 'woman', 'boy', 'girl', 'child', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train',
     'truck', 'boat', 'ship', 'watercraft', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird',
-    'ostrich', 'fish', 'tuna', 'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'groundhog',
-    'pig', 'deer', 'gazelle', 'goose', 'shrimp', 'worm', 'turtle', 'bunny', 'animal', 'beaver', 'backpack', 'umbrella',
-    'tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants', 'diaper', 'dress', 'coat', 'clothing', 'suitcase', 'frisbee',
-    'ski', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket',
-    'plate', 'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'sandwich',
-    'orange', 'broccoli', 'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'sausage', 'cabbage', 'vegetable',
-    'fruit', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'biscuit', 'burrito', 'bread', 'toast', 'coffee', 'chair',
-    'couch', 'plant', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table', 'counter', 'toilet', 'television',
-    'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove',
-    'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'doll', 'hair drier',
-    'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'beach', 'kitchen',
-    'kitchen utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea',
-    'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope',
-    'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel', 'hand tool', 'guitar', 'piano',
-    'musical instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'caboose'
+    'ostrich', 'fish', 'tuna', 'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'tiger', 'zebra', 'giraffe',
+    'groundhog', 'pig', 'deer', 'gazelle', 'goose', 'shrimp', 'worm', 'turtle', 'bunny', 'animal', 'beaver', 'backpack',
+    'umbrella', 'tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants', 'diaper', 'dress', 'coat', 'clothing', 'suitcase',
+    'frisbee', 'ski', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard',
+    'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple',
+    'kiwi', 'sandwich', 'orange', 'broccoli', 'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'sausage', 'cabbage',
+    'vegetable', 'fruit', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'biscuit', 'burrito', 'bread', 'toast', 'coffee',
+    'chair', 'couch', 'plant', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table', 'counter', 'toilet',
+    'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave',
+    'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'doll',
+    'hair drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'beach',
+    'kitchen', 'kitchen utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine',
+    'sea', 'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle',
+    'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel', 'hand tool', 'guitar',
+    'piano', 'musical instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'cutter', 'caboose'
     ]
 
 parent_to_children = {
@@ -34,7 +34,7 @@ parent_to_children = {
     'mammal': ['cat', 'dog', 'horse', 'sheep', 'cow', 'wild mammal', 'groundhog', 'pig', 'deer', 'gazelle', 'bunny',
                'beaver'],
     'fish': ['tuna'],
-    'wild mammal': ['elephant', 'bear', 'zebra', 'giraffe'],
+    'wild mammal': ['elephant', 'bear', 'zebra', 'giraffe', 'tiger'],
     'bag': ['backpack', 'suitcase', 'basket'],
     'clothing': ['tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants', 'diaper', 'dress', 'coat', 'helmet'],
     'riding device': ['skis', 'surfboard', 'snowboard', 'skateboard'],
@@ -44,7 +44,7 @@ parent_to_children = {
     'cup': ['glass'],
     'food': ['fruit', 'vegetable', 'sandwich', 'corn', 'sausage', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'burrito',
              'bread', 'nut', 'toast', 'biscuit'],
-    'fruit': ['banana', 'apple', 'orange'],
+    'fruit': ['banana', 'apple', 'orange', 'kiwi'],
     'vegetable': ['cucumber', 'tomato', 'broccoli', 'brussel sprout', 'carrot', 'garlic', 'onion', 'cabbage'],
     'plant': ['tree'],
     'electornics': ['television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone',
@@ -75,7 +75,8 @@ known_mappings = {
     'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote-control': 'remote', 'scooter': 'motorcycle',
     'hay': 'plant', 'van': 'car', 'walnut': 'nut', 'children': 'child', 'diner': 'restaurant', 'guy': 'man',
     'tennis racquet': 'tennis racket', 'male': 'man', 'female': 'woman', 'adult': 'person', 'plantain': 'banana',
-    'racer': 'person', 'young': 'person', 'clippers': 'scissors', 'pet': 'animal', 'president': 'person'
+    'racer': 'person', 'young': 'person', 'clippers': 'scissors', 'pet': 'animal', 'president': 'person',
+    'guide': 'person', 'climber': 'person'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
