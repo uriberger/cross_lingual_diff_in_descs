@@ -79,7 +79,7 @@ known_mappings = {
     'plantain': 'banana', 'racer': 'person', 'young': 'person', 'clippers': 'scissors', 'pet': 'animal',
     'president': 'person', 'guide': 'person', 'climber': 'person', 'commuter': 'person', 'dalmatian': 'dog',
     'chick': 'chicken', 'gondola': 'boat', 'ewe': 'sheep', 'sailor': 'person', 'fighter': 'airplane', 'receiver': 'person',
-    'sweeper': 'person'
+    'sweeper': 'person', 'settee': 'couch', 'caster': 'person'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
