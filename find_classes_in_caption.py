@@ -9,19 +9,19 @@ word_classes = [
     'ostrich', 'fish', 'tuna', 'cat', 'dog', 'horse', 'fox', 'sheep', 'cow', 'elephant', 'bear', 'tiger', 'chicken',
     'zebra', 'giraffe', 'groundhog', 'pig', 'deer', 'gazelle', 'goose', 'shrimp', 'worm', 'turtle', 'bunny', 'rat',
     'animal', 'beaver', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants', 'diaper', 'dress',
-    'coat', 'clothing', 'suitcase', 'frisbee', 'ski', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove',
+    'coat', 'boa', 'clothing', 'suitcase', 'frisbee', 'ski', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove',
     'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl',
-    'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'sandwich', 'orange', 'cucumber', 'tomato', 'chickpea', 'broccoli',
-    'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'sausage', 'cabbage', 'vegetable', 'fruit', 'hotdog', 'pizza',
-    'fries', 'donut', 'cake', 'biscuit', 'burrito', 'bread', 'toast', 'coffee', 'chair', 'couch', 'plant', 'bed', 'pillow',
-    'blanket', 'sheets', 'mattress', 'table', 'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse',
-    'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book',
-    'clock', 'vase', 'scissors', 'teddy bear', 'doll', 'hair drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk',
-    'building', 'restaurant', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon',
-    'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box',
-    'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail',
-    'hammer', 'shovel', 'hand tool', 'guitar', 'piano', 'musical instrument', 'newspaper', 'helmet', 'carrier', 'slicer',
-    'cutter', 'caboose', 'pinwheel'
+    'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'sandwich', 'orange', 'mandarin', 'cucumber', 'tomato', 'chickpea',
+    'broccoli', 'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'sausage', 'cabbage', 'vegetable', 'fruit',
+    'hotdog', 'pizza', 'fries', 'donut', 'cake', 'biscuit', 'burrito', 'bread', 'toast', 'coffee', 'chair', 'couch',
+    'plant', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table', 'counter', 'toilet', 'television', 'laptop',
+    'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster',
+    'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'doll', 'hair drier', 'toothbrush', 'wall',
+    'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti',
+    'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye',
+    'nose', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick',
+    'wheel', 'basket', 'nail', 'hammer', 'shovel', 'hand tool', 'guitar', 'piano', 'musical instrument', 'newspaper',
+    'helmet', 'carrier', 'slicer', 'cutter', 'caboose', 'pinwheel', 'fireball', 'okra'
     ]
 
 parent_to_children = {
@@ -39,7 +39,7 @@ parent_to_children = {
     'fish': ['tuna'],
     'wild mammal': ['elephant', 'bear', 'zebra', 'giraffe', 'tiger'],
     'bag': ['backpack', 'suitcase', 'basket'],
-    'clothing': ['tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants', 'diaper', 'dress', 'coat', 'helmet'],
+    'clothing': ['tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants', 'diaper', 'dress', 'coat', 'helmet', 'boa'],
     'riding device': ['skis', 'surfboard', 'snowboard', 'skateboard'],
     'game': ['frisbee', 'sport instrument', 'kite'],
     'sport instrument': ['ball', 'baseball bat', 'baseball glove', 'tennis racket'],
@@ -47,8 +47,9 @@ parent_to_children = {
     'cup': ['glass'],
     'food': ['fruit', 'vegetable', 'sandwich', 'corn', 'sausage', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'burrito',
              'bread', 'toast', 'biscuit'],
-    'fruit': ['banana', 'apple', 'orange', 'kiwi', 'raspberry', 'nut'],
-    'vegetable': ['cucumber', 'tomato', 'broccoli', 'brussel sprout', 'carrot', 'garlic', 'onion', 'cabbage', 'chickpea'],
+    'fruit': ['banana', 'apple', 'orange', 'mandarin', 'kiwi', 'raspberry', 'nut'],
+    'vegetable': ['cucumber', 'tomato', 'broccoli', 'brussel sprout', 'carrot', 'garlic', 'onion', 'cabbage', 'chickpea',
+                  'okra'],
     'plant': ['tree'],
     'electornics': ['television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone',
     'microwave', 'oven', 'stove', 'toaster', 'refrigerator'],
@@ -82,7 +83,8 @@ known_mappings = {
     'president': 'person', 'guide': 'person', 'climber': 'person', 'commuter': 'person', 'dalmatian': 'dog',
     'chick': 'chicken', 'gondola': 'boat', 'ewe': 'sheep', 'sailor': 'person', 'fighter': 'airplane', 'receiver': 'person',
     'sweeper': 'person', 'settee': 'couch', 'caster': 'person', 'mansion': 'building', 'pecker': 'bird',
-    'emperor': 'person', 'smoker': 'person'
+    'emperor': 'person', 'smoker': 'person', 'medic': 'person', 'frank': 'hotdog', 'canary': 'bird', 'chestnut': 'nut',
+    'lounger': 'chair', 'brat': 'hotdog', 'snoot': 'nose', 'cardigan': 'sweater'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
