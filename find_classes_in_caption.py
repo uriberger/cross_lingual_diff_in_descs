@@ -359,7 +359,7 @@ def find_classes(caption):
             phrase_class = 'ball'
 
         if type(phrase_class) is list:
-            choose_class(token_list, start_ind, end_ind, phrase_class)
+            phrase_class = choose_class(token_list, start_ind, end_ind, phrase_class)
 
         classes.append((start_ind, end_ind, phrase_class))
     
