@@ -160,6 +160,8 @@ def find_phrase_class(phrase):
 
     if phrase in known_mappings:
         phrase_class = known_mappings[phrase]
+    elif phrase in word_classes:
+        phrase_class = phrase
     elif phrase in non_word_classes:
         return None
     else:
@@ -204,7 +206,7 @@ def find_phrase_class(phrase):
                 classes = [classes[1]]
 
             if len(classes) > 1:
-                should_be_handled_list = ['rocker', 'tumbler', 'anemone', 'selector']
+                should_be_handled_list = ['rocker', 'tumbler', 'anemone', 'selector', 'rotisserie', 'bowler']
                 if phrase in should_be_handled_list:
                     return classes
 
