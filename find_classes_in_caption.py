@@ -96,7 +96,7 @@ model = AutoModelForMaskedLM.from_pretrained('bert-large-uncased')
 device = torch.device('cuda')
 model = model.to(device)
 model = model.eval()
-tokenizer = AutoTokenizer('bert-large-uncased')
+tokenizer = AutoTokenizer.from_pretrained('bert-large-uncased')
 
 def get_depth_at_ind(token_list, i, depths):
     head_ind = token_list[i][0]['head'] - 1
@@ -313,7 +313,7 @@ def choose_class(token_list, start_ind, end_ind, class_list):
     text = ' '.join(before + [mask_str] + after)
     input = tokenizer(text, return_tensors='pt').to(device)
     mask_id = tokenizer.vocab[mask_str]
-    mask_ind = [i for i in range(input.input_ids.shape[1]) if input.input_ids[0, i] == mask_id]
+    mask_ind = [i for i in range(input.input_ids.shape[1]) if input.input_ids[0, i] == mask_id][0]
     output = model(**input)
     max_class_val = (-1)*math.inf
     class_with_max_val = None
