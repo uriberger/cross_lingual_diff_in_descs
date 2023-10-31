@@ -1,6 +1,9 @@
 import stanza
 from nltk.corpus import wordnet as wn
 import inflect
+from transformers import AutoModelForMaskedLM, AutoTokenizer
+import torch
+import math
 
 word_classes = [
     'man', 'woman', 'boy', 'girl', 'child', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'blimp', 'bus',
@@ -71,7 +74,7 @@ def is_hyponym_of(class1, class2):
     return False
 
 non_word_classes = [
-    'sport', 'amazon'
+    'sport', 'amazon', 'quarry'
 ]
 
 known_mappings = {
@@ -84,11 +87,16 @@ known_mappings = {
     'chick': 'chicken', 'gondola': 'boat', 'ewe': 'sheep', 'sailor': 'person', 'fighter': 'airplane', 'receiver': 'person',
     'sweeper': 'person', 'settee': 'couch', 'caster': 'person', 'mansion': 'building', 'pecker': 'bird',
     'emperor': 'person', 'smoker': 'person', 'medic': 'person', 'frank': 'hotdog', 'canary': 'bird', 'chestnut': 'nut',
-    'lounger': 'chair', 'brat': 'hotdog', 'snoot': 'nose', 'cardigan': 'sweater'
+    'lounger': 'chair', 'brat': 'hotdog', 'snoot': 'nose', 'cardigan': 'sweater', 'tangerine': 'mandarin'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
 inflect_engine = inflect.engine()
+model = AutoModelForMaskedLM.from_pretrained('bert-large-uncased')
+device = torch.device('cuda')
+model = model.to(device)
+model = model.eval()
+tokenizer = AutoTokenizer('bert-large-uncased')
 
 def get_depth_at_ind(token_list, i, depths):
     head_ind = token_list[i][0]['head'] - 1
@@ -196,6 +204,11 @@ def find_phrase_class(phrase):
             elif len(classes) == 2 and is_hyponym_of(classes[1], classes[0]):
                 classes = [classes[1]]
 
+            if len(classes) > 1:
+                should_be_handled_list = ['rocker']
+                if phrase in should_be_handled_list:
+                    return classes
+
             # Else, we can't except more than one class
             assert len(classes) == 1, f'Phrase "{phrase}" has multiple classes'
             phrase_class = classes[0]
@@ -293,6 +306,28 @@ def preprocess(token_list):
 
     return token_list
 
+def choose_class(token_list, start_ind, end_ind, class_list):
+    mask_str = '[MASK]'
+    before = [x[0]['text'] for x in token_list[:start_ind]]
+    after = [x[0]['text'] for x in token_list[end_ind:]]
+    text = ' '.join(before + [mask_str] + after)
+    input = tokenizer(text, return_tensors='pt').to(device)
+    mask_id = tokenizer.vocab[mask_str]
+    mask_ind = [i for i in range(input.input_ids.shape[1]) if input.input_ids[0, i] == mask_id]
+    output = model(**input)
+    max_class_val = (-1)*math.inf
+    class_with_max_val = None
+    for cur_class in class_list:
+        if cur_class not in tokenizer.vocab:
+            # For now, don't handle
+            continue
+        class_id = tokenizer.vocab[cur_class]
+        class_val = output.logits[0, mask_ind, class_id]
+        if class_val > max_class_val:
+            max_class_val = class_val
+            class_with_max_val = cur_class
+    return class_with_max_val
+
 def find_classes(caption):
     doc = nlp(caption)
     token_lists = [[x.to_dict() for x in y.tokens] for y in doc.sentences]
@@ -322,6 +357,9 @@ def find_classes(caption):
             and token_list[start_ind-1][0]['upos'] == 'DET' \
             and token_list[start_ind][0]['text'].endswith('ball'):
             phrase_class = 'ball'
+
+        if type(phrase_class) is list:
+            choose_class(token_list, start_ind, end_ind, phrase_class)
 
         classes.append((start_ind, end_ind, phrase_class))
     
