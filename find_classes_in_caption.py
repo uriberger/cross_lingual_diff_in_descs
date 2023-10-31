@@ -3,6 +3,7 @@ from nltk.corpus import wordnet as wn
 import inflect
 from transformers import AutoModelForMaskedLM, AutoTokenizer
 import torch
+from torch import nn
 import math
 
 word_classes = [
@@ -89,7 +90,7 @@ known_mappings = {
     'emperor': 'person', 'smoker': 'person', 'medic': 'person', 'frank': 'hotdog', 'canary': 'bird', 'chestnut': 'nut',
     'lounger': 'chair', 'brat': 'hotdog', 'snoot': 'nose', 'cardigan': 'sweater', 'tangerine': 'mandarin',
     'wrecker': 'truck', 'setter': 'dog', 'sharpie': 'pen', 'jumper': ['person', 'clothing'], 'digger': ['person', 'truck'],
-    'prey': 'animal', 'excavator': ['person', 'truck'], 'watchdog': 'dog', 'barker': 'person'
+    'prey': 'animal', 'excavator': ['person', 'truck'], 'watchdog': 'dog', 'barker': 'person', 'sphinx': 'statue'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
@@ -99,6 +100,7 @@ device = torch.device('cuda')
 model = model.to(device)
 model = model.eval()
 tokenizer = AutoTokenizer.from_pretrained('bert-large-uncased')
+mask_str = '[MASK]'
 
 def get_depth_at_ind(token_list, i, depths):
     head_ind = token_list[i][0]['head'] - 1
@@ -207,7 +209,7 @@ def find_phrase_class(phrase):
                 classes = [classes[1]]
 
             if len(classes) > 1:
-                should_be_handled_list = ['rocker', 'tumbler', 'anemone', 'selector', 'rotisserie', 'bowler', 'digger', 'excavator']
+                should_be_handled_list = ['rocker', 'tumbler', 'anemone', 'selector', 'rotisserie', 'bowler', 'digger', 'excavator', 'hydroplane']
                 if phrase in should_be_handled_list:
                     return classes
 
@@ -308,27 +310,59 @@ def preprocess(token_list):
 
     return token_list
 
-def choose_class(token_list, start_ind, end_ind, class_list):
-    mask_str = '[MASK]'
-    before = [x[0]['text'] for x in token_list[:start_ind]]
-    after = [x[0]['text'] for x in token_list[end_ind:]]
-    text = ' '.join(before + [mask_str] + after)
+def get_probs_from_lm(text, returned_vals):
     input = tokenizer(text, return_tensors='pt').to(device)
     mask_id = tokenizer.vocab[mask_str]
     mask_ind = [i for i in range(input.input_ids.shape[1]) if input.input_ids[0, i] == mask_id][0]
     output = model(**input)
-    max_class_val = (-1)*math.inf
-    class_with_max_val = None
-    for cur_class in class_list:
-        if cur_class not in tokenizer.vocab:
-            # For now, don't handle
-            continue
-        class_id = tokenizer.vocab[cur_class]
-        class_val = output.logits[0, mask_ind, class_id]
-        if class_val > max_class_val:
-            max_class_val = class_val
-            class_with_max_val = cur_class
-    return class_with_max_val
+    mask_logits = output.logits[0, mask_ind, :]
+    if returned_vals == 'logits':
+        return mask_logits
+    elif returned_vals == 'probs':
+        mask_probs = nn.functional.softmax(mask_logits, dim=0)
+        return mask_probs
+    else:
+        assert False
+
+def is_an_word(word):
+    inflected = inflect_engine.a(word)
+    return inflected.startswith('an')
+
+def choose_class(token_list, start_ind, end_ind, class_list, selection_method='probs'):
+    before = [x[0]['text'].lower() for x in token_list[:start_ind]]
+    after = [x[0]['text'].lower() for x in token_list[end_ind:]]
+    
+    # To prevent unwanted bias, check if we need to consider a/an
+    if len(before) > 0 and before[-1] in ['a', 'an']:
+        a_classes = []
+        an_classes = []
+        for cur_class in class_list:
+            if is_an_word(cur_class):
+                an_classes.append(cur_class)
+            else:
+                a_classes.append(cur_class)
+        a_text = ' '.join(before[:-1] + ['a', mask_str] + after)
+        a_probs = get_probs_from_lm(a_text, selection_method)
+        an_text = ' '.join(before[:-1] + ['an', mask_str] + after)
+        an_probs = get_probs_from_lm(an_text, selection_method)
+        prob_class_list = [(a_probs, a_classes), (an_probs, an_classes)]
+    else:
+        text = ' '.join(before + [mask_str] + after)
+        probs = get_probs_from_lm(text)
+        prob_class_list = [(probs, class_list)]
+    max_class_prob = (-1)*math.inf
+    class_with_max_prob = None
+    for probs, classes in prob_class_list:
+        for cur_class in classes:
+            if cur_class not in tokenizer.vocab:
+                # For now, don't handle
+                continue
+            class_id = tokenizer.vocab[cur_class]
+            class_prob = probs[class_id]
+            if class_prob > max_class_prob:
+                max_class_prob = class_prob
+                class_with_max_prob = cur_class
+    return class_with_max_prob
 
 def find_classes(caption):
     doc = nlp(caption)
