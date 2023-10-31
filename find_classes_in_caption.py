@@ -24,7 +24,7 @@ word_classes = [
     'sea', 'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle',
     'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel', 'hand tool', 'guitar',
     'piano', 'musical instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'cutter', 'caboose', 'pinwheel', 'fireball',
-    'okra', 'siren'
+    'okra', 'siren', 'pen', 'pencil'
     ]
 
 parent_to_children = {
@@ -88,7 +88,7 @@ known_mappings = {
     'sweeper': 'person', 'settee': 'couch', 'caster': 'person', 'mansion': 'building', 'pecker': 'bird',
     'emperor': 'person', 'smoker': 'person', 'medic': 'person', 'frank': 'hotdog', 'canary': 'bird', 'chestnut': 'nut',
     'lounger': 'chair', 'brat': 'hotdog', 'snoot': 'nose', 'cardigan': 'sweater', 'tangerine': 'mandarin',
-    'wrecker': 'truck', 'setter': 'dog'
+    'wrecker': 'truck', 'setter': 'dog', 'sharpie': 'pen', 'jumper': ['person', 'clothing']
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
@@ -159,9 +159,7 @@ def find_phrase_class(phrase):
         phrase = inflect_engine.singular_noun(phrase)
 
     if phrase in known_mappings:
-        phrase = known_mappings[phrase]
-    if phrase in word_classes:
-        phrase_class = phrase
+        phrase_class = known_mappings[phrase]
     elif phrase in non_word_classes:
         return None
     else:
@@ -206,7 +204,7 @@ def find_phrase_class(phrase):
                 classes = [classes[1]]
 
             if len(classes) > 1:
-                should_be_handled_list = ['rocker', 'tumbler', 'anemone']
+                should_be_handled_list = ['rocker', 'tumbler', 'anemone', 'selector']
                 if phrase in should_be_handled_list:
                     return classes
 
