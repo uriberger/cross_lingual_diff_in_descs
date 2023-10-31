@@ -24,7 +24,7 @@ word_classes = [
     'sea', 'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle',
     'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel', 'hand tool', 'guitar',
     'piano', 'musical instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'cutter', 'caboose', 'pinwheel', 'fireball',
-    'okra', 'siren', 'pen', 'pencil'
+    'okra', 'siren', 'pen', 'pencil', 'shingle'
     ]
 
 parent_to_children = {
@@ -88,7 +88,8 @@ known_mappings = {
     'sweeper': 'person', 'settee': 'couch', 'caster': 'person', 'mansion': 'building', 'pecker': 'bird',
     'emperor': 'person', 'smoker': 'person', 'medic': 'person', 'frank': 'hotdog', 'canary': 'bird', 'chestnut': 'nut',
     'lounger': 'chair', 'brat': 'hotdog', 'snoot': 'nose', 'cardigan': 'sweater', 'tangerine': 'mandarin',
-    'wrecker': 'truck', 'setter': 'dog', 'sharpie': 'pen', 'jumper': ['person', 'clothing']
+    'wrecker': 'truck', 'setter': 'dog', 'sharpie': 'pen', 'jumper': ['person', 'clothing'], 'digger': ['person', 'truck'],
+    'prey': 'animal', 'excavator': ['person', 'truck']
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
@@ -206,7 +207,7 @@ def find_phrase_class(phrase):
                 classes = [classes[1]]
 
             if len(classes) > 1:
-                should_be_handled_list = ['rocker', 'tumbler', 'anemone', 'selector', 'rotisserie', 'bowler']
+                should_be_handled_list = ['rocker', 'tumbler', 'anemone', 'selector', 'rotisserie', 'bowler', 'digger', 'excavator']
                 if phrase in should_be_handled_list:
                     return classes
 
