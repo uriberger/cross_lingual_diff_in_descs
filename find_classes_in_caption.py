@@ -7,24 +7,24 @@ import math
 
 word_classes = [
     'man', 'woman', 'boy', 'girl', 'child', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'blimp', 'bus',
-    'train',
-    'truck', 'boat', 'ship', 'watercraft', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench', 'bird',
-    'ostrich', 'fish', 'tuna', 'cat', 'dog', 'horse', 'fox', 'sheep', 'cow', 'elephant', 'bear', 'tiger', 'chicken',
-    'zebra', 'giraffe', 'groundhog', 'pig', 'deer', 'gazelle', 'goose', 'shrimp', 'worm', 'turtle', 'bunny', 'rat',
-    'animal', 'beaver', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants', 'diaper', 'dress',
-    'coat', 'boa', 'clothing', 'suitcase', 'frisbee', 'ski', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove',
-    'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl',
-    'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'sandwich', 'orange', 'mandarin', 'cucumber', 'tomato', 'chickpea',
-    'broccoli', 'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'sausage', 'cabbage', 'vegetable', 'fruit',
-    'hotdog', 'pizza', 'fries', 'donut', 'cake', 'biscuit', 'burrito', 'bread', 'toast', 'coffee', 'chair', 'couch',
-    'plant', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table', 'counter', 'toilet', 'television', 'laptop',
-    'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster',
-    'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'doll', 'hair drier', 'toothbrush', 'wall',
-    'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'beach', 'kitchen', 'kitchen utensil', 'graffiti',
-    'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye',
-    'nose', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick',
-    'wheel', 'basket', 'nail', 'hammer', 'shovel', 'hand tool', 'guitar', 'piano', 'musical instrument', 'newspaper',
-    'helmet', 'carrier', 'slicer', 'cutter', 'caboose', 'pinwheel', 'fireball', 'okra'
+    'train', 'truck', 'boat', 'ship', 'watercraft', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench',
+    'bird', 'ostrich', 'fish', 'tuna', 'cat', 'dog', 'horse', 'fox', 'sheep', 'cow', 'elephant', 'bear', 'tiger',
+    'chicken', 'zebra', 'giraffe', 'groundhog', 'pig', 'deer', 'gazelle', 'goose', 'shrimp', 'worm', 'turtle', 'bunny',
+    'rat', 'weasel', 'animal', 'beaver', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants',
+    'diaper', 'dress', 'coat', 'boa', 'clothing', 'suitcase', 'frisbee', 'ski', 'snowboard', 'ball', 'kite',
+    'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can',
+    'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'sandwich', 'orange', 'mandarin',
+    'cucumber', 'tomato', 'chickpea', 'broccoli', 'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'sausage',
+    'cabbage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'biscuit', 'burrito', 'bread', 'toast',
+    'coffee', 'chair', 'couch', 'plant', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table', 'counter', 'toilet',
+    'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave',
+    'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'doll',
+    'hair drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'beach',
+    'kitchen', 'kitchen utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine',
+    'sea', 'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle',
+    'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel', 'hand tool', 'guitar',
+    'piano', 'musical instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'cutter', 'caboose', 'pinwheel', 'fireball',
+    'okra', 'siren'
     ]
 
 parent_to_children = {
@@ -38,7 +38,7 @@ parent_to_children = {
     'bedding accessories': ['pillow', 'blanket', 'sheets', 'mattress'],
     'animal': ['bird', 'fish', 'mammal', 'goose', 'shrimp', 'worm', 'turtle', 'chicken', 'rat'],
     'mammal': ['cat', 'dog', 'horse', 'sheep', 'cow', 'wild mammal', 'groundhog', 'pig', 'deer', 'gazelle', 'bunny',
-               'beaver', 'fox'],
+               'beaver', 'fox', 'weasel'],
     'fish': ['tuna'],
     'wild mammal': ['elephant', 'bear', 'zebra', 'giraffe', 'tiger'],
     'bag': ['backpack', 'suitcase', 'basket'],
@@ -87,7 +87,8 @@ known_mappings = {
     'chick': 'chicken', 'gondola': 'boat', 'ewe': 'sheep', 'sailor': 'person', 'fighter': 'airplane', 'receiver': 'person',
     'sweeper': 'person', 'settee': 'couch', 'caster': 'person', 'mansion': 'building', 'pecker': 'bird',
     'emperor': 'person', 'smoker': 'person', 'medic': 'person', 'frank': 'hotdog', 'canary': 'bird', 'chestnut': 'nut',
-    'lounger': 'chair', 'brat': 'hotdog', 'snoot': 'nose', 'cardigan': 'sweater', 'tangerine': 'mandarin'
+    'lounger': 'chair', 'brat': 'hotdog', 'snoot': 'nose', 'cardigan': 'sweater', 'tangerine': 'mandarin',
+    'wrecker': 'truck', 'setter': 'dog'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
@@ -205,7 +206,7 @@ def find_phrase_class(phrase):
                 classes = [classes[1]]
 
             if len(classes) > 1:
-                should_be_handled_list = ['rocker']
+                should_be_handled_list = ['rocker', 'tumbler', 'anemone']
                 if phrase in should_be_handled_list:
                     return classes
 
