@@ -95,7 +95,7 @@ known_mappings = {
     'prey': 'animal', 'excavator': ['person', 'truck'], 'watchdog': 'dog', 'barker': 'person', 'sphinx': 'statue',
     'brownstone': 'building', 'pussycat': 'cat', 'romper': 'clothing', 'warbler': 'bird', 'schooner': ['boat', 'glass'],
     'trawler': 'boat', 'hatchback': 'car', 'whaler': 'boat', 'jigger': 'glass', 'cock': 'chicken', 'mallet': 'hammer',
-    'clipper': 'scissors', 'angler': 'person'
+    'clipper': 'scissors', 'angler': 'person', 'weaver': 'person'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
