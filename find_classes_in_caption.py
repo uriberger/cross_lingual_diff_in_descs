@@ -230,6 +230,12 @@ def is_noun(token_list, ind):
         return True
     
     return False
+
+def is_sequence_punctuation(token_list, ind):
+    if token_list[ind][0]['upos'] != 'PUNCT':
+        return False
+    
+    return token_list[ind][0]['text'] == '-'
     
 def extract_noun_spans(token_list):
     noun_spans = []
@@ -241,7 +247,7 @@ def extract_noun_spans(token_list):
         if is_noun(token_list, i) and (not in_sequence):
             sequence_start = i
             in_sequence = True
-        if (not is_noun(token_list, i)) and in_sequence:
+        if (not is_noun(token_list, i)) and in_sequence and (not is_sequence_punctuation(token_list, i)):
             in_sequence = False
             noun_sequences.append((sequence_start, i))
     if in_sequence:
@@ -348,7 +354,7 @@ def choose_class(token_list, start_ind, end_ind, class_list, selection_method='p
         prob_class_list = [(a_probs, a_classes), (an_probs, an_classes)]
     else:
         text = ' '.join(before + [mask_str] + after)
-        probs = get_probs_from_lm(text)
+        probs = get_probs_from_lm(text, selection_method)
         prob_class_list = [(probs, class_list)]
     max_class_prob = (-1)*math.inf
     class_with_max_prob = None
