@@ -5,6 +5,8 @@ from transformers import AutoModelForMaskedLM, AutoTokenizer
 import torch
 from torch import nn
 import math
+import clip
+from PIL import Image
 
 word_classes = [
     'man', 'woman', 'boy', 'girl', 'child', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'blimp', 'bus',
@@ -102,12 +104,13 @@ known_mappings = {
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
 inflect_engine = inflect.engine()
-model = AutoModelForMaskedLM.from_pretrained('bert-large-uncased')
+bert_model = AutoModelForMaskedLM.from_pretrained('bert-large-uncased')
 device = torch.device('cuda')
-model = model.to(device)
-model = model.eval()
+bert_model = bert_model.to(device)
+bert_model = bert_model.eval()
 tokenizer = AutoTokenizer.from_pretrained('bert-large-uncased')
 mask_str = '[MASK]'
+clip_model, clip_preprocess = clip.load("ViT-B/32", device=device)
 
 def get_depth_at_ind(token_list, i, depths):
     head_ind = token_list[i][0]['head'] - 1
@@ -327,7 +330,7 @@ def get_probs_from_lm(text, returned_vals):
     input = tokenizer(text, return_tensors='pt').to(device)
     mask_id = tokenizer.vocab[mask_str]
     mask_ind = [i for i in range(input.input_ids.shape[1]) if input.input_ids[0, i] == mask_id][0]
-    output = model(**input)
+    output = bert_model(**input)
     mask_logits = output.logits[0, mask_ind, :]
     if returned_vals == 'logits':
         return mask_logits
@@ -341,7 +344,7 @@ def is_an_word(word):
     inflected = inflect_engine.a(word)
     return inflected.startswith('an')
 
-def choose_class(token_list, start_ind, end_ind, class_list, selection_method='probs'):
+def choose_class_with_lm(token_list, start_ind, end_ind, class_list, selection_method='probs'):
     before = [x[0]['text'].lower() for x in token_list[:start_ind]]
     after = [x[0]['text'].lower() for x in token_list[end_ind:]]
     
@@ -377,6 +380,31 @@ def choose_class(token_list, start_ind, end_ind, class_list, selection_method='p
                 class_with_max_prob = cur_class
     return class_with_max_prob
 
+def choose_class_with_clip(token_list, start_ind, end_ind, class_list, image_path):
+    before = [x[0]['text'].lower() for x in token_list[:start_ind]]
+    after = [x[0]['text'].lower() for x in token_list[end_ind:]]
+
+    class_text_list = []
+    # To prevent unwanted bias, check if we need to consider a/an
+    if len(before) > 0 and before[-1] in ['a', 'an']:
+        for cur_class in class_list:
+            if is_an_word(cur_class):
+                det_str = 'an'
+            else:
+                det_str = 'a'
+            class_text_list.append((cur_class, ' '.join(before[:-1] + [det_str, cur_class] + after)))
+    else:
+        class_text_list = [(cur_class, ' '.join(before + [cur_class] + after)) for cur_class in class_list]
+
+    image = clip_preprocess(Image.open(image_path)).unsqueeze(0).to(device)
+    text = clip.tokenize([x[1] for x in class_text_list]).to(device)
+
+    with torch.no_grad():
+        logits_per_image, _ = clip_model(image, text)
+        probs = logits_per_image.softmax(dim=-1).cpu().numpy()
+
+    return class_list[probs.argmax()]
+
 def find_classes(caption):
     doc = nlp(caption)
     token_lists = [[x.to_dict() for x in y.tokens] for y in doc.sentences]
@@ -408,7 +436,7 @@ def find_classes(caption):
             phrase_class = 'ball'
 
         if type(phrase_class) is list:
-            phrase_class = choose_class(token_list, start_ind, end_ind, phrase_class)
+            phrase_class = choose_class_with_lm(token_list, start_ind, end_ind, phrase_class)
 
         classes.append((start_ind, end_ind, phrase_class))
     
