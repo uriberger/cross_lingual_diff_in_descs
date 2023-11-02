@@ -13,22 +13,22 @@ word_classes = [
     'train', 'truck', 'boat', 'ship', 'watercraft', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench',
     'bird', 'ostrich', 'wasp', 'fish', 'tuna', 'cat', 'dog', 'horse', 'fox', 'sheep', 'cow', 'elephant', 'bear', 'tiger',
     'chicken', 'zebra', 'giraffe', 'lion', 'groundhog', 'pig', 'deer', 'gazelle', 'goose', 'shrimp', 'worm', 'turtle',
-    'bunny', 'chameleon', 'rat', 'piranha', 'insect', 'beetle', 'butterfly', 'spider', 'weasel', 'peacock', 'wolverine', 'animal',
-    'beaver', 'badger', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants', 'diaper', 'dress',
-    'coat', 'boa', 'clothing', 'suitcase', 'frisbee', 'ski', 'snowboard', 'ball', 'kite', 'baseball bat', 'baseball glove',
-    'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl',
-    'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'sandwich', 'orange', 'mandarin', 'cucumber', 'tomato', 'chickpea',
-    'broccoli', 'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'soybean', 'sausage', 'cabbage', 'vegetable',
-    'fruit', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'biscuit', 'burrito', 'bread', 'toast', 'coffee', 'chair',
-    'couch', 'plant', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table', 'counter', 'toilet', 'television',
-    'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove',
-    'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'doll', 'hair drier',
-    'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'beach', 'kitchen',
-    'kitchen utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea',
-    'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope',
-    'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel', 'hand tool', 'guitar', 'piano',
-    'musical instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'cutter', 'caboose', 'pinwheel', 'fireball', 'okra',
-    'siren', 'pen', 'pencil', 'shingle', 'ethnic group', 'stepper'
+    'bunny', 'chameleon', 'rat', 'piranha', 'insect', 'beetle', 'butterfly', 'spider', 'weasel', 'peacock', 'wolverine',
+    'animal', 'beaver', 'badger', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants',
+    'diaper', 'dress', 'coat', 'boa', 'clothing', 'suitcase', 'frisbee', 'ski', 'snowboard', 'ball', 'kite',
+    'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can',
+    'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'sandwich', 'orange', 'mandarin',
+    'cucumber', 'tomato', 'chickpea', 'broccoli', 'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'soybean',
+    'sausage', 'cabbage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'biscuit', 'burrito', 'bread',
+    'toast', 'coffee', 'chair', 'couch', 'plant', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table', 'counter',
+    'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone',
+    'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear',
+    'doll', 'hair drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain',
+    'beach', 'kitchen', 'kitchen_utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth',
+    'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box', 'uniform', 'towel', 'stone',
+    'statue', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel',
+    'hand_tool', 'guitar', 'piano', 'musical_instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'cutter', 'caboose',
+    'pinwheel', 'fireball', 'okra', 'siren', 'pen', 'pencil', 'shingle', 'ethnic group', 'stepper'
     ]
 
 parent_to_children = {
@@ -99,7 +99,7 @@ known_mappings = {
     'brownstone': 'building', 'pussycat': 'cat', 'romper': 'clothing', 'warbler': 'bird', 'schooner': ['boat', 'glass'],
     'trawler': 'boat', 'hatchback': 'car', 'whaler': 'boat', 'jigger': 'glass', 'cock': 'chicken', 'mallet': 'hammer',
     'clipper': 'scissors', 'angler': 'person', 'weaver': 'person', 'predator': 'animal', 'arab': 'ethnic group',
-    'asian': 'ethnic group', 'galley': ['boat', 'kitchen', 'caboose']
+    'asian': 'ethnic group', 'galley': ['boat', 'kitchen', 'caboose'], 'hulk': 'person'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
