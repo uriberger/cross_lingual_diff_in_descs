@@ -165,7 +165,7 @@ def is_phrase_hypernym_of_phrase(phrase1, phrase2):
             return True
     return False
 
-def find_phrase_class(phrase):
+def find_phrase_classes(phrase):
     phrase = phrase.lower()
 
     if inflect_engine.singular_noun(phrase) != False:
@@ -218,14 +218,7 @@ def find_phrase_class(phrase):
             elif len(classes) == 2 and is_hyponym_of(classes[1], classes[0]):
                 classes = [classes[1]]
 
-            if len(classes) > 1:
-                should_be_handled_list = ['rocker', 'tumbler', 'anemone', 'selector', 'rotisserie', 'bowler', 'digger', 'excavator', 'hydroplane', 'schooner', 'amphibian', 'galley']
-                if phrase in should_be_handled_list:
-                    return classes
-
-            # Else, we can't except more than one class
-            assert len(classes) == 1, f'Phrase "{phrase}" has multiple classes'
-            phrase_class = classes[0]
+            phrase_class = classes
 
     return phrase_class
 
@@ -418,12 +411,12 @@ def find_classes(caption):
 
     for start_ind, end_ind, highest_ancestor_ind in noun_spans:
         phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
-        phrase_class = find_phrase_class(phrase)
+        phrase_class = find_phrase_classes(phrase)
 
         # Check only the highest ancestor in the noun span
         if phrase_class is None:
             phrase = token_list[highest_ancestor_ind][0]['text']
-            phrase_class = find_phrase_class(phrase)
+            phrase_class = find_phrase_classes(phrase)
 
         # 2. We have a problem when there's a sport named the same as its ball (baseball, basketball etc.).
         # The more common synset is the game, and when someone talks about the ball the algorithm always thinks it's the game.
