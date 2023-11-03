@@ -1,14 +1,12 @@
 import json
 import os
 
-datasets = ['COCO', 'flickr30k', 'pascal_sentences', 'xm3600_ar.json', 'xm3600_bn.json', 'xm3600_cs.json',
-            'xm3600_da.json', 'xm3600_de.json', 'xm3600_el.json', 'xm3600_es.json', 'xm3600_fa.json', 'xm3600_fi.json',
-            'xm3600_fil.json', 'xm3600_fr.json', 'xm3600_he.json', 'xm3600_hi.json', 'xm3600_hr.json', 'xm3600_hu.json',
-            'xm3600_id.json', 'xm3600_it.json', 'xm3600_ja.json', 'xm3600_ko.json', 'xm3600_mi.json', 'xm3600_nl.json',
-            'xm3600_no.json', 'xm3600_pl.json', 'xm3600_pt.json', 'xm3600_quz.json', 'xm3600_ro.json', 'xm3600_ru.json',
-            'xm3600_sv.json', 'xm3600_sw.json', 'xm3600_te.json', 'xm3600_th.json', 'xm3600_tr.json', 'xm3600_uk.json',
-            'xm3600_vi.json', 'xm3600_zh.json', 'multi30k', 'STAIR-captions', 'YJCaptions', 'coco-cn', 'flickr8kcn',
-            'ai_challenger']
+datasets = ['COCO', 'flickr30k', 'pascal_sentences', 'xm3600_ar', 'xm3600_bn', 'xm3600_cs', 'xm3600_da', 'xm3600_de',
+            'xm3600_el', 'xm3600_es', 'xm3600_fa', 'xm3600_fi', 'xm3600_fil', 'xm3600_fr', 'xm3600_he', 'xm3600_hi',
+            'xm3600_hr', 'xm3600_hu', 'xm3600_id', 'xm3600_it', 'xm3600_ja', 'xm3600_ko', 'xm3600_mi', 'xm3600_nl',
+            'xm3600_no', 'xm3600_pl', 'xm3600_pt', 'xm3600_quz', 'xm3600_ro', 'xm3600_ru', 'xm3600_sv', 'xm3600_sw',
+            'xm3600_te', 'xm3600_th', 'xm3600_tr', 'xm3600_uk', 'xm3600_vi', 'xm3600_zh', 'multi30k', 'STAIR-captions',
+            'YJCaptions', 'coco-cn', 'flickr8kcn', 'ai_challenger']
 
 def get_dataset(dataset_name):
     if dataset_name == 'COCO':

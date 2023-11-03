@@ -14,7 +14,7 @@ def run_regression():
         sample, gt = reg_obj.reg[i]
         res = find_classes(sample['caption'])
         pred = set([x[2] for x in res if x is not None])
-        if gt != pred:
+        if set(gt) != pred:
             failed.append(i)
     print('Finished regression, results:')
     print(f'{len(reg_obj.reg) - len(failed)} succeeded, {len(failed)} failed. Fail list:')
