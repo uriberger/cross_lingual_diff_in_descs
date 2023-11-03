@@ -13,7 +13,7 @@ def run_regression():
             t = time.time()
         sample, gt = reg_obj.reg[i]
         res = find_classes(sample['caption'])
-        pred = set([x[2] for x in res if x is not None])
+        pred = set([x[2] for x in res if x[2] is not None])
         if set(gt) != pred:
             failed.append(i)
     print('Finished regression, results:')
