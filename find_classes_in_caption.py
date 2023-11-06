@@ -20,15 +20,15 @@ word_classes = [
     'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'sandwich', 'orange', 'mandarin',
     'cucumber', 'tomato', 'chickpea', 'broccoli', 'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'soybean',
     'sausage', 'cabbage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'biscuit', 'burrito', 'bread',
-    'toast', 'coffee', 'chair', 'couch', 'plant', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table', 'counter',
-    'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone',
-    'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear',
-    'doll', 'hair drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain',
-    'beach', 'kitchen', 'kitchen_utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth',
-    'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box', 'uniform', 'towel', 'stone',
-    'statue', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel',
+    'toast', 'coffee', 'chair', 'seat', 'couch', 'plant', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table',
+    'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard',
+    'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',
+    'teddy bear', 'doll', 'hair drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'restaurant',
+    'mountain', 'beach', 'kitchen', 'kitchen_utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror',
+    'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box', 'uniform', 'towel',
+    'stone', 'statue', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel',
     'hand_tool', 'guitar', 'piano', 'musical_instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'cutter', 'caboose',
-    'pinwheel', 'fireball', 'okra', 'siren', 'pen', 'pencil', 'shingle', 'ethnic group', 'stepper'
+    'pinwheel', 'fireball', 'okra', 'siren', 'pen', 'pencil', 'shingle', 'ethnic group', 'stepper', 'chimney'
     ]
 
 parent_to_children = {
@@ -80,7 +80,7 @@ def is_hyponym_of(class1, class2):
     return False
 
 non_word_classes = [
-    'sport', 'amazon', 'quarry', 'aa', 'cob'
+    'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat'
 ]
 
 known_mappings = {
@@ -218,7 +218,10 @@ def find_phrase_classes(phrase):
             elif len(classes) == 2 and is_hyponym_of(classes[1], classes[0]):
                 classes = [classes[1]]
 
-            phrase_class = classes
+            if len(classes) == 1:
+                phrase_class = classes[0]
+            else:
+                phrase_class = classes
 
     return phrase_class
 
@@ -306,6 +309,25 @@ def preprocess(token_list):
                     inds_in_orig_strs[j] = 0
             else:
                 inds_in_orig_strs[j] = 0
+
+    # "A couple": this is always identified as a noun, but should only be considered a noun on it's own if the world
+    # "of" doesn't follow (e.g., "A couple sitting on a bench", and not "A couple of birds singing")
+    couple_indices = [i for i, x in enumerate(tokens) if x == 'couple']
+    for couple_index in couple_indices:
+        det_before = False
+        # First make sure it had a determiner before it (or its the first word)
+        if couple_index > 0:
+            if token_list[couple_index - 1][0].upos != 'DET':
+                continue
+            det_before = True
+        # Next, make sure it doesn't have "of" after it
+        if couple_index < (len(tokens) - 1) and tokens[couple_index + 1] == 'of':
+            continue
+        # Now, replace
+        if det_before:
+            to_replace.append((couple_index-1, couple_index+1, 'two people'))
+        else:
+            to_replace.append((couple_index, couple_index+1, 'two people'))
 
     if len(to_replace) > 0:
         for start_ind, end_ind, new_str in to_replace:
