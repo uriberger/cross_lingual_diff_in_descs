@@ -29,7 +29,7 @@ word_classes = [
     'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket',
     'nail', 'hammer', 'shovel', 'hand_tool', 'guitar', 'piano', 'musical_instrument', 'newspaper', 'helmet', 'carrier',
     'slicer', 'cutter', 'caboose', 'pinwheel', 'fireball', 'okra', 'siren', 'pen', 'pencil', 'shingle', 'ethnic_group',
-    'stepper', 'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'shelf', 'railroad_track'
+    'stepper', 'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'shelf', 'railroad_track', 'swing', 'paint'
     ]
 
 parent_to_children = {
@@ -441,6 +441,17 @@ def choose_class_with_clip(token_list, start_ind, end_ind, class_list, image_pat
 
     return class_list[probs.argmax()]
 
+def ball_handling(token_list, start_ind):
+    # If it's a single word with at the beginning of the sentence or with a determiner before it- it's the ball,
+    # otherwise it's the game
+    if start_ind == 0:
+        return 'ball'
+    
+    if start_ind > 0 and token_list[start_ind-1][0]['upos'] == 'DET':
+        return 'ball'
+    
+    return None
+
 def find_classes(caption):
     doc = nlp(caption)
     token_lists = [[x.to_dict() for x in y.tokens] for y in doc.sentences]
@@ -464,12 +475,8 @@ def find_classes(caption):
         # 2. We have a problem when there's a sport named the same as its ball (baseball, basketball etc.).
         # The more common synset is the game, and when someone talks about the ball the algorithm always thinks it's the game.
         # We'll try identifying these cases by checking if it's a single noun and there's an identifier before it
-        if phrase_class is None \
-            and end_ind - start_ind == 1 \
-            and start_ind > 0 \
-            and token_list[start_ind-1][0]['upos'] == 'DET' \
-            and token_list[start_ind][0]['text'].endswith('ball'):
-            phrase_class = 'ball'
+        if token_list[start_ind][0]['text'].endswith('ball') and end_ind - start_ind == 1:
+            phrase_class = ball_handling(token_list, start_ind)
 
         if type(phrase_class) is list:
             phrase_class = choose_class_with_lm(token_list, start_ind, end_ind, phrase_class)
