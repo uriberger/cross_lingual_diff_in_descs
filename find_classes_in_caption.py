@@ -460,6 +460,17 @@ def ball_handling(token_list, start_ind):
     
     return None
 
+def top_handling(token_list, start_ind):
+    # Need to distinguish top as a preposition from the clothing
+    if len([
+        x for x in token_list if x[0]['head'] == start_ind+1 and
+        x[0]['upos'] == 'DET' and
+        x[0]['text'].lower() in ['a', 'an']
+        ]) > 0:
+        return 'clothing'
+    
+    return None
+
 def find_classes(caption):
     doc = nlp(caption)
     token_lists = [[x.to_dict() for x in y.tokens] for y in doc.sentences]
@@ -485,6 +496,10 @@ def find_classes(caption):
         # We'll try identifying these cases by checking if it's a single noun and there's an identifier before it
         if token_list[start_ind][0]['text'].endswith('ball') and end_ind - start_ind == 1:
             phrase_class = ball_handling(token_list, start_ind)
+
+        # 3. "top" is also a problem, as it might be clothing
+        if token_list[start_ind][0]['text'] == 'top' and end_ind - start_ind == 1:
+            phrase_class = top_handling(token_list, start_ind)
 
         if type(phrase_class) is list:
             phrase_class = choose_class_with_lm(token_list, start_ind, end_ind, phrase_class)
