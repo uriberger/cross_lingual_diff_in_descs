@@ -15,7 +15,7 @@ word_classes = [
     'tiger', 'chicken', 'zebra', 'giraffe', 'lion', 'groundhog', 'pig', 'deer', 'gazelle', 'goose', 'shrimp', 'worm',
     'turtle', 'bunny', 'chameleon', 'rat', 'piranha', 'insect', 'beetle', 'butterfly', 'spider', 'weasel', 'peacock',
     'wolverine', 'animal', 'beaver', 'badger', 'llama', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'eyeglasses',
-    'shirt', 'sweater', 'pants', 'diaper', 'dress', 'coat', 'boa', 'clothing', 'suitcase', 'frisbee', 'ski', 'snowboard',
+    'shirt', 'sweater', 'pant', 'diaper', 'dress', 'coat', 'boa', 'clothing', 'suitcase', 'frisbee', 'ski', 'snowboard',
     'ball', 'kite', 'baseball_bat', 'baseball_glove', 'skateboard', 'rollerblade', 'surfboard', 'tennis_racket', 'plate',
     'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'kiwi', 'raspberry',
     'sandwich', 'orange', 'mandarin', 'cucumber', 'tomato', 'chickpea', 'broccoli', 'brussel_sprout', 'carrot', 'corn',
@@ -49,7 +49,7 @@ parent_to_children = {
     'insect': ['wasp', 'beetle', 'butterfly'],
     'wild_mammal': ['elephant', 'bear', 'zebra', 'giraffe', 'tiger', 'wolverine'],
     'bag': ['backpack', 'suitcase', 'basket'],
-    'clothing': ['tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants', 'diaper', 'dress', 'coat', 'helmet', 'boa'],
+    'clothing': ['tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pant', 'diaper', 'dress', 'coat', 'helmet', 'boa'],
     'riding_device': ['skis', 'surfboard', 'snowboard', 'skateboard', 'rollerblade'],
     'game': ['frisbee', 'sport_instrument', 'kite'],
     'sport_instrument': ['ball', 'baseball_bat', 'baseball_glove', 'tennis_racket'],
@@ -87,7 +87,7 @@ non_word_classes = [
 
 # Inflect don't handle some strings well, ignore these
 non_inflect_strs = [
-    'dress', 'pants'
+    'dress'
 ]
 
 known_mappings = {
@@ -107,7 +107,7 @@ known_mappings = {
     'trawler': 'boat', 'hatchback': 'car', 'whaler': 'boat', 'jigger': 'glass', 'cock': 'chicken', 'mallet': 'hammer',
     'clipper': 'scissors', 'angler': 'person', 'weaver': 'person', 'predator': 'animal', 'arab': 'ethnic_group',
     'asian': 'ethnic_group', 'galley': ['boat', 'kitchen', 'caboose'], 'hulk': 'person', 'rope_line': 'rope',
-    'outfit': 'clothing'
+    'outfit': 'clothing', 'jean': 'pant'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
