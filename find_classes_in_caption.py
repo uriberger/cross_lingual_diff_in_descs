@@ -317,7 +317,7 @@ def preprocess(token_list):
         det_before = False
         # First make sure it had a determiner before it (or its the first word)
         if couple_index > 0:
-            if token_list[couple_index - 1][0].upos != 'DET':
+            if token_list[couple_index - 1][0]['upos'] != 'DET':
                 continue
             det_before = True
         # Next, make sure it doesn't have "of" after it
