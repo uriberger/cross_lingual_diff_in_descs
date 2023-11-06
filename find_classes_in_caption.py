@@ -10,25 +10,26 @@ from PIL import Image
 
 word_classes = [
     'man', 'woman', 'boy', 'girl', 'child', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'blimp', 'bus',
-    'train', 'truck', 'boat', 'ship', 'watercraft', 'traffic light', 'fire hydrant', 'sign', 'parking meter', 'bench',
+    'train', 'truck', 'boat', 'ship', 'watercraft', 'traffic_light', 'fire _hydrant', 'sign', 'parking_meter', 'bench',
     'bird', 'ostrich', 'wasp', 'fish', 'tuna', 'cat', 'dog', 'horse', 'fox', 'sheep', 'cow', 'elephant', 'bear', 'tiger',
     'chicken', 'zebra', 'giraffe', 'lion', 'groundhog', 'pig', 'deer', 'gazelle', 'goose', 'shrimp', 'worm', 'turtle',
     'bunny', 'chameleon', 'rat', 'piranha', 'insect', 'beetle', 'butterfly', 'spider', 'weasel', 'peacock', 'wolverine',
-    'animal', 'beaver', 'badger', 'llama', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants',
-    'diaper', 'dress', 'coat', 'boa', 'clothing', 'suitcase', 'frisbee', 'ski', 'snowboard', 'ball', 'kite',
-    'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'plate', 'bottle', 'glass', 'cup', 'can',
-    'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'sandwich', 'orange', 'mandarin',
-    'cucumber', 'tomato', 'chickpea', 'broccoli', 'brussel sprout', 'carrot', 'corn', 'garlic', 'onion', 'soybean',
-    'sausage', 'cabbage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'biscuit', 'burrito', 'bread',
-    'toast', 'coffee', 'chair', 'seat', 'couch', 'plant', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table',
-    'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard',
-    'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',
-    'teddy bear', 'doll', 'hair drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'restaurant',
-    'mountain', 'beach', 'kitchen', 'kitchen_utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror',
-    'teeth', 'bathtub', 'wine', 'sea', 'lake', 'mouth', 'ear', 'eye', 'nose', 'platform', 'box', 'uniform', 'towel',
-    'stone', 'statue', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel',
-    'hand_tool', 'guitar', 'piano', 'musical_instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'cutter', 'caboose',
-    'pinwheel', 'fireball', 'okra', 'siren', 'pen', 'pencil', 'shingle', 'ethnic group', 'stepper', 'chimney'
+    'animal', 'beaver', 'badger', 'llama', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'eyeglasses', 'shirt',
+    'sweater', 'pants', 'diaper', 'dress', 'coat', 'boa', 'clothing', 'suitcase', 'frisbee', 'ski', 'snowboard', 'ball',
+    'kite', 'baseball_bat', 'baseball_glove', 'skateboard', 'surfboard', 'tennis_racket', 'plate', 'bottle', 'glass',
+    'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'sandwich', 'orange',
+    'mandarin', 'cucumber', 'tomato', 'chickpea', 'broccoli', 'brussel_sprout', 'carrot', 'corn', 'garlic', 'onion',
+    'soybean', 'sausage', 'cabbage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'biscuit',
+    'burrito', 'bread', 'toast', 'coffee', 'chair', 'seat', 'couch', 'plant', 'bed', 'pillow', 'blanket', 'sheets',
+    'mattress', 'table', 'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote',
+    'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock',
+    'vase', 'scissors', 'teddy_bear', 'doll', 'hair_drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk',
+    'building', 'restaurant', 'mountain', 'beach', 'kitchen', 'kitchen_utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon',
+    'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'head', 'mouth', 'ear', 'eye', 'nose', 'platform',
+    'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket',
+    'nail', 'hammer', 'shovel', 'hand_tool', 'guitar', 'piano', 'musical_instrument', 'newspaper', 'helmet', 'carrier',
+    'slicer', 'cutter', 'caboose', 'pinwheel', 'fireball', 'okra', 'siren', 'pen', 'pencil', 'shingle', 'ethnic_group',
+    'stepper', 'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'shelf'
     ]
 
 parent_to_children = {
@@ -38,21 +39,21 @@ parent_to_children = {
     'watercraft': ['boat', 'ship'],
     'aircraft': ['airplane', 'blimp'],
     'seat': ['bench', 'chair', 'couch'],
-    'furniture': ['bed', 'seat', 'table', 'counter'],
-    'bedding accessories': ['pillow', 'blanket', 'sheets', 'mattress'],
+    'furniture': ['bed', 'seat', 'table', 'counter', 'shelf'],
+    'bedding_accessories': ['pillow', 'blanket', 'sheets', 'mattress'],
     'animal': ['bird', 'fish', 'mammal', 'goose', 'shrimp', 'worm', 'turtle', 'chicken', 'rat', 'insect', 'spider',
                'chameleon', 'peacock'],
     'mammal': ['cat', 'dog', 'horse', 'sheep', 'cow', 'wild mammal', 'groundhog', 'pig', 'deer', 'gazelle', 'bunny',
                'beaver', 'fox', 'weasel', 'badger', 'llama'],
     'fish': ['tuna', 'piranha'],
     'insect': ['wasp', 'beetle', 'butterfly'],
-    'wild mammal': ['elephant', 'bear', 'zebra', 'giraffe', 'tiger', 'wolverine'],
+    'wild_mammal': ['elephant', 'bear', 'zebra', 'giraffe', 'tiger', 'wolverine'],
     'bag': ['backpack', 'suitcase', 'basket'],
     'clothing': ['tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pants', 'diaper', 'dress', 'coat', 'helmet', 'boa'],
-    'riding device': ['skis', 'surfboard', 'snowboard', 'skateboard'],
-    'game': ['frisbee', 'sport instrument', 'kite'],
-    'sport instrument': ['ball', 'baseball bat', 'baseball glove', 'tennis racket'],
-    'kitchen utensil': ['plate', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray'],
+    'riding_device': ['skis', 'surfboard', 'snowboard', 'skateboard'],
+    'game': ['frisbee', 'sport_instrument', 'kite'],
+    'sport_instrument': ['ball', 'baseball_bat', 'baseball_glove', 'tennis_racket'],
+    'kitchen_utensil': ['plate', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray'],
     'cup': ['glass'],
     'food': ['fruit', 'vegetable', 'sandwich', 'corn', 'sausage', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'burrito',
              'bread', 'toast', 'biscuit'],
@@ -62,9 +63,9 @@ parent_to_children = {
     'plant': ['tree'],
     'electornics': ['television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone',
     'microwave', 'oven', 'stove', 'toaster', 'refrigerator'],
-    'body part': ['mouth', 'ear', 'eye', 'nose'],
+    'body part': ['mouth', 'ear', 'eye', 'nose', 'head'],
     'hand tool': ['hammer', 'shovel'],
-    'musical instrument': ['guitar', 'piano']
+    'musical_instrument': ['guitar', 'piano']
 }
 
 child_to_parent = {}
@@ -174,7 +175,16 @@ def find_phrase_classes(phrase):
     phrase = phrase.lower()
 
     if phrase not in non_inflect_strs and inflect_engine.singular_noun(phrase) != False:
-        phrase = inflect_engine.singular_noun(phrase)
+        singular_phrase = inflect_engine.singular_noun(phrase)
+
+    singular_phrase_classes = find_preprocessed_phrase_classes(singular_phrase)
+    if singular_phrase_classes is not None:
+        return singular_phrase_classes
+    else:
+        return find_preprocessed_phrase_classes(phrase)
+
+def find_preprocessed_phrase_classes(phrase):
+    phrase = phrase.replace(' ', '_')
 
     if phrase in known_mappings:
         phrase_class = known_mappings[phrase]
