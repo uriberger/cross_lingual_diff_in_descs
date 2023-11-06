@@ -244,12 +244,16 @@ def find_preprocessed_phrase_classes(phrase):
     return phrase_class
 
 def is_noun(token_list, ind):
+    head_ind = token_list[ind][0]['head'] - 1
+
     if token_list[ind][0]['upos'] == 'NOUN':
+        # VBN edge cases: If we have a noun with a VBN parent (e.g., "flower-covered") the entire phrase is not a noun
+        if token_list[head_ind][0]['upos'] == 'VBN':
+            return False
         return True
     
     # "remote" edge cases: in many cases, when people say "remote" they mean "remote controller", i.e., a noun. But the
     #  parser treats it as an adjective. To identify these cases, we'll find "remote" with non-noun heads
-    head_ind = token_list[ind][0]['head'] - 1
     if token_list[ind][0]['text'].lower() == 'remote' and token_list[head_ind][0]['upos'] != 'NOUN':
         return True
     
