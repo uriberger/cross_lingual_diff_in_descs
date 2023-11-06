@@ -83,6 +83,11 @@ non_word_classes = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat'
 ]
 
+# Inflect don't handle some strings well, ignore these
+non_inflect_strs = [
+    'dress'
+]
+
 known_mappings = {
     'rail road track': 'railroad track', 'tv': 'television', 'skate board': 'skateboard', 'roller blades': 'rollerblade',
     'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote-control': 'remote', 'scooter': 'motorcycle',
@@ -99,7 +104,7 @@ known_mappings = {
     'brownstone': 'building', 'pussycat': 'cat', 'romper': 'clothing', 'warbler': 'bird', 'schooner': ['boat', 'glass'],
     'trawler': 'boat', 'hatchback': 'car', 'whaler': 'boat', 'jigger': 'glass', 'cock': 'chicken', 'mallet': 'hammer',
     'clipper': 'scissors', 'angler': 'person', 'weaver': 'person', 'predator': 'animal', 'arab': 'ethnic group',
-    'asian': 'ethnic group', 'galley': ['boat', 'kitchen', 'caboose'], 'hulk': 'person'
+    'asian': 'ethnic group', 'galley': ['boat', 'kitchen', 'caboose'], 'hulk': 'person', 'rope line': 'rope'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
@@ -168,7 +173,7 @@ def is_phrase_hypernym_of_phrase(phrase1, phrase2):
 def find_phrase_classes(phrase):
     phrase = phrase.lower()
 
-    if inflect_engine.singular_noun(phrase) != False:
+    if phrase not in non_inflect_strs and inflect_engine.singular_noun(phrase) != False:
         phrase = inflect_engine.singular_noun(phrase)
 
     if phrase in known_mappings:
