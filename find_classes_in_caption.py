@@ -248,7 +248,7 @@ def is_noun(token_list, ind):
 
     if token_list[ind][0]['upos'] == 'NOUN':
         # VBN edge cases: If we have a noun with a VBN parent (e.g., "flower-covered") the entire phrase is not a noun
-        if token_list[head_ind][0]['upos'] == 'VBN':
+        if token_list[head_ind][0]['xpos'] == 'VBN':
             return False
         return True
     
