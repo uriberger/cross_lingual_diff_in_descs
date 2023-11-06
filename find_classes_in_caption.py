@@ -271,15 +271,18 @@ def extract_noun_spans(token_list):
     # First find sequences of nouns
     noun_sequences = []
     in_sequence = False
+    last_noun_ind = -1
     for i in range(len(token_list)):
-        if is_noun(token_list, i) and (not in_sequence):
-            sequence_start = i
-            in_sequence = True
+        if is_noun(token_list, i):
+            last_noun_ind = i
+            if not in_sequence:
+                sequence_start = i
+                in_sequence = True
         if (not is_noun(token_list, i)) and in_sequence and (not is_sequence_punctuation(token_list, i)):
             in_sequence = False
-            noun_sequences.append((sequence_start, i))
+            noun_sequences.append((sequence_start, last_noun_ind+1))
     if in_sequence:
-        noun_sequences.append((sequence_start, len(token_list)))
+        noun_sequences.append((sequence_start, last_noun_ind+1))
 
     # Next, for each sequence, find- for each token in the sequence- the highest ancestor inside the sequence
     for sequence_start, sequence_end in noun_sequences:
