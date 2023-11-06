@@ -174,10 +174,11 @@ def is_phrase_hypernym_of_phrase(phrase1, phrase2):
 def find_phrase_classes(phrase):
     phrase = phrase.lower()
 
+    singular_phrase_classes = None
     if phrase not in non_inflect_strs and inflect_engine.singular_noun(phrase) != False:
         singular_phrase = inflect_engine.singular_noun(phrase)
+        singular_phrase_classes = find_preprocessed_phrase_classes(singular_phrase)
 
-    singular_phrase_classes = find_preprocessed_phrase_classes(singular_phrase)
     if singular_phrase_classes is not None:
         return singular_phrase_classes
     else:
