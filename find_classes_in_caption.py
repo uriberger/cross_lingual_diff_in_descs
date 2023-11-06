@@ -253,7 +253,7 @@ def is_noun(token_list, ind):
         return True
     
     # "baked goods" edge case: baked is considered adjective, but both should be considered a noun together
-    if token_list[ind][0]['text'] == 'baked' and ind < (len(token_list) - 1) and token_list[ind][0]['text'] == 'goods':
+    if token_list[ind][0]['text'] == 'baked' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'goods':
         return True
     
     return False
