@@ -19,11 +19,11 @@ word_classes = [
     'kite', 'baseball_bat', 'baseball_glove', 'skateboard', 'rollerblade', 'surfboard', 'tennis_racket', 'plate', 'bottle',
     'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'sandwich',
     'orange', 'mandarin', 'cucumber', 'tomato', 'chickpea', 'broccoli', 'brussel_sprout', 'carrot', 'corn', 'garlic',
-    'onion', 'soybean', 'sausage', 'cabbage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'biscuit',
-    'burrito', 'bread', 'toast', 'coffee', 'chair', 'seat', 'couch', 'plant', 'bed', 'pillow', 'blanket', 'sheets',
-    'mattress', 'table', 'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote',
-    'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock',
-    'vase', 'scissors', 'teddy_bear', 'doll', 'hair_drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk',
+    'onion', 'soybean', 'sausage', 'cabbage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'fries', 'donut', 'cake',
+    'baked_goods', 'biscuit', 'burrito', 'bread', 'toast', 'coffee', 'chair', 'seat', 'couch', 'plant', 'bed', 'pillow',
+    'blanket', 'sheets', 'mattress', 'table', 'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse',
+    'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book',
+    'clock', 'vase', 'scissors', 'teddy_bear', 'doll', 'hair_drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk',
     'building', 'restaurant', 'mountain', 'beach', 'kitchen', 'kitchen_utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon',
     'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'head', 'mouth', 'ear', 'eye', 'nose', 'platform',
     'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket',
@@ -55,8 +55,9 @@ parent_to_children = {
     'sport_instrument': ['ball', 'baseball_bat', 'baseball_glove', 'tennis_racket'],
     'kitchen_utensil': ['plate', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray'],
     'cup': ['glass'],
-    'food': ['fruit', 'vegetable', 'sandwich', 'corn', 'sausage', 'hotdog', 'pizza', 'fries', 'donut', 'cake', 'burrito',
-             'bread', 'toast', 'biscuit'],
+    'food': ['fruit', 'vegetable', 'sandwich', 'corn', 'sausage', 'hotdog', 'pizza', 'fries', 'burrito', 'baked_goods'],
+    'baked_goods': ['donut', 'cake', 'pastry', 'biscuit', 'bread'],
+    'bread': ['toast'],
     'fruit': ['banana', 'apple', 'orange', 'mandarin', 'kiwi', 'raspberry', 'nut'],
     'vegetable': ['cucumber', 'tomato', 'broccoli', 'brussel sprout', 'carrot', 'garlic', 'onion', 'cabbage', 'chickpea',
                   'okra', 'soybean'],
@@ -251,6 +252,10 @@ def is_noun(token_list, ind):
     if token_list[ind][0]['text'].lower() == 'remote' and token_list[head_ind][0]['upos'] != 'NOUN':
         return True
     
+    # "baked goods" edge case: baked is considered adjective, but both should be considered a noun together
+    if token_list[ind][0]['text'] == 'baked' and ind < (len(token_list) - 1) and token_list[ind][0]['text'] == 'goods':
+        return True
+    
     return False
 
 def is_sequence_punctuation(token_list, ind):
@@ -308,8 +313,8 @@ def preprocess(token_list):
         # 2. "hot dog": hot is considered an adjective, and the only identified noun is "dog"
         (['hot', 'dog'], 'hotdog'),
         (['hot', 'dogs'], 'hotdogs'),
-        # 2. "olive green": olive is considered a noun
-        (['olive', 'green'], 'green')
+        # 3. "olive green": olive is considered a noun
+        (['olive', 'green'], 'green'),
     ]
 
     tokens = [x[0]['text'].lower() for x in token_list]
