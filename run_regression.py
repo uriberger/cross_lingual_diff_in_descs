@@ -17,11 +17,11 @@ def run_regression():
         res = find_classes(sample['caption'])
         pred = [x[2] for x in res if x[2] is not None]
         if sorted(gt) != sorted(pred):
-            if i in reg_obj.waivers:
+            if str(i) in reg_obj.waivers:
                 waived_and_failed.apend(i)
             else:
                 failed.append(i)
-        elif i in reg_obj.waivers:
+        elif str(i) in reg_obj.waivers:
             waived_and_passed.append(i)
     passed_count = len(reg_obj.reg) - len(failed) - len(waived_and_failed) - len(waived_and_passed)
     print('Finished regression, results:')
