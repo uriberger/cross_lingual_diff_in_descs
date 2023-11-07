@@ -22,7 +22,7 @@ word_classes = [
     'broccoli', 'brussel_sprout', 'carrot', 'corn', 'garlic', 'onion', 'soybean', 'sausage', 'cabbage', 'vegetable',
     'fruit', 'hotdog', 'pizza', 'rice', 'noodle', 'fries', 'donut', 'cake', 'baked_goods', 'biscuit', 'burrito', 'taco',
     'bread', 'toast', 'coffee', 'chair', 'seat', 'couch', 'plant', 'bed', 'pillow', 'blanket', 'sheets', 'mattress',
-    'table', 'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller',
+    'table',  'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller',
     'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase',
     'scissors', 'teddy_bear', 'doll', 'hair_drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building',
     'restaurant', 'mountain', 'hill', 'beach', 'kitchen', 'kitchen_utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon',
@@ -33,7 +33,7 @@ word_classes = [
     'pencil', 'chalk', 'shingle', 'ethnic_group', 'stepper', 'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'rail',
     'shelf', 'railroad_track', 'swing', 'paint', 'toy', 'fan', 'writing_implement', 'escalator', 'carpet', 'sponge',
     'tattoo', 'jewelry', 'necklace', 'bracelet', 'earring', 'gun', 'rifle', 'hair', 'cart', 'cutting_board', 'egg',
-    'dessert', 'rack', 'window', 'fireplace'
+    'dessert', 'rack', 'milk', 'cheese', 'meat', 'window', 'fireplace'
     ]
 
 parent_to_children = {
@@ -61,7 +61,7 @@ parent_to_children = {
     'kitchen_utensil': ['tableware', 'can', 'bowl', 'tray', 'cutting_board'],
     'tableware': ['plate', 'cup', 'fork', 'knife', 'spoon', 'chopstick'],
     'food': ['fruit', 'vegetable', 'sandwich', 'corn', 'sausage', 'hotdog', 'pizza', 'fries', 'burrito', 'taco',
-             'baked_goods', 'dessert'],
+             'baked_goods', 'dessert', 'milk', 'cheese', 'meat'],
     'baked_goods': ['donut', 'cake', 'biscuit', 'bread'],
     'bread': ['toast'],
     'fruit': ['banana', 'apple', 'orange', 'mandarin', 'kiwi', 'raspberry', 'nut'],
@@ -94,7 +94,7 @@ def is_hyponym_of(class1, class2):
 
 non_word_classes = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
-    'middle', 'lot'
+    'middle', 'lot', 'lots'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -116,14 +116,14 @@ known_mappings = {
     'wrecker': 'truck', 'setter': 'dog', 'sharpie': 'pen', 'jumper': ['person', 'clothing'], 'digger': ['person', 'truck'],
     'prey': 'animal', 'excavator': ['person', 'truck'], 'watchdog': 'dog', 'barker': 'person', 'sphinx': 'statue',
     'brownstone': 'building', 'pussycat': 'cat', 'romper': 'clothing', 'warbler': 'bird', 'schooner': ['boat', 'glass'],
-    'trawler': 'boat', 'hatchback': 'car', 'whaler': 'boat', 'jigger': 'glass', 'cock': 'chicken', 'mallet': 'hammer',
+    'trawler': 'boat', 'hatchback': 'car', 'whaler': 'boat', 'jigger': 'cup', 'cock': 'chicken', 'mallet': 'hammer',
     'clipper': 'scissors', 'angler': 'person', 'weaver': 'person', 'predator': 'animal', 'arab': 'ethnic_group',
     'asian': 'ethnic_group', 'galley': ['boat', 'kitchen', 'caboose'], 'hulk': 'person', 'rope_line': 'rope',
     'outfit': 'clothing', 'jean': 'pant', 'back': ['body_part', None], 'shorts': 'clothing', 'glass': ['cup', 'eyeglasses']
 }
 
 word_to_replace_str = {
-    'back': {'body_part': 'hand', None: 'rear'}
+    'back': {'body_part': 'hand', None: 'rear'}, 'glasses': {'cup': 'cup', 'eyeglasses': 'sunglasses'}
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
