@@ -31,7 +31,7 @@ word_classes = [
     'musical_instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'cutter', 'caboose', 'pinwheel', 'fireball', 'okra',
     'siren', 'pen', 'pencil', 'shingle', 'ethnic_group', 'stepper', 'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'rail',
     'shelf', 'railroad_track', 'swing', 'paint', 'toy', 'fan', 'writing_implement', 'escalator', 'carpet', 'sponge',
-    'tattoo'
+    'tattoo', 'jewelry', 'necklace', 'bracelet', 'earring', 'gun', 'rifle'
     ]
 
 parent_to_children = {
@@ -71,7 +71,9 @@ parent_to_children = {
     'musical_instrument': ['guitar', 'piano'],
     'sculpture': ['statue'],
     'toy': ['teddy_bear', 'doll'],
-    'writing_implement': ['pen', 'pencil']
+    'writing_implement': ['pen', 'pencil'],
+    'jewelry': ['necklace', 'bracelet', 'earring'],
+    'gun': ['rifle']
 }
 
 child_to_parent = {}
@@ -112,7 +114,7 @@ known_mappings = {
     'trawler': 'boat', 'hatchback': 'car', 'whaler': 'boat', 'jigger': 'glass', 'cock': 'chicken', 'mallet': 'hammer',
     'clipper': 'scissors', 'angler': 'person', 'weaver': 'person', 'predator': 'animal', 'arab': 'ethnic_group',
     'asian': 'ethnic_group', 'galley': ['boat', 'kitchen', 'caboose'], 'hulk': 'person', 'rope_line': 'rope',
-    'outfit': 'clothing', 'jean': 'pant', 'back': ['body_part', None]
+    'outfit': 'clothing', 'jean': 'pant', 'back': ['body_part', None], 'shorts': 'clothing'
 }
 
 word_to_replace_str = {
@@ -424,7 +426,7 @@ def choose_class_with_lm(token_list, start_ind, end_ind, class_list, selection_m
     if orig_word in word_to_replace_str:
         class_to_repr_word = word_to_replace_str[orig_word]
     else:
-        class_to_repr_word = {cur_class: cur_class for cur_class in classes}
+        class_to_repr_word = {cur_class: cur_class for cur_class in class_list}
     max_class_prob = (-1)*math.inf
     class_with_max_prob = None
     for probs, classes in prob_class_list:
