@@ -16,7 +16,7 @@ word_classes = [
     'turtle', 'bunny', 'chameleon', 'rat', 'piranha', 'insect', 'beetle', 'butterfly', 'spider', 'weasel', 'peacock',
     'wolverine', 'animal', 'beaver', 'badger', 'llama', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'eyeglasses',
     'shirt', 'sweater', 'pant', 'diaper', 'dress', 'coat', 'boa', 'shoe', 'clothing', 'suitcase', 'frisbee', 'ski',
-    'snowboard', 'ball', 'kite', 'baseball_bat', 'baseball_glove', 'skateboard', 'rollerblade', 'surfboard',
+    'snowboard', 'ball', 'kite', 'baseball_bat', 'baseball_glove', 'skateboard', 'rollerblade', 'surfboard', 'beard',
     'tennis_racket', 'plate', 'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple',
     'kiwi', 'raspberry', 'sandwich', 'orange', 'mandarin', 'cucumber', 'tomato', 'chickpea', 'broccoli', 'brussel_sprout',
     'carrot', 'corn', 'garlic', 'onion', 'soybean', 'sausage', 'cabbage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'fries',
@@ -25,12 +25,13 @@ word_classes = [
     'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink',
     'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy_bear', 'doll', 'hair_drier', 'toothbrush', 'wall', 'door',
     'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'hill', 'beach', 'kitchen', 'kitchen_utensil', 'graffiti',
-    'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'head', 'mouth', 'ear',
-    'eye', 'nose', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut', 'bag', 'pole',
-    'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel', 'hand_tool', 'guitar', 'piano', 'musical_instrument',
-    'newspaper', 'helmet', 'carrier', 'slicer', 'cutter', 'caboose', 'pinwheel', 'fireball', 'okra', 'siren', 'pen',
-    'pencil', 'shingle', 'ethnic_group', 'stepper', 'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'shelf',
-    'railroad_track', 'swing', 'paint'
+    'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'tooth', 'bathtub', 'wine', 'sea', 'lake', 'head', 'mouth', 'ear',
+    'eye', 'nose', 'body_part', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'sculpture', 'candle', 'rope',
+    'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel', 'hand_tool', 'guitar', 'piano',
+    'musical_instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'cutter', 'caboose', 'pinwheel', 'fireball', 'okra',
+    'siren', 'pen', 'pencil', 'shingle', 'ethnic_group', 'stepper', 'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'rail',
+    'shelf', 'railroad_track', 'swing', 'paint', 'toy', 'fan', 'writing_implement', 'escalator', 'carpet', 'sponge',
+    'tattoo'
     ]
 
 parent_to_children = {
@@ -65,9 +66,12 @@ parent_to_children = {
     'plant': ['tree'],
     'electornics': ['television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone',
     'microwave', 'oven', 'stove', 'toaster', 'refrigerator'],
-    'body part': ['mouth', 'ear', 'eye', 'nose', 'head'],
-    'hand tool': ['hammer', 'shovel'],
-    'musical_instrument': ['guitar', 'piano']
+    'body_part': ['mouth', 'ear', 'eye', 'nose', 'head', 'tooth'],
+    'hand_tool': ['hammer', 'shovel'],
+    'musical_instrument': ['guitar', 'piano'],
+    'sculpture': ['statue'],
+    'toy': ['teddy_bear', 'doll'],
+    'writing_implement': ['pen', 'pencil']
 }
 
 child_to_parent = {}
@@ -83,7 +87,7 @@ def is_hyponym_of(class1, class2):
     return False
 
 non_word_classes = [
-    'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header'
+    'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -108,7 +112,11 @@ known_mappings = {
     'trawler': 'boat', 'hatchback': 'car', 'whaler': 'boat', 'jigger': 'glass', 'cock': 'chicken', 'mallet': 'hammer',
     'clipper': 'scissors', 'angler': 'person', 'weaver': 'person', 'predator': 'animal', 'arab': 'ethnic_group',
     'asian': 'ethnic_group', 'galley': ['boat', 'kitchen', 'caboose'], 'hulk': 'person', 'rope_line': 'rope',
-    'outfit': 'clothing', 'jean': 'pant'
+    'outfit': 'clothing', 'jean': 'pant', 'back': ['body_part', None]
+}
+
+word_to_replace_str = {
+    'back': {'body_part': 'hand', None: 'rear'}
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
@@ -411,14 +419,21 @@ def choose_class_with_lm(token_list, start_ind, end_ind, class_list, selection_m
         text = ' '.join(before + [mask_str] + after)
         probs = get_probs_from_lm(text, selection_method)
         prob_class_list = [(probs, class_list)]
+
+    orig_word = '_'.join([x[0]['text'] for x in token_list[start_ind:end_ind]])
+    if orig_word in word_to_replace_str:
+        class_to_repr_word = word_to_replace_str[orig_word]
+    else:
+        class_to_repr_word = {cur_class: cur_class for cur_class in classes}
     max_class_prob = (-1)*math.inf
     class_with_max_prob = None
     for probs, classes in prob_class_list:
         for cur_class in classes:
-            if cur_class not in tokenizer.vocab:
+            repr_word = class_to_repr_word[cur_class]
+            if repr_word not in tokenizer.vocab:
                 # For now, don't handle
                 continue
-            class_id = tokenizer.vocab[cur_class]
+            class_id = tokenizer.vocab[repr_word]
             class_prob = probs[class_id]
             if class_prob > max_class_prob:
                 max_class_prob = class_prob
