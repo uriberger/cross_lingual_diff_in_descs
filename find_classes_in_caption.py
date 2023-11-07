@@ -456,7 +456,7 @@ def ball_handling(token_list, start_ind):
     if start_ind == 0:
         return 'ball'
     
-    if start_ind > 0 and token_list[start_ind-1][0]['upos'] == 'DET':
+    if start_ind > 0 and len([x for x in token_list if x[0]['head'] == start_ind+1 and x[0]['upos'] == 'DET']) > 0:
         return 'ball'
     
     return None
