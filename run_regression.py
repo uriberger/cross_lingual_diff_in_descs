@@ -18,7 +18,7 @@ def run_regression():
         pred = [x[2] for x in res if x[2] is not None]
         if sorted(gt) != sorted(pred):
             if str(i) in reg_obj.waivers:
-                waived_and_failed.apend(i)
+                waived_and_failed.append(i)
             else:
                 failed.append(i)
         elif str(i) in reg_obj.waivers:
