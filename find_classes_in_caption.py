@@ -15,21 +15,22 @@ word_classes = [
     'tiger', 'chicken', 'zebra', 'giraffe', 'lion', 'groundhog', 'pig', 'deer', 'gazelle', 'goose', 'shrimp', 'worm',
     'turtle', 'bunny', 'chameleon', 'rat', 'piranha', 'insect', 'beetle', 'butterfly', 'spider', 'weasel', 'peacock',
     'wolverine', 'animal', 'beaver', 'badger', 'llama', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses', 'eyeglasses',
-    'shirt', 'sweater', 'pant', 'diaper', 'dress', 'coat', 'boa', 'clothing', 'suitcase', 'frisbee', 'ski', 'snowboard',
-    'ball', 'kite', 'baseball_bat', 'baseball_glove', 'skateboard', 'rollerblade', 'surfboard', 'tennis_racket', 'plate',
-    'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple', 'kiwi', 'raspberry',
-    'sandwich', 'orange', 'mandarin', 'cucumber', 'tomato', 'chickpea', 'broccoli', 'brussel_sprout', 'carrot', 'corn',
-    'garlic', 'onion', 'soybean', 'sausage', 'cabbage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'fries', 'donut', 'cake',
-    'baked_goods', 'biscuit', 'burrito', 'bread', 'toast', 'coffee', 'chair', 'seat', 'couch', 'plant', 'bed', 'pillow',
-    'blanket', 'sheets', 'mattress', 'table', 'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse',
-    'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'book',
-    'clock', 'vase', 'scissors', 'teddy_bear', 'doll', 'hair_drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk',
-    'building', 'restaurant', 'mountain', 'hill', 'beach', 'kitchen', 'kitchen_utensil', 'graffiti', 'tree', 'sky', 'sun',
-    'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'head', 'mouth', 'ear', 'eye', 'nose',
-    'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel',
-    'basket', 'nail', 'hammer', 'shovel', 'hand_tool', 'guitar', 'piano', 'musical_instrument', 'newspaper', 'helmet',
-    'carrier', 'slicer', 'cutter', 'caboose', 'pinwheel', 'fireball', 'okra', 'siren', 'pen', 'pencil', 'shingle',
-    'ethnic_group', 'stepper', 'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'shelf', 'railroad_track', 'swing', 'paint'
+    'shirt', 'sweater', 'pant', 'diaper', 'dress', 'coat', 'boa', 'shoe', 'clothing', 'suitcase', 'frisbee', 'ski',
+    'snowboard', 'ball', 'kite', 'baseball_bat', 'baseball_glove', 'skateboard', 'rollerblade', 'surfboard',
+    'tennis_racket', 'plate', 'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple',
+    'kiwi', 'raspberry', 'sandwich', 'orange', 'mandarin', 'cucumber', 'tomato', 'chickpea', 'broccoli', 'brussel_sprout',
+    'carrot', 'corn', 'garlic', 'onion', 'soybean', 'sausage', 'cabbage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'fries',
+    'donut', 'cake', 'baked_goods', 'biscuit', 'burrito', 'bread', 'toast', 'coffee', 'chair', 'seat', 'couch', 'plant',
+    'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table', 'counter', 'toilet', 'television', 'laptop', 'computer',
+    'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink',
+    'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy_bear', 'doll', 'hair_drier', 'toothbrush', 'wall', 'door',
+    'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'hill', 'beach', 'kitchen', 'kitchen_utensil', 'graffiti',
+    'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'teeth', 'bathtub', 'wine', 'sea', 'lake', 'head', 'mouth', 'ear',
+    'eye', 'nose', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'candle', 'rope', 'nut', 'bag', 'pole',
+    'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel', 'hand_tool', 'guitar', 'piano', 'musical_instrument',
+    'newspaper', 'helmet', 'carrier', 'slicer', 'cutter', 'caboose', 'pinwheel', 'fireball', 'okra', 'siren', 'pen',
+    'pencil', 'shingle', 'ethnic_group', 'stepper', 'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'shelf',
+    'railroad_track', 'swing', 'paint'
     ]
 
 parent_to_children = {
@@ -82,7 +83,7 @@ def is_hyponym_of(class1, class2):
     return False
 
 non_word_classes = [
-    'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat'
+    'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header'
 ]
 
 # Inflect don't handle some strings well, ignore these
