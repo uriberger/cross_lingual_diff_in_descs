@@ -20,18 +20,19 @@ word_classes = [
     'tennis_racket', 'plate', 'bottle', 'glass', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'banana', 'apple',
     'kiwi', 'raspberry', 'sandwich', 'orange', 'mandarin', 'cucumber', 'tomato', 'chickpea', 'broccoli', 'brussel_sprout',
     'carrot', 'corn', 'garlic', 'onion', 'soybean', 'sausage', 'cabbage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'fries',
-    'donut', 'cake', 'baked_goods', 'biscuit', 'burrito', 'bread', 'toast', 'coffee', 'chair', 'seat', 'couch', 'plant',
-    'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table', 'counter', 'toilet', 'television', 'laptop', 'computer',
-    'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink',
-    'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy_bear', 'doll', 'hair_drier', 'toothbrush', 'wall', 'door',
-    'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'hill', 'beach', 'kitchen', 'kitchen_utensil', 'graffiti',
-    'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'tooth', 'bathtub', 'wine', 'sea', 'lake', 'head', 'mouth', 'ear',
-    'eye', 'nose', 'body_part', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'sculpture', 'candle', 'rope',
-    'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel', 'hand_tool', 'guitar', 'piano',
-    'musical_instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'cutter', 'caboose', 'pinwheel', 'fireball', 'okra',
-    'siren', 'pen', 'pencil', 'shingle', 'ethnic_group', 'stepper', 'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'rail',
-    'shelf', 'railroad_track', 'swing', 'paint', 'toy', 'fan', 'writing_implement', 'escalator', 'carpet', 'sponge',
-    'tattoo', 'jewelry', 'necklace', 'bracelet', 'earring', 'gun', 'rifle'
+    'donut', 'cake', 'baked_goods', 'biscuit', 'burrito', 'taco', 'bread', 'toast', 'coffee', 'chair', 'seat', 'couch',
+    'plant', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table', 'counter', 'toilet', 'television', 'laptop',
+    'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster',
+    'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy_bear', 'doll', 'hair_drier', 'toothbrush', 'wall',
+    'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'hill', 'beach', 'kitchen', 'kitchen_utensil',
+    'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'tooth', 'bathtub', 'wine', 'sea', 'lake', 'head',
+    'mouth', 'ear', 'eye', 'nose', 'body_part', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'sculpture',
+    'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel', 'hand_tool',
+    'guitar', 'piano', 'musical_instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'cutter', 'caboose', 'pinwheel',
+    'fireball', 'okra', 'siren', 'pen', 'pencil', 'chalk', 'shingle', 'ethnic_group', 'stepper', 'chimney', 'leaf',
+    'fence', 'vehicle', 'torch', 'rail', 'shelf', 'railroad_track', 'swing', 'paint', 'toy', 'fan', 'writing_implement',
+    'escalator', 'carpet', 'sponge', 'tattoo', 'jewelry', 'necklace', 'bracelet', 'earring', 'gun', 'rifle', 'hair',
+    'cart', 'cutting_board', 'egg'
     ]
 
 parent_to_children = {
@@ -55,9 +56,10 @@ parent_to_children = {
     'riding_device': ['skis', 'surfboard', 'snowboard', 'skateboard', 'rollerblade'],
     'game': ['frisbee', 'sport_instrument', 'kite'],
     'sport_instrument': ['ball', 'baseball_bat', 'baseball_glove', 'tennis_racket'],
-    'kitchen_utensil': ['plate', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray'],
+    'kitchen_utensil': ['plate', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'tray', 'cutting_board'],
     'cup': ['glass'],
-    'food': ['fruit', 'vegetable', 'sandwich', 'corn', 'sausage', 'hotdog', 'pizza', 'fries', 'burrito', 'baked_goods'],
+    'food': ['fruit', 'vegetable', 'sandwich', 'corn', 'sausage', 'hotdog', 'pizza', 'fries', 'burrito', 'taco',
+             'baked_goods'],
     'baked_goods': ['donut', 'cake', 'pastry', 'biscuit', 'bread'],
     'bread': ['toast'],
     'fruit': ['banana', 'apple', 'orange', 'mandarin', 'kiwi', 'raspberry', 'nut'],
@@ -71,7 +73,7 @@ parent_to_children = {
     'musical_instrument': ['guitar', 'piano'],
     'sculpture': ['statue'],
     'toy': ['teddy_bear', 'doll'],
-    'writing_implement': ['pen', 'pencil'],
+    'writing_implement': ['pen', 'pencil', 'chalk'],
     'jewelry': ['necklace', 'bracelet', 'earring'],
     'gun': ['rifle']
 }
@@ -272,6 +274,10 @@ def is_noun(token_list, ind):
     if token_list[ind][0]['text'] == 'baked' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'goods':
         return True
     
+    # "orange slices" edge case: orange is considered adjective, but both should be considered a noun together
+    if token_list[ind][0]['text'] == 'orange' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'slices':
+        return True
+    
     return False
 
 def is_sequence_punctuation(token_list, ind):
@@ -317,7 +323,11 @@ def extract_noun_spans(token_list):
                 noun_spans.append((noun_sequence_start, sequence_start + i, cur_highest_ancestor))
                 noun_sequence_start = sequence_start + i
                 cur_highest_ancestor = highest_ancestors[i]
-        noun_spans.append((noun_sequence_start, sequence_end, cur_highest_ancestor))
+        # Edge case: in "X slices" pairs (e.g., "orange slices") we want X to be the highest ancestor
+        if sequence_end - noun_sequence_start == 2 and token_list[sequence_end-1][0]['text'].lower() == 'slices':
+            noun_spans.append((noun_sequence_start, sequence_end, noun_sequence_start))
+        else:
+            noun_spans.append((noun_sequence_start, sequence_end, cur_highest_ancestor))
 
     return noun_spans
 
