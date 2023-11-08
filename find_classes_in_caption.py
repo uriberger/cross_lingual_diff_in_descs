@@ -13,29 +13,29 @@ word_classes = [
     'train', 'truck', 'boat', 'ship', 'watercraft', 'traffic_light', 'fire _hydrant', 'sign', 'parking_meter', 'bench',
     'bird', 'penguin', 'ostrich', 'wasp', 'fish', 'tuna', 'cat', 'dog', 'horse', 'fox', 'sheep', 'cow', 'bull', 'elephant',
     'bear', 'tiger', 'chicken', 'zebra', 'giraffe', 'lion', 'groundhog', 'pig', 'deer', 'gazelle', 'goose', 'shrimp',
-    'worm', 'turtle', 'bunny', 'chameleon', 'rat', 'piranha', 'insect', 'bee', 'beetle', 'butterfly', 'spider', 'weasel',
-    'peacock', 'wolverine', 'animal', 'beaver', 'badger', 'llama', 'backpack', 'umbrella', 'tie', 'hat', 'sunglasses',
-    'eyeglasses', 'shirt', 'sweater', 'pant', 'diaper', 'dress', 'coat', 'boa', 'shoe', 'clothing', 'suitcase', 'frisbee',
-    'ski', 'snowboard', 'ball', 'kite', 'baseball_bat', 'baseball_glove', 'skateboard', 'rollerblade', 'surfboard',
-    'beard', 'tennis_racket', 'plate', 'bottle', 'cup', 'can', 'fork', 'knife', 'spoon', 'bowl', 'chopstick', 'tableware',
-    'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'sandwich', 'orange', 'mandarin', 'cucumber', 'tomato', 'chickpea',
-    'broccoli', 'brussel_sprout', 'carrot', 'corn', 'garlic', 'onion', 'soybean', 'sausage', 'cabbage', 'vegetable',
-    'fruit', 'hotdog', 'pizza', 'rice', 'noodle', 'fries', 'donut', 'cake', 'baked_goods', 'biscuit', 'burrito', 'taco',
-    'soup', 'bread', 'toast', 'coffee', 'chair', 'seat', 'couch', 'plant', 'flower', 'bed', 'pillow', 'blanket', 'sheets',
-    'mattress', 'table',  'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote',
-    'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'dishwasher',
-    'washing_machine', 'drier', 'white_goods', 'book', 'clock', 'vase', 'scissors', 'teddy_bear', 'doll', 'hair_drier',
-    'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'hill', 'dune', 'beach',
-    'kitchen', 'kitchen_utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'tooth', 'bathtub', 'wine',
-    'sea', 'lake', 'head', 'mouth', 'ear', 'eye', 'nose', 'body_part', 'platform', 'box', 'uniform', 'towel', 'stone',
-    'statue', 'sculpture', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer',
-    'shovel', 'hand_tool', 'guitar', 'piano', 'musical_instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'cutter',
-    'caboose', 'pinwheel', 'fireball', 'okra', 'siren', 'pen', 'pencil', 'chalk', 'shingle', 'ethnic_group', 'stepper',
-    'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'rail', 'shelf', 'railroad_track', 'swing', 'paint', 'toy', 'fan',
-    'writing_implement', 'escalator', 'carpet', 'sponge', 'tattoo', 'jewelry', 'necklace', 'bracelet', 'earring', 'gun',
-    'rifle', 'hair', 'cart', 'cutting_board', 'egg', 'dessert', 'rack', 'milk', 'cheese', 'meat', 'window', 'fireplace',
-    'folder', 'star', 'engine', 'tire', 'coffee_maker', 'branch', 'slide', 'advertisement', 'mannequin', 'oil_rig',
-    'newsstand'
+    'monkey', 'worm', 'turtle', 'bunny', 'chameleon', 'rat', 'piranha', 'insect', 'bee', 'beetle', 'butterfly', 'spider',
+    'weasel', 'peacock', 'wolverine', 'animal', 'beaver', 'badger', 'llama', 'backpack', 'umbrella', 'tie', 'hat',
+    'sunglasses', 'eyeglasses', 'shirt', 'sweater', 'pant', 'diaper', 'dress', 'coat', 'boa', 'shoe', 'clothing',
+    'suitcase', 'frisbee', 'ski', 'snowboard', 'ball', 'kite', 'baseball_bat', 'baseball_glove', 'skateboard',
+    'rollerblade', 'surfboard', 'beard', 'tennis_racket', 'plate', 'bottle', 'cup', 'can', 'fork', 'knife', 'spoon',
+    'bowl', 'chopstick', 'tableware', 'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'sandwich', 'orange', 'mandarin',
+    'cucumber', 'tomato', 'chickpea', 'broccoli', 'brussel_sprout', 'carrot', 'corn', 'garlic', 'onion', 'soybean',
+    'sausage', 'cabbage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'rice', 'noodle', 'fries', 'donut', 'cake',
+    'baked_goods', 'biscuit', 'burrito', 'taco', 'soup', 'bread', 'toast', 'coffee', 'chair', 'seat', 'couch', 'plant',
+    'flower', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table',  'counter', 'toilet', 'television', 'laptop',
+    'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster',
+    'sink', 'refrigerator', 'dishwasher', 'washing_machine', 'drier', 'white_goods', 'book', 'clock', 'vase', 'scissors',
+    'teddy_bear', 'doll', 'hair_drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'restaurant',
+    'mountain', 'hill', 'dune', 'beach', 'kitchen', 'kitchen_utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera',
+    'mirror', 'tooth', 'bathtub', 'wine', 'sea', 'lake', 'head', 'mouth', 'ear', 'eye', 'nose', 'body_part', 'platform',
+    'box', 'uniform', 'towel', 'stone', 'statue', 'sculpture', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick',
+    'wheel', 'basket', 'nail', 'hammer', 'shovel', 'hand_tool', 'guitar', 'piano', 'musical_instrument', 'newspaper',
+    'helmet', 'carrier', 'slicer', 'cutter', 'caboose', 'pinwheel', 'fireball', 'okra', 'siren', 'pen', 'pencil', 'chalk',
+    'shingle', 'ethnic_group', 'stepper', 'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'rail', 'shelf',
+    'railroad_track', 'swing', 'paint', 'toy', 'fan', 'writing_implement', 'escalator', 'carpet', 'sponge', 'tattoo',
+    'jewelry', 'necklace', 'bracelet', 'earring', 'gun', 'rifle', 'hair', 'cart', 'cutting_board', 'egg', 'dessert',
+    'rack', 'milk', 'cheese', 'meat', 'window', 'fireplace', 'folder', 'star', 'engine', 'tire', 'coffee_maker', 'branch',
+    'slide', 'advertisement', 'mannequin', 'oil_rig', 'newsstand', 'terrace'
     ]
 
 parent_to_children = {
@@ -53,7 +53,7 @@ parent_to_children = {
                'beaver', 'fox', 'weasel', 'badger', 'llama', 'bull'],
     'fish': ['tuna', 'piranha'],
     'insect': ['wasp', 'beetle', 'butterfly', 'bee'],
-    'wild_mammal': ['elephant', 'bear', 'zebra', 'giraffe', 'tiger', 'wolverine'],
+    'wild_mammal': ['elephant', 'bear', 'zebra', 'giraffe', 'tiger', 'wolverine', 'monkey'],
     'bag': ['backpack', 'suitcase', 'basket'],
     'clothing': ['tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pant', 'diaper', 'dress', 'coat', 'helmet', 'boa',
                  'eyeglasses'],
@@ -369,25 +369,6 @@ def preprocess(token_list):
             else:
                 inds_in_orig_strs[j] = 0
 
-    # "A couple": this is always identified as a noun, but should only be considered a noun on it's own if the world
-    # "of" doesn't follow (e.g., "A couple sitting on a bench", and not "A couple of birds singing")
-    couple_indices = [i for i, x in enumerate(tokens) if x == 'couple']
-    for couple_index in couple_indices:
-        det_before = False
-        # First make sure it had a determiner before it (or its the first word)
-        if couple_index > 0:
-            if token_list[couple_index - 1][0]['upos'] != 'DET':
-                continue
-            det_before = True
-        # Next, make sure it doesn't have "of" after it
-        if couple_index < (len(tokens) - 1) and tokens[couple_index + 1] == 'of':
-            continue
-        # Now, replace
-        if det_before:
-            to_replace.append((couple_index-1, couple_index+1, 'two people'))
-        else:
-            to_replace.append((couple_index, couple_index+1, 'two people'))
-
     if len(to_replace) > 0:
         for start_ind, end_ind, new_str in to_replace:
             tokens[start_ind] = new_str
@@ -486,13 +467,33 @@ def choose_class_with_clip(token_list, start_ind, end_ind, class_list, image_pat
 
     return class_list[probs.argmax()]
 
+def is_subtree_first(token_list, ind):
+    adjusted_ind = ind + 1
+    subtree_first = True
+    for cur_ind in range(ind):
+        # Check if its an ancestor of ind
+        inner_ind = cur_ind
+        while True:
+            if token_list[inner_ind][0]['head'] == adjusted_ind:
+                break
+            if token_list[inner_ind][0]['head'] > adjusted_ind or token_list[inner_ind][0]['head'] == 0:
+                subtree_first = False
+                break
+            inner_ind = token_list[inner_ind][0]['head'] - 1
+        if not subtree_first:
+            break
+    return subtree_first
+
+def has_determiner(token_list, ind):
+    return len([x for x in token_list if x[0]['head'] == ind+1 and x[0]['upos'] == 'DET']) > 0
+
 def ball_handling(token_list, start_ind):
     # If it's a single word with at the beginning of the sentence or with a determiner before it- it's the ball,
     # otherwise it's the game
-    if start_ind == 0:
+    if is_subtree_first(token_list, start_ind):
         return 'ball'
     
-    if start_ind > 0 and len([x for x in token_list if x[0]['head'] == start_ind+1 and x[0]['upos'] == 'DET']) > 0:
+    if has_determiner(token_list, start_ind):
         return 'ball'
     
     return None
@@ -507,6 +508,17 @@ def top_handling(token_list, start_ind):
         return 'clothing'
     
     return None
+
+def couple_handling(token_list, ind):
+    # If we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
+    # we do want. Distinguish by checking if we have a determiner (or this is the first phrase), and no "of" after it
+    if (not is_subtree_first(token_list, ind)) and (not has_determiner(token_list, ind)):
+        return None
+    
+    if ind < (len(token_list) - 1) and token_list[ind+1][0]['text'].lower() == 'of':
+        return None
+    
+    return 'person'
 
 def find_classes(caption):
     doc = nlp(caption)
@@ -537,6 +549,11 @@ def find_classes(caption):
         # 3. "top" is also a problem, as it might be clothing
         if token_list[start_ind][0]['text'] == 'top' and end_ind - start_ind == 1:
             phrase_class = top_handling(token_list, start_ind)
+
+        # 4. "couple": if we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
+        # we do want. Distinguish by checking if we have a determiner (or this is the first phrase), and no "of" after it
+        if token_list[highest_ancestor_ind][0]['text'] == 'couple':
+            phrase_class = couple_handling(token_list, highest_ancestor_ind)
 
         if type(phrase_class) is list:
             phrase_class = choose_class_with_lm(token_list, start_ind, end_ind, phrase_class)
