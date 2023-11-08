@@ -511,10 +511,7 @@ def top_handling(token_list, start_ind):
 
 def couple_handling(token_list, ind):
     # If we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
-    # we do want. Distinguish by checking if we have a determiner (or this is the first phrase), and no "of" after it
-    if (not is_subtree_first(token_list, ind)) and (not has_determiner(token_list, ind)):
-        return None
-    
+    # we do want. Distinguish by checking if we have no "of" after it
     if ind < (len(token_list) - 1) and token_list[ind+1][0]['text'].lower() == 'of':
         return None
     
@@ -552,7 +549,7 @@ def find_classes(caption):
 
         # 4. "couple": if we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
         # we do want. Distinguish by checking if we have a determiner (or this is the first phrase), and no "of" after it
-        if token_list[highest_ancestor_ind][0]['text'] == 'couple':
+        if token_list[highest_ancestor_ind][0]['text'] in ['couple', 'couples']:
             phrase_class = couple_handling(token_list, highest_ancestor_ind)
 
         if type(phrase_class) is list:
