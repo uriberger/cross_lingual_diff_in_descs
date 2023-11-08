@@ -402,13 +402,19 @@ def is_an_word(word):
 def choose_class_with_lm(token_list, start_ind, end_ind, class_list, selection_method='probs'):
     before = [x[0]['text'].lower() for x in token_list[:start_ind]]
     after = [x[0]['text'].lower() for x in token_list[end_ind:]]
+
+    orig_word = '_'.join([x[0]['text'] for x in token_list[start_ind:end_ind]])
+    if orig_word in word_to_replace_str:
+        class_to_repr_word = word_to_replace_str[orig_word]
+    else:
+        class_to_repr_word = {cur_class: cur_class for cur_class in class_list}
     
     # To prevent unwanted bias, check if we need to consider a/an
     if len(before) > 0 and before[-1] in ['a', 'an']:
         a_classes = []
         an_classes = []
         for cur_class in class_list:
-            if is_an_word(cur_class):
+            if is_an_word(class_to_repr_word[cur_class]):
                 an_classes.append(cur_class)
             else:
                 a_classes.append(cur_class)
@@ -422,11 +428,6 @@ def choose_class_with_lm(token_list, start_ind, end_ind, class_list, selection_m
         probs = get_probs_from_lm(text, selection_method)
         prob_class_list = [(probs, class_list)]
 
-    orig_word = '_'.join([x[0]['text'] for x in token_list[start_ind:end_ind]])
-    if orig_word in word_to_replace_str:
-        class_to_repr_word = word_to_replace_str[orig_word]
-    else:
-        class_to_repr_word = {cur_class: cur_class for cur_class in class_list}
     max_class_prob = (-1)*math.inf
     class_with_max_prob = None
     for probs, classes in prob_class_list:
