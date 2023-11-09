@@ -25,5 +25,5 @@ class RegressionHandler:
         self.waivers[ind] = reason
 
     def remove_waiver(self, ind):
-        if ind in self.waivers:
+        if str(ind) in self.waivers:
             del self.waivers[ind]
