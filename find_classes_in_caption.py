@@ -531,30 +531,34 @@ def find_classes(caption):
 
     for start_ind, end_ind, highest_ancestor_ind in noun_spans:
         phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
-        phrase_class = find_phrase_classes(phrase)
 
-        # Check only the highest ancestor in the noun span
-        if phrase_class is None:
-            phrase = token_list[highest_ancestor_ind][0]['text']
-            phrase_class = find_phrase_classes(phrase)
-
-        # 2. We have a problem when there's a sport named the same as its ball (baseball, basketball etc.).
+        # 1. We have a problem when there's a sport named the same as its ball (baseball, basketball etc.).
         # The more common synset is the game, and when someone talks about the ball the algorithm always thinks it's the game.
         # We'll try identifying these cases by checking if it's a single noun and there's an identifier before it
         if token_list[start_ind][0]['text'].endswith('ball') and end_ind - start_ind == 1:
             phrase_class = ball_handling(token_list, start_ind)
 
-        # 3. "top" is also a problem, as it might be clothing
-        if token_list[start_ind][0]['text'] == 'top' and end_ind - start_ind == 1:
+        # 2. "top" is also a problem, as it might be clothing
+        elif token_list[start_ind][0]['text'] == 'top' and end_ind - start_ind == 1:
             phrase_class = top_handling(token_list, start_ind)
 
-        # 4. "couple": if we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
+        # 3. "couple": if we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
         # we do want. Distinguish by checking if we have a determiner (or this is the first phrase), and no "of" after it
-        if token_list[highest_ancestor_ind][0]['text'] in ['couple', 'couples']:
+        elif token_list[highest_ancestor_ind][0]['text'] in ['couple', 'couples']:
             phrase_class = couple_handling(token_list, highest_ancestor_ind)
 
-        if type(phrase_class) is list:
-            phrase_class = choose_class_with_lm(token_list, start_ind, end_ind, phrase_class)
+        else:
+            phrase_class = find_phrase_classes(phrase)
+
+            # Check only the highest ancestor in the noun span
+            if phrase_class is None:
+                phrase = token_list[highest_ancestor_ind][0]['text']
+                phrase_class = find_phrase_classes(phrase)
+                start_ind = highest_ancestor_ind
+                end_ind = highest_ancestor_ind + 1
+
+            if type(phrase_class) is list:
+                phrase_class = choose_class_with_lm(token_list, start_ind, end_ind, phrase_class)
 
         classes.append((start_ind, end_ind, phrase_class))
     
