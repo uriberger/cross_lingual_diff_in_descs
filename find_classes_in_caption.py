@@ -35,7 +35,7 @@ word_classes = [
     'railroad_track', 'swing', 'paint', 'toy', 'fan', 'writing_implement', 'escalator', 'carpet', 'sponge', 'tattoo',
     'jewelry', 'necklace', 'bracelet', 'earring', 'gun', 'rifle', 'hair', 'cart', 'cutting_board', 'egg', 'dessert',
     'rack', 'milk', 'cheese', 'meat', 'window', 'fireplace', 'folder', 'star', 'engine', 'tire', 'coffee_maker', 'branch',
-    'slide', 'advertisement', 'mannequin', 'oil_rig', 'newsstand', 'terrace'
+    'slide', 'advertisement', 'mannequin', 'oil_rig', 'newsstand', 'terrace', 'binoculars'
     ]
 
 parent_to_children = {
@@ -97,7 +97,7 @@ def is_hyponym_of(class1, class2):
 
 non_word_classes = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
-    'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality'
+    'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -519,6 +519,7 @@ def couple_handling(token_list, ind):
     return 'person'
 
 def find_classes(caption):
+    caption = caption.lower()
     doc = nlp(caption)
     token_lists = [[x.to_dict() for x in y.tokens] for y in doc.sentences]
     if len(token_lists) > 1:
