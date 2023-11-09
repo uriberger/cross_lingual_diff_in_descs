@@ -18,25 +18,26 @@ word_classes = [
     'sunglasses', 'eyeglasses', 'shirt', 'sweater', 'pant', 'diaper', 'dress', 'coat', 'boa', 'shoe', 'clothing',
     'suitcase', 'frisbee', 'ski', 'snowboard', 'ball', 'kite', 'baseball_bat', 'baseball_glove', 'skateboard',
     'rollerblade', 'surfboard', 'beard', 'tennis_racket', 'plate', 'bottle', 'cup', 'can', 'fork', 'knife', 'spoon',
-    'bowl', 'chopstick', 'tableware', 'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'sandwich', 'orange', 'mandarin',
-    'cucumber', 'tomato', 'chickpea', 'broccoli', 'brussel_sprout', 'carrot', 'corn', 'garlic', 'onion', 'greens',
-    'soybean', 'sausage', 'cabbage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'rice', 'coleslaw', 'noodle', 'fries',
-    'donut', 'cake', 'baked_goods', 'biscuit', 'burrito', 'taco', 'falafel', 'soup', 'bread', 'toast', 'coffee', 'chair',
-    'seat', 'couch', 'plant', 'flower', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table',  'counter', 'toilet',
-    'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave',
-    'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'dishwasher', 'washing_machine', 'drier', 'white_goods', 'book',
-    'clock', 'vase', 'scissors', 'teddy_bear', 'doll', 'hair_drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk',
-    'building', 'restaurant', 'mountain', 'hill', 'dune', 'beach', 'kitchen', 'kitchen_utensil', 'graffiti', 'tree', 'sky',
-    'sun', 'moon', 'camera', 'mirror', 'tooth', 'bathtub', 'wine', 'sea', 'lake', 'head', 'mouth', 'ear', 'eye', 'nose',
-    'body_part', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue', 'sculpture', 'candle', 'rope', 'nut', 'bag',
-    'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel', 'hand_tool', 'guitar', 'piano',
-    'musical_instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'cutter', 'caboose', 'pinwheel', 'fireball', 'okra',
-    'siren', 'pen', 'pencil', 'chalk', 'shingle', 'ethnic_group', 'stepper', 'chimney', 'leaf', 'fence', 'vehicle',
-    'torch', 'rail', 'shelf', 'railroad_track', 'swing', 'paint', 'toy', 'fan', 'writing_implement', 'escalator', 'carpet',
-    'sponge', 'tattoo', 'jewelry', 'necklace', 'bracelet', 'earring', 'gun', 'rifle', 'hair', 'cart', 'cutting_board',
-    'egg', 'dessert', 'rack', 'milk', 'cheese', 'meat', 'window', 'fireplace', 'folder', 'star', 'engine', 'tire',
-    'coffee_maker', 'branch', 'slide', 'advertisement', 'mannequin', 'oil_rig', 'newsstand', 'terrace', 'binoculars',
-    'garage', 'map', 'pool', 'sleeping_bag', 'bridge', 'string', 'stadium'
+    'bowl', 'chopstick', 'tableware', 'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'watermelon', 'sandwich', 'orange',
+    'mandarin', 'cucumber', 'tomato', 'chickpea', 'broccoli', 'brussel_sprout', 'carrot', 'corn', 'garlic', 'onion',
+    'greens', 'soybean', 'sausage', 'cabbage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'rice', 'pasta', 'coleslaw',
+    'noodle', 'fries', 'donut', 'cake', 'baked_goods', 'biscuit', 'burrito', 'taco', 'falafel', 'sashimi', 'soup', 'bread',
+    'toast', 'coffee', 'chair', 'seat', 'couch', 'plant', 'flower', 'bed', 'pillow', 'blanket', 'sheets', 'mattress',
+    'table', 'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller',
+    'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'dishwasher', 'washing_machine',
+    'drier', 'white_goods', 'book', 'clock', 'vase', 'scissors', 'teddy_bear', 'doll', 'hair_drier', 'toothbrush', 'wall',
+    'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'hill', 'dune', 'beach', 'kitchen',
+    'kitchen_utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'tooth', 'bathtub', 'wine', 'sea',
+    'lake', 'head', 'mouth', 'ear', 'eye', 'nose', 'body_part', 'platform', 'box', 'uniform', 'towel', 'stone', 'statue',
+    'sculpture', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer', 'shovel',
+    'hand_tool', 'guitar', 'piano', 'musical_instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'cutter', 'caboose',
+    'pinwheel', 'fireball', 'okra', 'siren', 'pen', 'pencil', 'chalk', 'shingle', 'ethnic_group', 'stepper', 'chimney',
+    'leaf', 'fence', 'vehicle', 'torch', 'rail', 'shelf', 'railroad_track', 'swing', 'paint', 'toy', 'fan',
+    'writing_implement', 'escalator', 'carpet', 'sponge', 'tattoo', 'jewelry', 'necklace', 'bracelet', 'earring', 'gun',
+    'rifle', 'hair', 'cart', 'cutting_board', 'egg', 'dessert', 'rack', 'milk', 'cheese', 'meat', 'window', 'fireplace',
+    'folder', 'star', 'engine', 'tire', 'coffee_maker', 'branch', 'slide', 'advertisement', 'mannequin', 'oil_rig',
+    'newsstand', 'terrace', 'binoculars', 'garage', 'map', 'pool', 'sleeping_bag', 'bridge', 'string', 'stadium',
+    'cocktail', 'straw'
     ]
 
 parent_to_children = {
@@ -64,10 +65,10 @@ parent_to_children = {
     'kitchen_utensil': ['tableware', 'can', 'bowl', 'tray', 'cutting_board'],
     'tableware': ['plate', 'cup', 'fork', 'knife', 'spoon', 'chopstick'],
     'food': ['fruit', 'vegetable', 'sandwich', 'corn', 'sausage', 'hotdog', 'pizza', 'fries', 'burrito', 'taco',
-             'baked_goods', 'dessert', 'milk', 'cheese', 'meat', 'soup', 'coleslaw', 'falafel'],
+             'baked_goods', 'dessert', 'milk', 'cheese', 'meat', 'soup', 'coleslaw', 'falafel', 'sashimi', 'rice', 'pasta',],
     'baked_goods': ['donut', 'cake', 'biscuit', 'bread'],
     'bread': ['toast'],
-    'fruit': ['banana', 'apple', 'orange', 'mandarin', 'kiwi', 'raspberry', 'nut'],
+    'fruit': ['banana', 'apple', 'orange', 'mandarin', 'kiwi', 'raspberry', 'nut', 'watermelon'],
     'vegetable': ['cucumber', 'tomato', 'broccoli', 'brussel sprout', 'carrot', 'garlic', 'onion', 'cabbage', 'chickpea',
                   'okra', 'soybean', 'greens'],
     'plant': ['tree', 'flower'],
@@ -334,8 +335,8 @@ def extract_noun_spans(token_list):
                 noun_spans.append((noun_sequence_start, sequence_start + i, cur_highest_ancestor))
                 noun_sequence_start = sequence_start + i
                 cur_highest_ancestor = highest_ancestors[i]
-        # Edge case: in "X slices" pairs (e.g., "orange slices") we want X to be the highest ancestor
-        if sequence_end - noun_sequence_start == 2 and token_list[sequence_end-1][0]['text'].lower() == 'slices':
+        # Edge case: in "X slice/slices" pairs (e.g., "orange slices") we want X to be the highest ancestor
+        if sequence_end - noun_sequence_start == 2 and token_list[sequence_end-1][0]['text'].lower() in ['slice', 'slices']:
             noun_spans.append((noun_sequence_start, sequence_end, noun_sequence_start))
         else:
             noun_spans.append((noun_sequence_start, sequence_end, cur_highest_ancestor))
