@@ -2,11 +2,11 @@ import json
 import os
 
 datasets = ['COCO', 'flickr30k', 'pascal_sentences', 'xm3600_ar', 'xm3600_bn', 'xm3600_cs', 'xm3600_da', 'xm3600_de',
-            'xm3600_el', 'xm3600_es', 'xm3600_fa', 'xm3600_fi', 'xm3600_fil', 'xm3600_fr', 'xm3600_he', 'xm3600_hi',
-            'xm3600_hr', 'xm3600_hu', 'xm3600_id', 'xm3600_it', 'xm3600_ja', 'xm3600_ko', 'xm3600_mi', 'xm3600_nl',
-            'xm3600_no', 'xm3600_pl', 'xm3600_pt', 'xm3600_quz', 'xm3600_ro', 'xm3600_ru', 'xm3600_sv', 'xm3600_sw',
-            'xm3600_te', 'xm3600_th', 'xm3600_tr', 'xm3600_uk', 'xm3600_vi', 'xm3600_zh', 'multi30k', 'STAIR-captions',
-            'YJCaptions', 'coco-cn', 'flickr8kcn', 'ai_challenger']
+            'xm3600_el', 'xm3600_en', 'xm3600_es', 'xm3600_fa', 'xm3600_fi', 'xm3600_fil', 'xm3600_fr', 'xm3600_he',
+            'xm3600_hi', 'xm3600_hr', 'xm3600_hu', 'xm3600_id', 'xm3600_it', 'xm3600_ja', 'xm3600_ko', 'xm3600_mi',
+            'xm3600_nl', 'xm3600_no', 'xm3600_pl', 'xm3600_pt', 'xm3600_quz', 'xm3600_ro', 'xm3600_ru', 'xm3600_sv',
+            'xm3600_sw', 'xm3600_te', 'xm3600_th', 'xm3600_tr', 'xm3600_uk', 'xm3600_vi', 'xm3600_zh', 'multi30k',
+            'STAIR-captions', 'YJCaptions', 'coco-cn', 'flickr8kcn', 'ai_challenger']
 
 def get_dataset(dataset_name):
     if dataset_name == 'COCO':
