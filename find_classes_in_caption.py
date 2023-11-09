@@ -24,7 +24,7 @@ word_classes = [
     'donut', 'cake', 'baked_goods', 'biscuit', 'burrito', 'taco', 'falafel', 'soup', 'bread', 'toast', 'coffee', 'chair',
     'seat', 'couch', 'plant', 'flower', 'bed', 'pillow', 'blanket', 'sheets', 'mattress', 'table',  'counter', 'toilet',
     'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone', 'microwave',
-    'oven', 'stove', 'toaster'     'sink', 'refrigerator', 'dishwasher', 'washing_machine', 'drier', 'white_goods', 'book',
+    'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'dishwasher', 'washing_machine', 'drier', 'white_goods', 'book',
     'clock', 'vase', 'scissors', 'teddy_bear', 'doll', 'hair_drier', 'toothbrush', 'wall', 'door', 'windows', 'sidewalk',
     'building', 'restaurant', 'mountain', 'hill', 'dune', 'beach', 'kitchen', 'kitchen_utensil', 'graffiti', 'tree', 'sky',
     'sun', 'moon', 'camera', 'mirror', 'tooth', 'bathtub', 'wine', 'sea', 'lake', 'head', 'mouth', 'ear', 'eye', 'nose',
