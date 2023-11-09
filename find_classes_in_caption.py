@@ -129,7 +129,7 @@ known_mappings = {
 }
 
 word_to_replace_str = {
-    'back': {'body_part': 'hand', None: 'rear'}, 'glasses': {'cup': 'cup', 'eyeglasses': 'sunglasses'}
+    'back': {'body_part': 'hand', None: 'rear'}, 'glasses': {'cup': 'cups', 'eyeglasses': 'sunglasses'}
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
