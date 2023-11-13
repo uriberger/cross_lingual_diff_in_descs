@@ -10,7 +10,7 @@ from PIL import Image
 
 word_classes = [
     'man', 'woman', 'boy', 'girl', 'child', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'blimp', 'bus',
-    'train', 'truck', 'boat', 'ship', 'watercraft', 'traffic_light', 'fire _hydrant', 'sign', 'parking_meter', 'bench',
+    'train', 'truck', 'boat', 'ship', 'watercraft', 'traffic_light', 'fire_hydrant', 'sign', 'parking_meter', 'bench',
     'bird', 'penguin', 'ostrich', 'wasp', 'fish', 'tuna', 'cat', 'dog', 'horse', 'fox', 'sheep', 'cow', 'bull', 'elephant',
     'bear', 'tiger', 'chicken', 'zebra', 'giraffe', 'lion', 'groundhog', 'pig', 'deer', 'gazelle', 'goose', 'shrimp',
     'seafood', 'monkey', 'worm', 'turtle', 'bunny', 'chameleon', 'rat', 'piranha', 'insect', 'bee', 'beetle', 'butterfly',
@@ -100,7 +100,8 @@ def is_hyponym_of(class1, class2):
 
 non_word_classes = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
-    'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording'
+    'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
+    'lid'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -129,7 +130,7 @@ known_mappings = {
     'glass': ['cup', 'eyeglasses'], 'bike': ['bicycle', 'motorcycle'], 'washer': 'washing_machine', 'lamb': 'sheep',
     'tower': 'building', 'factory': 'building', 'cloth': 'clothing', 'clothes': 'clothing', 'fortress': 'building',
     'fort': 'building', 'subway': 'train', 'plant': ['plant', 'building'], 'hotdog': 'sausage',
-    'dish': ['dish', 'tableware']
+    'dish': ['dish', 'tableware'], 'butt': 'body_part'
 }
 
 word_to_replace_str = {
