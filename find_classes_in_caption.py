@@ -14,9 +14,9 @@ word_classes = [
     'bird', 'penguin', 'ostrich', 'wasp', 'fish', 'tuna', 'cat', 'dog', 'horse', 'fox', 'sheep', 'cow', 'bull', 'elephant',
     'bear', 'tiger', 'chicken', 'zebra', 'giraffe', 'lion', 'groundhog', 'pig', 'deer', 'gazelle', 'goose', 'shrimp',
     'seafood', 'monkey', 'worm', 'turtle', 'bunny', 'chameleon', 'rat', 'piranha', 'insect', 'bee', 'beetle', 'butterfly',
-    'spider', 'weasel', 'peacock', 'wolverine', 'animal', 'beaver', 'badger', 'llama', 'backpack', 'umbrella', 'tie',
-    'hat', 'sunglasses', 'eyeglasses', 'shirt', 'sweater', 'pant', 'diaper', 'dress', 'coat', 'boa', 'shoe', 'clothing',
-    'suitcase', 'frisbee', 'ski', 'snowboard', 'ball', 'kite', 'baseball_bat', 'baseball_glove', 'skateboard',
+    'spider', 'weasel', 'peacock', 'wolverine', 'snake', 'animal', 'beaver', 'badger', 'llama', 'backpack', 'umbrella',
+    'tie', 'hat', 'sunglasses', 'eyeglasses', 'shirt', 'sweater', 'pant', 'diaper', 'dress', 'coat', 'boa', 'shoe',
+    'clothing', 'suitcase', 'frisbee', 'ski', 'snowboard', 'ball', 'kite', 'baseball_bat', 'baseball_glove', 'skateboard',
     'rollerblade', 'surfboard', 'beard', 'tennis_racket', 'plate', 'bottle', 'cup', 'can', 'fork', 'knife', 'spoon',
     'bowl', 'chopstick', 'tableware', 'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'watermelon', 'sandwich', 'orange',
     'mandarin', 'cucumber', 'tomato', 'chickpea', 'broccoli', 'brussel_sprout', 'carrot', 'corn', 'garlic', 'onion',
@@ -37,7 +37,7 @@ word_classes = [
     'rifle', 'hair', 'cart', 'cutting_board', 'egg', 'dessert', 'rack', 'milk', 'cheese', 'meat', 'window', 'fireplace',
     'folder', 'star', 'engine', 'tire', 'coffee_maker', 'branch', 'slide', 'advertisement', 'mannequin', 'oil_rig',
     'newsstand', 'terrace', 'binoculars', 'garage', 'map', 'pool', 'sleeping_bag', 'bridge', 'string', 'stadium',
-    'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot'
+    'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail', 'cloak', 'tea'
     ]
 
 parent_to_children = {
@@ -50,7 +50,7 @@ parent_to_children = {
     'furniture': ['bed', 'seat', 'table', 'counter', 'shelf', 'rack'],
     'bedding_accessories': ['pillow', 'blanket', 'sheets', 'mattress'],
     'animal': ['bird', 'fish', 'mammal', 'goose', 'shrimp', 'worm', 'turtle', 'chicken', 'rat', 'insect', 'spider',
-               'chameleon', 'peacock', 'penguin'],
+               'chameleon', 'peacock', 'penguin', 'snake'],
     'mammal': ['cat', 'dog', 'horse', 'sheep', 'cow', 'wild mammal', 'groundhog', 'pig', 'deer', 'gazelle', 'bunny',
                'beaver', 'fox', 'weasel', 'badger', 'llama', 'bull'],
     'fish': ['tuna', 'piranha'],
@@ -58,7 +58,7 @@ parent_to_children = {
     'wild_mammal': ['elephant', 'bear', 'zebra', 'giraffe', 'tiger', 'wolverine', 'monkey'],
     'bag': ['backpack', 'suitcase', 'basket'],
     'clothing': ['tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pant', 'diaper', 'dress', 'coat', 'helmet', 'boa',
-                 'eyeglasses'],
+                 'eyeglasses', 'cloak'],
     'riding_device': ['skis', 'surfboard', 'snowboard', 'skateboard', 'rollerblade'],
     'game': ['frisbee', 'sport_instrument', 'kite'],
     'sport_instrument': ['ball', 'baseball_bat', 'baseball_glove', 'tennis_racket'],
@@ -76,7 +76,7 @@ parent_to_children = {
     'electornics': ['television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone',
     'microwave', 'oven', 'stove', 'toaster', 'white_goods'],
     'white_goods': ['refrigerator', 'dishwasher', 'washing_machine', 'drier'],
-    'body_part': ['mouth', 'ear', 'eye', 'nose', 'head', 'tooth'],
+    'body_part': ['mouth', 'ear', 'eye', 'nose', 'head', 'tooth', 'tail'],
     'hand_tool': ['hammer', 'shovel'],
     'musical_instrument': ['guitar', 'piano'],
     'sculpture': ['statue'],
@@ -130,7 +130,7 @@ known_mappings = {
     'glass': ['cup', 'eyeglasses'], 'bike': ['bicycle', 'motorcycle'], 'washer': 'washing_machine', 'lamb': 'sheep',
     'tower': 'building', 'factory': 'building', 'cloth': 'clothing', 'clothes': 'clothing', 'fortress': 'building',
     'fort': 'building', 'subway': 'train', 'plant': ['plant', 'building'], 'hotdog': 'sausage',
-    'dish': ['dish', 'tableware'], 'butt': 'body_part'
+    'dish': ['dish', 'tableware'], 'butt': 'body_part', 'python': 'snake', 'saucer': 'tableware'
 }
 
 word_to_replace_str = {
