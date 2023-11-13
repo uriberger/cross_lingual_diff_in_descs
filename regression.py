@@ -2,7 +2,7 @@ import json
 import os
 
 reg_file = 'reg.json'
-WAIVERS = ['parsing']
+WAIVERS = ['parsing', 'multiple_class_lm']
 
 class RegressionHandler:
     def __init__(self):

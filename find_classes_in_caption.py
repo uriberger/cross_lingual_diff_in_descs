@@ -13,9 +13,9 @@ word_classes = [
     'train', 'truck', 'boat', 'ship', 'watercraft', 'traffic_light', 'fire _hydrant', 'sign', 'parking_meter', 'bench',
     'bird', 'penguin', 'ostrich', 'wasp', 'fish', 'tuna', 'cat', 'dog', 'horse', 'fox', 'sheep', 'cow', 'bull', 'elephant',
     'bear', 'tiger', 'chicken', 'zebra', 'giraffe', 'lion', 'groundhog', 'pig', 'deer', 'gazelle', 'goose', 'shrimp',
-    'monkey', 'worm', 'turtle', 'bunny', 'chameleon', 'rat', 'piranha', 'insect', 'bee', 'beetle', 'butterfly', 'spider',
-    'weasel', 'peacock', 'wolverine', 'animal', 'beaver', 'badger', 'llama', 'backpack', 'umbrella', 'tie', 'hat',
-    'sunglasses', 'eyeglasses', 'shirt', 'sweater', 'pant', 'diaper', 'dress', 'coat', 'boa', 'shoe', 'clothing',
+    'seafood', 'monkey', 'worm', 'turtle', 'bunny', 'chameleon', 'rat', 'piranha', 'insect', 'bee', 'beetle', 'butterfly',
+    'spider', 'weasel', 'peacock', 'wolverine', 'animal', 'beaver', 'badger', 'llama', 'backpack', 'umbrella', 'tie',
+    'hat', 'sunglasses', 'eyeglasses', 'shirt', 'sweater', 'pant', 'diaper', 'dress', 'coat', 'boa', 'shoe', 'clothing',
     'suitcase', 'frisbee', 'ski', 'snowboard', 'ball', 'kite', 'baseball_bat', 'baseball_glove', 'skateboard',
     'rollerblade', 'surfboard', 'beard', 'tennis_racket', 'plate', 'bottle', 'cup', 'can', 'fork', 'knife', 'spoon',
     'bowl', 'chopstick', 'tableware', 'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'watermelon', 'sandwich', 'orange',
@@ -37,7 +37,7 @@ word_classes = [
     'rifle', 'hair', 'cart', 'cutting_board', 'egg', 'dessert', 'rack', 'milk', 'cheese', 'meat', 'window', 'fireplace',
     'folder', 'star', 'engine', 'tire', 'coffee_maker', 'branch', 'slide', 'advertisement', 'mannequin', 'oil_rig',
     'newsstand', 'terrace', 'binoculars', 'garage', 'map', 'pool', 'sleeping_bag', 'bridge', 'string', 'stadium',
-    'cocktail', 'straw'
+    'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot'
     ]
 
 parent_to_children = {
@@ -62,10 +62,11 @@ parent_to_children = {
     'riding_device': ['skis', 'surfboard', 'snowboard', 'skateboard', 'rollerblade'],
     'game': ['frisbee', 'sport_instrument', 'kite'],
     'sport_instrument': ['ball', 'baseball_bat', 'baseball_glove', 'tennis_racket'],
-    'kitchen_utensil': ['tableware', 'can', 'bowl', 'tray', 'cutting_board'],
+    'kitchen_utensil': ['tableware', 'can', 'bowl', 'tray', 'cutting_board', 'pot'],
     'tableware': ['plate', 'cup', 'fork', 'knife', 'spoon', 'chopstick'],
-    'food': ['fruit', 'vegetable', 'sandwich', 'corn', 'sausage', 'hotdog', 'pizza', 'fries', 'burrito', 'taco',
-             'baked_goods', 'dessert', 'milk', 'cheese', 'meat', 'soup', 'coleslaw', 'falafel', 'sashimi', 'rice', 'pasta',],
+    'food': ['fruit', 'vegetable', 'sandwich', 'corn', 'sausage', 'pizza', 'fries', 'burrito', 'taco',
+             'baked_goods', 'dessert', 'milk', 'cheese', 'meat', 'soup', 'coleslaw', 'falafel', 'sashimi', 'rice', 'pasta',
+             'seafood', 'dish'],
     'baked_goods': ['donut', 'cake', 'biscuit', 'bread'],
     'bread': ['toast'],
     'fruit': ['banana', 'apple', 'orange', 'mandarin', 'kiwi', 'raspberry', 'nut', 'watermelon'],
@@ -116,8 +117,8 @@ known_mappings = {
     'president': 'person', 'guide': 'person', 'climber': 'person', 'commuter': 'person', 'dalmatian': 'dog',
     'chick': 'chicken', 'gondola': 'boat', 'ewe': 'sheep', 'sailor': 'person', 'fighter': 'airplane', 'receiver': 'person',
     'sweeper': 'person', 'settee': 'couch', 'caster': 'person', 'mansion': 'building', 'pecker': 'bird',
-    'emperor': 'person', 'smoker': 'person', 'medic': 'person', 'frank': 'hotdog', 'canary': 'bird', 'chestnut': 'nut',
-    'lounger': 'chair', 'brat': 'hotdog', 'snoot': 'nose', 'cardigan': 'sweater', 'tangerine': 'mandarin',
+    'emperor': 'person', 'smoker': 'person', 'medic': 'person', 'frank': 'sausage', 'canary': 'bird', 'chestnut': 'nut',
+    'lounger': 'chair', 'brat': 'sausage', 'snoot': 'nose', 'cardigan': 'sweater', 'tangerine': 'mandarin',
     'wrecker': 'truck', 'setter': 'dog', 'sharpie': 'pen', 'jumper': ['person', 'clothing'], 'digger': ['person', 'truck'],
     'prey': 'animal', 'excavator': ['person', 'truck'], 'watchdog': 'dog', 'barker': 'person', 'sphinx': 'statue',
     'brownstone': 'building', 'pussycat': 'cat', 'romper': 'clothing', 'warbler': 'bird', 'schooner': ['boat', 'glass'],
@@ -127,12 +128,13 @@ known_mappings = {
     'outfit': 'clothing', 'jean': 'pant', 'back': ['body_part', None], 'shorts': 'clothing',
     'glass': ['cup', 'eyeglasses'], 'bike': ['bicycle', 'motorcycle'], 'washer': 'washing_machine', 'lamb': 'sheep',
     'tower': 'building', 'factory': 'building', 'cloth': 'clothing', 'clothes': 'clothing', 'fortress': 'building',
-    'fort': 'building', 'subway': 'train', 'plant': ['plant', 'building']
+    'fort': 'building', 'subway': 'train', 'plant': ['plant', 'building'], 'hotdog': 'sausage',
+    'dish': ['dish', 'tableware']
 }
 
 word_to_replace_str = {
     'back': {'body_part': 'hand', None: 'rear'}, 'glasses': {'cup': 'cups', 'eyeglasses': 'sunglasses'},
-    'plant': {'plant': 'flower', 'building': 'factory'}
+    'plant': {'plant': 'flower', 'building': 'factory'}, 'dish': {'dish': 'dish', 'tableware': 'plate'}
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
