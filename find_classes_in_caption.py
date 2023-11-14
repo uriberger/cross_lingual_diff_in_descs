@@ -37,7 +37,8 @@ word_classes = [
     'rifle', 'hair', 'cart', 'cutting_board', 'egg', 'dessert', 'rack', 'milk', 'cheese', 'meat', 'window', 'fireplace',
     'folder', 'star', 'engine', 'tire', 'coffee_maker', 'branch', 'slide', 'advertisement', 'mannequin', 'oil_rig',
     'newsstand', 'terrace', 'binoculars', 'garage', 'map', 'pool', 'sleeping_bag', 'bridge', 'string', 'stadium',
-    'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail', 'cloak', 'tea'
+    'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail', 'cloak', 'tea', 'note',
+    'watch', 'paraglider', 'parachute'
     ]
 
 parent_to_children = {
@@ -130,7 +131,8 @@ known_mappings = {
     'glass': ['cup', 'eyeglasses'], 'bike': ['bicycle', 'motorcycle'], 'washer': 'washing_machine', 'lamb': 'sheep',
     'tower': 'building', 'factory': 'building', 'cloth': 'clothing', 'clothes': 'clothing', 'fortress': 'building',
     'fort': 'building', 'subway': 'train', 'plant': ['plant', 'building'], 'hotdog': 'sausage',
-    'dish': ['dish', 'tableware'], 'butt': 'body_part', 'python': 'snake', 'saucer': 'tableware'
+    'dish': ['dish', 'tableware'], 'butt': 'body_part', 'python': 'snake', 'saucer': 'tableware',
+    'surf_board': 'surfboard', 'skate_board': 'skateboard', 'snow_board': 'snowboard'
 }
 
 word_to_replace_str = {
