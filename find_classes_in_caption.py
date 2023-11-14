@@ -52,7 +52,7 @@ parent_to_children = {
     'bedding_accessories': ['pillow', 'blanket', 'sheets', 'mattress'],
     'animal': ['bird', 'fish', 'mammal', 'goose', 'shrimp', 'worm', 'turtle', 'chicken', 'rat', 'insect', 'spider',
                'chameleon', 'peacock', 'penguin', 'snake'],
-    'mammal': ['cat', 'dog', 'horse', 'sheep', 'cow', 'wild mammal', 'groundhog', 'pig', 'deer', 'gazelle', 'bunny',
+    'mammal': ['cat', 'dog', 'horse', 'sheep', 'cow', 'wild_mammal', 'groundhog', 'pig', 'deer', 'gazelle', 'bunny',
                'beaver', 'fox', 'weasel', 'badger', 'llama', 'bull'],
     'fish': ['tuna', 'piranha'],
     'insect': ['wasp', 'beetle', 'butterfly', 'bee'],
@@ -60,7 +60,7 @@ parent_to_children = {
     'bag': ['backpack', 'suitcase', 'basket'],
     'clothing': ['tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pant', 'diaper', 'dress', 'coat', 'helmet', 'boa',
                  'eyeglasses', 'cloak'],
-    'riding_device': ['skis', 'surfboard', 'snowboard', 'skateboard', 'rollerblade'],
+    'riding_device': ['ski', 'surfboard', 'snowboard', 'skateboard', 'rollerblade'],
     'game': ['frisbee', 'sport_instrument', 'kite'],
     'sport_instrument': ['ball', 'baseball_bat', 'baseball_glove', 'tennis_racket'],
     'kitchen_utensil': ['tableware', 'can', 'bowl', 'tray', 'cutting_board', 'pot'],
@@ -496,7 +496,15 @@ def is_subtree_first(token_list, ind):
 def has_determiner(token_list, ind):
     return len([x for x in token_list if x[0]['head'] == ind+1 and x[0]['upos'] == 'DET']) > 0
 
-def ball_handling(token_list, start_ind):
+def ball_handling(token_list, start_ind, end_ind):
+    # Only consider single tokens
+    if end_ind - start_ind > 1:
+        return None
+    
+    # Plural is always the ball, never the game
+    if token_list[start_ind][0]['text'].endswith('balls'):
+        return 'ball'
+
     # If it's a single word with at the beginning of the sentence or with a determiner before it- it's the ball,
     # otherwise it's the game
     if is_subtree_first(token_list, start_ind):
@@ -544,8 +552,8 @@ def find_classes(caption):
         # 1. We have a problem when there's a sport named the same as its ball (baseball, basketball etc.).
         # The more common synset is the game, and when someone talks about the ball the algorithm always thinks it's the game.
         # We'll try identifying these cases by checking if it's a single noun and there's an identifier before it
-        if token_list[start_ind][0]['text'].endswith('ball') and end_ind - start_ind == 1:
-            phrase_class = ball_handling(token_list, start_ind)
+        if token_list[start_ind][0]['text'].endswith('ball') or token_list[start_ind][0]['text'].endswith('balls'):
+            phrase_class = ball_handling(token_list, start_ind, end_ind)
 
         # 2. "top" is also a problem, as it might be clothing
         elif token_list[start_ind][0]['text'] == 'top' and end_ind - start_ind == 1:
