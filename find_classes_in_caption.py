@@ -496,17 +496,17 @@ def is_subtree_first(token_list, ind):
 def has_determiner(token_list, ind):
     return len([x for x in token_list if x[0]['head'] == ind+1 and x[0]['upos'] == 'DET']) > 0
 
-def ball_handling(token_list, start_ind):
+def ball_handling(token_list, ball_ind):
     # Plural is always the ball, never the game
-    if token_list[start_ind][0]['text'].endswith('balls'):
+    if token_list[ball_ind][0]['text'].endswith('balls'):
         return 'ball'
 
     # If it's a single word with at the beginning of the sentence or with a determiner before it- it's the ball,
     # otherwise it's the game
-    if is_subtree_first(token_list, start_ind):
+    if is_subtree_first(token_list, ball_ind):
         return 'ball'
     
-    if has_determiner(token_list, start_ind):
+    if has_determiner(token_list, ball_ind):
         return 'ball'
     
     return None
@@ -547,10 +547,9 @@ def find_classes(caption):
 
         # 1. We have a problem when there's a sport named the same as its ball (baseball, basketball etc.).
         # The more common synset is the game, and when someone talks about the ball the algorithm always thinks it's the game.
-        # We'll try identifying these cases by checking if it's a single noun and there's an identifier before it
-        if (token_list[start_ind][0]['text'].endswith('ball') or token_list[start_ind][0]['text'].endswith('balls')) \
-            and end_ind - start_ind == 1:
-            phrase_class = ball_handling(token_list, start_ind)
+        # We'll try identifying these cases
+        if token_list[end_ind - 1][0]['text'].endswith('ball') or token_list[end_ind - 1][0]['text'].endswith('balls'):
+            phrase_class = ball_handling(token_list, end_ind - 1)
 
         # 2. "top" is also a problem, as it might be clothing
         elif token_list[start_ind][0]['text'] == 'top' and end_ind - start_ind == 1:
