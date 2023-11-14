@@ -132,7 +132,7 @@ known_mappings = {
     'tower': 'building', 'factory': 'building', 'cloth': 'clothing', 'clothes': 'clothing', 'fortress': 'building',
     'fort': 'building', 'subway': 'train', 'plant': ['plant', 'building'], 'hotdog': 'sausage',
     'dish': ['dish', 'tableware'], 'butt': 'body_part', 'python': 'snake', 'saucer': 'tableware',
-    'surf_board': 'surfboard', 'skate_board': 'skateboard', 'snow_board': 'snowboard'
+    'surf_board': 'surfboard', 'snow_board': 'snowboard'
 }
 
 word_to_replace_str = {
