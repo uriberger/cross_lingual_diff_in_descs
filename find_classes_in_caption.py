@@ -574,7 +574,7 @@ def find_classes(caption):
 
         # 4. "plant": people almost always mean plants and not factories. We'll always chooce plants except if we see the
         # word "power" before
-        elif token_list[end_ind - 1] in ['plant', 'plants']:
+        elif token_list[end_ind - 1][0]['text'] in ['plant', 'plants']:
             phrase_class = plant_handling(token_list, start_ind, end_ind)
 
         else:
