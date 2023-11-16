@@ -28,17 +28,18 @@ word_classes = [
     'washing_machine', 'drier', 'white_goods', 'book', 'clock', 'vase', 'scissors', 'teddy_bear', 'doll', 'hair_drier',
     'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'hill', 'dune', 'beach',
     'kitchen', 'kitchen_utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'tooth', 'bathtub', 'wine',
-    'sea', 'lake', 'head', 'mouth', 'ear', 'eye', 'nose', 'body_part', 'platform', 'box', 'uniform', 'towel', 'stone',
-    'statue', 'sculpture', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail', 'hammer',
-    'shovel', 'hand_tool', 'guitar', 'piano', 'musical_instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 'cutter',
-    'caboose', 'pinwheel', 'fireball', 'okra', 'siren', 'pen', 'pencil', 'chalk', 'shingle', 'ethnic_group', 'stepper',
-    'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'rail', 'shelf', 'railroad_track', 'swing', 'paint', 'toy', 'fan',
-    'writing_implement', 'escalator', 'carpet', 'sponge', 'tattoo', 'jewelry', 'necklace', 'bracelet', 'earring', 'gun',
-    'rifle', 'hair', 'cart', 'cutting_board', 'egg', 'dessert', 'rack', 'milk', 'cheese', 'meat', 'window', 'fireplace',
-    'folder', 'star', 'engine', 'tire', 'coffee_maker', 'branch', 'slide', 'advertisement', 'mannequin', 'oil_rig',
-    'newsstand', 'terrace', 'binoculars', 'garage', 'map', 'pool', 'sleeping_bag', 'bridge', 'string', 'stadium',
-    'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail', 'cloak', 'tea', 'note',
-    'watch', 'paraglider', 'parachute', 'letter', 'heart', 'foam', 'gauge'
+    'sea', 'lake', 'head', 'mouth', 'beak', 'ear', 'eye', 'nose', 'body_part', 'platform', 'box', 'uniform', 'towel',
+    'stone', 'statue', 'sculpture', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail',
+    'hammer', 'shovel', 'hand_tool', 'guitar', 'piano', 'musical_instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 
+    'cutter', 'caboose', 'pinwheel', 'fireball', 'okra', 'siren', 'pen', 'pencil', 'chalk', 'shingle', 'ethnic_group',
+    'stepper', 'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'rail', 'shelf', 'railroad_track', 'swing', 'paint', 'toy', 
+    'fan', 'writing_implement', 'escalator', 'carpet', 'sponge', 'tattoo', 'jewelry', 'necklace', 'bracelet', 'earring', 
+    'gun', 'rifle', 'hair', 'cart', 'cutting_board', 'egg', 'dessert', 'rack', 'milk', 'cheese', 'meat', 'window', 
+    'fireplace', 'folder', 'star', 'engine', 'tire', 'coffee_maker', 'branch', 'slide', 'advertisement', 'mannequin',
+    'oil_rig', 'newsstand', 'terrace', 'binoculars', 'garage', 'map', 'pool', 'sleeping_bag', 'bridge', 'string',
+    'stadium', 'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail', 'cloak', 'tea',
+    'note', 'watch', 'paraglider', 'parachute', 'letter', 'heart', 'foam', 'gauge', 'grill', 'food', 'sauce', 'cloud',
+    'figure', 'tunnel', 'ice', 'icing'
     ]
 
 parent_to_children = {
@@ -67,17 +68,18 @@ parent_to_children = {
     'tableware': ['plate', 'cup', 'fork', 'knife', 'spoon', 'chopstick'],
     'food': ['fruit', 'vegetable', 'sandwich', 'corn', 'sausage', 'pizza', 'fries', 'burrito', 'taco',
              'baked_goods', 'dessert', 'milk', 'cheese', 'meat', 'soup', 'coleslaw', 'falafel', 'sashimi', 'rice', 'pasta',
-             'seafood', 'dish'],
+             'seafood', 'dish', 'sauce'],
     'baked_goods': ['donut', 'cake', 'biscuit', 'bread'],
     'bread': ['toast'],
     'fruit': ['banana', 'apple', 'orange', 'mandarin', 'kiwi', 'raspberry', 'nut', 'watermelon'],
     'vegetable': ['cucumber', 'tomato', 'broccoli', 'brussel sprout', 'carrot', 'garlic', 'onion', 'cabbage', 'chickpea',
                   'okra', 'soybean', 'greens'],
     'plant': ['tree', 'flower'],
-    'electornics': ['television', 'laptop', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone',
+    'electornics': ['television', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone',
     'microwave', 'oven', 'stove', 'toaster', 'white_goods'],
+    'computer': ['laptop'],
     'white_goods': ['refrigerator', 'dishwasher', 'washing_machine', 'drier'],
-    'body_part': ['mouth', 'ear', 'eye', 'nose', 'head', 'tooth', 'tail'],
+    'body_part': ['mouth', 'ear', 'eye', 'nose', 'head', 'tooth', 'tail', 'beak'],
     'hand_tool': ['hammer', 'shovel'],
     'musical_instrument': ['guitar', 'piano'],
     'sculpture': ['statue'],
@@ -102,7 +104,7 @@ def is_hyponym_of(class1, class2):
 non_word_classes = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
-    'lid', 'region', 'sea_floor'
+    'lid', 'region', 'sea_floor', 'meal', 'pair'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -130,14 +132,14 @@ known_mappings = {
     'outfit': 'clothing', 'jean': 'pant', 'back': ['body_part', None], 'shorts': 'clothing',
     'glass': ['cup', 'eyeglasses'], 'bike': ['bicycle', 'motorcycle'], 'washer': 'washing_machine', 'lamb': 'sheep',
     'tower': 'building', 'factory': 'building', 'cloth': 'clothing', 'clothes': 'clothing', 'fortress': 'building',
-    'fort': 'building', 'subway': 'train', 'plant': ['plant', 'building'], 'hotdog': 'sausage',
+    'fort': 'building', 'subway': 'train', 'hotdog': 'sausage',
     'dish': ['dish', 'tableware'], 'butt': 'body_part', 'python': 'snake', 'saucer': 'tableware',
-    'surf_board': 'surfboard', 'snow_board': 'snowboard'
+    'surf_board': 'surfboard', 'snow_board': 'snowboard', 'railway': 'railroad_track'
 }
 
 word_to_replace_str = {
     'back': {'body_part': 'hand', None: 'rear'}, 'glasses': {'cup': 'cups', 'eyeglasses': 'sunglasses'},
-    'plant': {'plant': 'tree', 'building': 'factory'}, 'dish': {'dish': 'dish', 'tableware': 'plate'}
+    'dish': {'dish': 'dish', 'tableware': 'plate'}
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
@@ -530,6 +532,16 @@ def couple_handling(token_list, ind):
     
     return 'person'
 
+def plant_handling(token_list, start_ind, end_ind):
+    # If we have a plant, it's the living thing- unless the word "power" is before it
+    if end_ind - start_ind == 1:
+        return 'plant'
+    
+    if token_list[end_ind - 2][0]['text'] == 'power':
+        return 'building'
+    
+    return 'plant'
+
 def find_classes(caption):
     caption = caption.lower()
     doc = nlp(caption)
@@ -559,6 +571,11 @@ def find_classes(caption):
         # we do want. Distinguish by checking if we have a determiner (or this is the first phrase), and no "of" after it
         elif token_list[highest_ancestor_ind][0]['text'] in ['couple', 'couples']:
             phrase_class = couple_handling(token_list, highest_ancestor_ind)
+
+        # 4. "plant": people almost always mean plants and not factories. We'll always chooce plants except if we see the
+        # word "power" before
+        elif token_list[end_ind - 1] in ['plant', 'plants']:
+            phrase_class = plant_handling(token_list, start_ind, end_ind)
 
         else:
             phrase_class = find_phrase_classes(phrase)
