@@ -28,18 +28,18 @@ word_classes = [
     'washing_machine', 'drier', 'white_goods', 'book', 'clock', 'vase', 'scissors', 'teddy_bear', 'doll', 'hair_drier',
     'toothbrush', 'wall', 'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'hill', 'dune', 'beach',
     'kitchen', 'kitchen_utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'tooth', 'bathtub', 'wine',
-    'sea', 'lake', 'head', 'mouth', 'beak', 'ear', 'eye', 'nose', 'body_part', 'platform', 'box', 'uniform', 'towel',
-    'stone', 'statue', 'sculpture', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket', 'nail',
-    'hammer', 'shovel', 'hand_tool', 'guitar', 'piano', 'musical_instrument', 'newspaper', 'helmet', 'carrier', 'slicer', 
-    'cutter', 'caboose', 'pinwheel', 'fireball', 'okra', 'siren', 'pen', 'pencil', 'chalk', 'shingle', 'ethnic_group',
-    'stepper', 'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'rail', 'shelf', 'railroad_track', 'swing', 'paint', 'toy', 
-    'fan', 'writing_implement', 'escalator', 'carpet', 'sponge', 'tattoo', 'jewelry', 'necklace', 'bracelet', 'earring', 
-    'gun', 'rifle', 'hair', 'cart', 'cutting_board', 'egg', 'dessert', 'rack', 'milk', 'cheese', 'meat', 'window', 
-    'fireplace', 'folder', 'star', 'engine', 'tire', 'coffee_maker', 'branch', 'slide', 'advertisement', 'mannequin',
-    'oil_rig', 'newsstand', 'terrace', 'binoculars', 'garage', 'map', 'pool', 'sleeping_bag', 'bridge', 'string',
-    'stadium', 'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail', 'cloak', 'tea',
-    'note', 'watch', 'paraglider', 'parachute', 'letter', 'heart', 'foam', 'gauge', 'grill', 'food', 'sauce', 'cloud',
-    'figure', 'tunnel', 'ice', 'icing', 'sewer', 'surface'
+    'sea', 'lake', 'head', 'mouth', 'beak', 'ear', 'eye', 'nose', 'heel', 'body_part', 'platform', 'box', 'uniform',
+    'towel', 'stone', 'statue', 'sculpture', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket',
+    'nail', 'hammer', 'shovel', 'hand_tool', 'guitar', 'piano', 'musical_instrument', 'newspaper', 'helmet', 'carrier',
+    'slicer',  'cutter', 'caboose', 'pinwheel', 'fireball', 'okra', 'siren', 'pen', 'pencil', 'chalk', 'shingle',
+    'ethnic_group', 'stepper', 'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'rail', 'shelf', 'railroad_track', 'swing',
+    'paint', 'toy',  'fan', 'writing_implement', 'escalator', 'carpet', 'sponge', 'tattoo', 'jewelry', 'necklace',
+    'bracelet', 'earring',  'gun', 'rifle', 'hair', 'cart', 'cutting_board', 'egg', 'dessert', 'rack', 'milk', 'cheese',
+    'meat', 'window',  'fireplace', 'folder', 'star', 'engine', 'tire', 'coffee_maker', 'branch', 'slide', 'advertisement',
+    'mannequin', 'oil_rig', 'newsstand', 'terrace', 'binoculars', 'garage', 'map', 'pool', 'sleeping_bag', 'bridge',
+    'string', 'stadium', 'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail',
+    'cloak', 'tea', 'note', 'watch', 'paraglider', 'parachute', 'letter', 'heart', 'foam', 'gauge', 'grill', 'food',
+    'sauce', 'cloud', 'figure', 'tunnel', 'ice', 'icing', 'sewer', 'surface'
     ]
 
 parent_to_children = {
@@ -79,7 +79,7 @@ parent_to_children = {
     'microwave', 'oven', 'stove', 'toaster', 'white_goods'],
     'computer': ['laptop'],
     'white_goods': ['refrigerator', 'dishwasher', 'washing_machine', 'drier'],
-    'body_part': ['mouth', 'ear', 'eye', 'nose', 'head', 'tooth', 'tail', 'beak'],
+    'body_part': ['mouth', 'ear', 'eye', 'nose', 'head', 'tooth', 'tail', 'beak', 'heel'],
     'hand_tool': ['hammer', 'shovel'],
     'musical_instrument': ['guitar', 'piano'],
     'sculpture': ['statue'],
@@ -105,7 +105,7 @@ def is_hyponym_of(class1, class2):
 non_word_classes = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
-    'lid', 'region', 'sea_floor', 'meal', 'pair'
+    'lid', 'region', 'meal', 'pair', 'upside'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -135,7 +135,7 @@ known_mappings = {
     'tower': 'building', 'factory': 'building', 'cloth': 'clothing', 'clothes': 'clothing', 'fortress': 'building',
     'fort': 'building', 'subway': 'train', 'hotdog': 'sausage',
     'dish': ['dish', 'tableware'], 'butt': 'body_part', 'python': 'snake', 'saucer': 'tableware',
-    'surf_board': 'surfboard', 'snow_board': 'snowboard', 'railway': 'railroad_track'
+    'surf_board': 'surfboard', 'snow_board': 'snowboard', 'railway': 'railroad_track', 'sea_floor': 'surface'
 }
 
 word_to_replace_str = {
@@ -313,7 +313,7 @@ def is_like_construct(token_list, ind):
     if token_list[ind - 1][0]['upos'] != 'PUNCT':
         return False
     
-    return token_list[ind][0]['text'] == '-'
+    return token_list[ind - 1][0]['text'] == '-'
     
 def extract_noun_spans(token_list):
     noun_spans = []
