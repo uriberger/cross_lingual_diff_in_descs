@@ -39,7 +39,7 @@ word_classes = [
     'oil_rig', 'newsstand', 'terrace', 'binoculars', 'garage', 'map', 'pool', 'sleeping_bag', 'bridge', 'string',
     'stadium', 'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail', 'cloak', 'tea',
     'note', 'watch', 'paraglider', 'parachute', 'letter', 'heart', 'foam', 'gauge', 'grill', 'food', 'sauce', 'cloud',
-    'figure', 'tunnel', 'ice', 'icing'
+    'figure', 'tunnel', 'ice', 'icing', 'sewer', 'surface'
     ]
 
 parent_to_children = {
@@ -86,7 +86,8 @@ parent_to_children = {
     'toy': ['teddy_bear', 'doll'],
     'writing_implement': ['pen', 'pencil', 'chalk'],
     'jewelry': ['necklace', 'bracelet', 'earring'],
-    'gun': ['rifle']
+    'gun': ['rifle'],
+    'surface': ['platform']
 }
 
 child_to_parent = {}
@@ -304,6 +305,15 @@ def is_sequence_punctuation(token_list, ind):
         return False
     
     return token_list[ind][0]['text'] == '-'
+
+def is_like_construct(token_list, ind):
+    if token_list[ind][0]['text'] != 'like':
+        return False
+
+    if token_list[ind - 1][0]['upos'] != 'PUNCT':
+        return False
+    
+    return token_list[ind][0]['text'] == '-'
     
 def extract_noun_spans(token_list):
     noun_spans = []
@@ -320,7 +330,9 @@ def extract_noun_spans(token_list):
                 in_sequence = True
         if (not is_noun(token_list, i)) and in_sequence and (not is_sequence_punctuation(token_list, i)):
             in_sequence = False
-            noun_sequences.append((sequence_start, last_noun_ind+1))
+            # Need to make sure this is not a noun that became an adjective by adding "-like" (e.g., "bridge-like")
+            if not is_like_construct(token_list, i):
+                noun_sequences.append((sequence_start, last_noun_ind+1))
     if in_sequence:
         noun_sequences.append((sequence_start, last_noun_ind+1))
 
