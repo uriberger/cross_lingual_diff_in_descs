@@ -39,7 +39,7 @@ word_classes = [
     'mannequin', 'oil_rig', 'newsstand', 'terrace', 'binoculars', 'garage', 'map', 'pool', 'sleeping_bag', 'bridge',
     'string', 'stadium', 'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail',
     'cloak', 'tea', 'note', 'watch', 'paraglider', 'parachute', 'letter', 'heart', 'foam', 'gauge', 'grill', 'food',
-    'sauce', 'cloud', 'figure', 'tunnel', 'ice', 'icing', 'sewer', 'surface'
+    'sauce', 'cloud', 'figure', 'tunnel', 'ice', 'icing', 'sewer', 'surface', 'promontory', 'roof'
     ]
 
 parent_to_children = {
@@ -135,7 +135,8 @@ known_mappings = {
     'tower': 'building', 'factory': 'building', 'cloth': 'clothing', 'clothes': 'clothing', 'fortress': 'building',
     'fort': 'building', 'subway': 'train', 'hotdog': 'sausage',
     'dish': ['dish', 'tableware'], 'butt': 'body_part', 'python': 'snake', 'saucer': 'tableware',
-    'surf_board': 'surfboard', 'snow_board': 'snowboard', 'railway': 'railroad_track', 'sea_floor': 'surface'
+    'surf_board': 'surfboard', 'snow_board': 'snowboard', 'railway': 'railroad_track', 'sea_floor': 'surface',
+    'mountain_peak': 'mountain'
 }
 
 word_to_replace_str = {
