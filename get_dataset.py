@@ -64,7 +64,7 @@ def get_dataset(dataset_name):
     elif dataset_name == 'multi30k':
         with open('multi30k_en.json', 'r') as fp:
             data = json.load(fp)
-        with open('../playground/multi30k_caption.json', 'r') as fp:
+        with open('../playground/multi30k_captions.json', 'r') as fp:
             orig_data = json.load(fp)
         for i in range(len(data)):
             data[i]['orig'] = orig_data[i]['caption']
