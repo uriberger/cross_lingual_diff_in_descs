@@ -72,7 +72,7 @@ parent_to_children = {
     'baked_goods': ['donut', 'cake', 'biscuit', 'bread'],
     'bread': ['toast'],
     'fruit': ['banana', 'apple', 'orange', 'mandarin', 'kiwi', 'raspberry', 'nut', 'watermelon'],
-    'vegetable': ['cucumber', 'tomato', 'broccoli', 'brussel sprout', 'carrot', 'garlic', 'onion', 'cabbage', 'chickpea',
+    'vegetable': ['cucumber', 'tomato', 'broccoli', 'brussel_sprout', 'carrot', 'garlic', 'onion', 'cabbage', 'chickpea',
                   'okra', 'soybean', 'greens'],
     'plant': ['tree', 'flower'],
     'electornics': ['television', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone',
