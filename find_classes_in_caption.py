@@ -405,7 +405,7 @@ def preprocess(token_list):
     return token_list
 
 def get_probs_from_lm(text, returned_vals):
-    input = tokenizer(text, return_tensors='pt').to(device)
+    input = tokenizer(text, return_tensors='pt', truncation='longest_first').to(device)
     mask_id = tokenizer.vocab[mask_str]
     mask_ind = [i for i in range(input.input_ids.shape[1]) if input.input_ids[0, i] == mask_id][0]
     output = bert_model(**input)
