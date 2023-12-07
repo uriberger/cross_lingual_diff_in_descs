@@ -6,7 +6,7 @@ datasets = ['COCO', 'flickr30k', 'pascal_sentences', 'xm3600_ar', 'xm3600_bn', '
             'xm3600_hi', 'xm3600_hr', 'xm3600_hu', 'xm3600_id', 'xm3600_it', 'xm3600_ja', 'xm3600_ko', 'xm3600_mi',
             'xm3600_nl', 'xm3600_no', 'xm3600_pl', 'xm3600_pt', 'xm3600_quz', 'xm3600_ro', 'xm3600_ru', 'xm3600_sv',
             'xm3600_sw', 'xm3600_te', 'xm3600_th', 'xm3600_tr', 'xm3600_uk', 'xm3600_vi', 'xm3600_zh', 'multi30k',
-            'STAIR-captions', 'YJCaptions', 'coco-cn', 'flickr8kcn', 'ai_challenger']
+            'STAIR-captions', 'YJCaptions', 'coco-cn', 'flickr8kcn', 'ai_challenger', 'wit_en']
 
 def get_dataset(dataset_name):
     if dataset_name == 'COCO':
@@ -64,7 +64,7 @@ def get_dataset(dataset_name):
     elif dataset_name == 'multi30k':
         with open('multi30k_en.json', 'r') as fp:
             data = json.load(fp)
-        with open('../playground/multi30k_caption.json', 'r') as fp:
+        with open('../playground/multi30k_captions.json', 'r') as fp:
             orig_data = json.load(fp)
         for i in range(len(data)):
             data[i]['orig'] = orig_data[i]['caption']
@@ -161,6 +161,18 @@ def get_dataset(dataset_name):
                 'orig': orig_data[i]['caption'],
                 'image_path': f'/cs/labs/oabend/uriber/datasets/ai_challenger/{image_dir}/{aic_data[sample_ind]["image_id"]}'
             })
+    elif dataset_name == 'wit_en':
+        with open('wit/en.json', 'r') as fp:
+            data = json.load(fp)
+    elif dataset_name.startswith('wit_'):
+        lang = dataset_name.split('_')[1]
+        with open(f'wit/{lang}_to_en.json', 'r') as fp:
+            data = json.load(fp)
+        with open(f'wit/{lang}.json', 'r') as fp:
+            tran_data = json.load(fp)
+        assert len(data) == len(tran_data)
+        for i in range(len(data)):
+            data[i]['orig'] = tran_data[i]['caption']
     else:
         assert False, f'Unknown dataset {dataset_name}'
 
