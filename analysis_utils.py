@@ -81,7 +81,7 @@ def compute_wilcoxon(dataset_pairs):
     res = []
     for dataset_pair in dataset_pairs:
         print(f'[Wilcoxon] starting {dataset_pair}')
-        class_to_image_prob, _, image_ids, _ = get_class_to_image_prob(dataset_pair)
+        class_to_image_prob, _, _, image_ids = get_class_to_image_prob(dataset_pair)
         res.append([])
         res[-1].append({})
         res[-1].append({})
