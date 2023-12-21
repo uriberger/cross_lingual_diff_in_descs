@@ -2,7 +2,10 @@ from find_classes_in_caption import *
 from collections import defaultdict
 import json
 import scipy.stats as stats
+import numpy as np
 from get_dataset import datasets as all_datasets
+import pandas as pd
+from irrCAC.raw import CAC
 
 def get_class_to_image_prob(datasets):
     all_classes = list(set(word_classes + list(parent_to_children.keys())))
@@ -38,6 +41,39 @@ def get_class_to_image_prob(datasets):
         class_to_image_prob.append({x[0]: {y[0]: y[1]/image_count[j][y[0]] for y in x[1].items()} for x in class_to_image_count[j].items()})		
 
     return class_to_image_prob, class_to_image_count, image_count, image_ids
+
+def get_annotator_agreement(dataset):
+    all_classes = list(set(word_classes + list(parent_to_children.keys())))
+    with open(f'datasets/{dataset}.json', 'r') as fp:
+        data = json.load(fp)
+
+    iid_to_captions = defaultdict(list)
+    for x in data:
+        iid_to_captions[x['image_id']].append(x)
+        
+    max_annotator_num = max([len(x) for x in iid_to_captions.values()])
+    class_to_annotator_data = {x: np.zeros((len(iid_to_captions), max_annotator_num)) for x in all_classes}
+    captions_grouped_by_iid = list(iid_to_captions.values())
+
+    for i in range(len(captions_grouped_by_iid)):
+        captions = captions_grouped_by_iid[i]
+        for j in range(max_annotator_num):
+            if j < len(captions):
+                for cur_class in captions[j]['classes']:
+                    class_to_annotator_data[cur_class][i, j] = 1
+            else:
+                for cur_class in all_classes:
+                    class_to_annotator_data[cur_class][i, j] = np.nan
+
+    class_to_agreement = {}
+    for cur_class, data in class_to_annotator_data.items():
+        if sum([len([j for j in range(data.shape[1]) if data[i][j] == 1]) for i in range(data.shape[0])]) == 0:
+            continue
+        df = pd.DataFrame(data)
+        cac = CAC(df)
+        class_to_agreement[cur_class] = cac.fleiss()['est']['coefficient_value']
+
+    return class_to_agreement
 
 def compute_wilcoxon(dataset_pairs):
     all_classes = list(set(word_classes + list(parent_to_children.keys())))
