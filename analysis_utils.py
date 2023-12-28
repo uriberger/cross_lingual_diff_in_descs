@@ -7,7 +7,7 @@ import numpy as np
 from get_dataset import datasets as all_datasets
 import pandas as pd
 from irrCAC.raw import CAC
-import tqdm
+from tqdm import tqdm
 from sklearn.cluster import SpectralClustering
 
 def get_class_to_image_prob(datasets):
