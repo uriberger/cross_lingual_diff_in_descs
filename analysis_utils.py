@@ -2,10 +2,13 @@ from find_classes_in_caption import *
 from collections import defaultdict
 import json
 import scipy.stats as stats
+from scipy import spatial
 import numpy as np
 from get_dataset import datasets as all_datasets
 import pandas as pd
 from irrCAC.raw import CAC
+import tqdm
+from sklearn.cluster import SpectralClustering
 
 def get_class_to_image_prob(datasets):
     all_classes = list(set(word_classes + list(parent_to_children.keys())))
@@ -152,13 +155,50 @@ def compute_diff_and_add_indexes(dataset_pairs):
 def compute_correlation(dataset_pair):
     all_classes = list(set(word_classes + list(parent_to_children.keys())))
     print(f'[correlation] starting {dataset_pair}')
-    class_to_image_prob, _, _, _ = get_class_to_image_prob(dataset_pair)
+    class_to_image_prob, _, _, image_ids = get_class_to_image_prob(dataset_pair)
     res = {}
     for cur_class in all_classes:
-        image_ids = list(set(list(class_to_image_prob[0][cur_class].keys()) + list(class_to_image_prob[1][cur_class].keys())))
-        if len(image_ids) < 2:
-            continue
         lists = [[class_to_image_prob[i][cur_class][x] if x in class_to_image_prob[i][cur_class] else 0 for x in image_ids] for i in range(2)]
         res[cur_class] = stats.pearsonr(lists[0], lists[1])
     
     return res
+
+def compute_vector_similarity(dataset_pair, sim_method):
+    all_classes = list(set(word_classes + list(parent_to_children.keys())))
+    class_to_image_prob, _, _, image_ids = get_class_to_image_prob(dataset_pair)
+    res = {}
+    for cur_class in all_classes:
+        lists = [[class_to_image_prob[i][cur_class][x] if x in class_to_image_prob[i][cur_class] else 0 for x in image_ids] for i in range(2)]
+        vec1 = np.array(lists[0])
+        vec2 = np.array(lists[1])
+        if sim_method == 'l2_norm':
+            res[cur_class] = (-1)*np.linalg.norm(vec1-vec2)
+        elif sim_method == 'cosine':
+            res[cur_class] = 1 - spatial.distance.cosine(vec1, vec2)
+    return res
+
+def compute_language_similarity(dataset_pair, sim_method, agg_method):
+    per_class_similarity = compute_vector_similarity(dataset_pair, sim_method)
+    sim_list = [x[1] for x in sorted(list(per_class_similarity.items()), key=lambda y:y[0])]
+    if agg_method == 'mean':
+        return sum(sim_list)/len(sim_list)
+    if agg_method == 'l2_norm':
+        return (-1)*np.linalg.norm(sim_list)
+    
+def cluster_xm3600_langs(sim_method, agg_method, n_cluster):
+    from get_dataset import datasets
+    langs = [x.split('_')[1] for x in datasets if x.startswith('xm3600_')]
+    pairs = [(i, j) for i in range(len(langs)) for j in range(i+1, len(langs))]
+    adj_mat = np.zeros((36, 36))
+    for i, j in tqdm(pairs):
+        lang1 = langs[i]
+        lang2 = langs[j]
+        cur_adj = compute_language_similarity((f'xm3600_{lang1}', f'xm3600_{lang2}'), sim_method, agg_method)
+        adj_mat[i, j] = cur_adj
+        adj_mat[j, i] = cur_adj
+        
+    adj_mat = adj_mat-np.min(adj_mat)
+    sc = SpectralClustering(n_cluster, affinity='precomputed', n_init=100)
+    sc.fit(adj_mat)
+
+    return [[langs[j] for j in range(36) if sc.labels_[j] == i] for i in range(n_cluster)]
