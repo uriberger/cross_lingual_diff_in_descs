@@ -39,7 +39,8 @@ word_classes = [
     'mannequin', 'oil_rig', 'newsstand', 'terrace', 'binoculars', 'garage', 'map', 'pool', 'sleeping_bag', 'bridge',
     'string', 'stadium', 'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail',
     'cloak', 'tea', 'note', 'watch', 'paraglider', 'parachute', 'letter', 'heart', 'foam', 'gauge', 'grill', 'food',
-    'sauce', 'cloud', 'figure', 'tunnel', 'ice', 'icing', 'sewer', 'surface', 'promontory', 'roof'
+    'sauce', 'cloud', 'figure', 'tunnel', 'ice', 'icing', 'sewer', 'surface', 'promontory', 'roof', 'lemon', 'pomegranate',
+    'lamp', 'lantern'
     ]
 
 parent_to_children = {
@@ -71,7 +72,7 @@ parent_to_children = {
              'seafood', 'dish', 'sauce'],
     'baked_goods': ['donut', 'cake', 'biscuit', 'bread'],
     'bread': ['toast'],
-    'fruit': ['banana', 'apple', 'orange', 'mandarin', 'kiwi', 'raspberry', 'nut', 'watermelon'],
+    'fruit': ['banana', 'apple', 'orange', 'mandarin', 'kiwi', 'raspberry', 'nut', 'watermelon', 'lemon', 'pomegranate'],
     'vegetable': ['cucumber', 'tomato', 'broccoli', 'brussel_sprout', 'carrot', 'garlic', 'onion', 'cabbage', 'chickpea',
                   'okra', 'soybean', 'greens'],
     'plant': ['tree', 'flower'],
@@ -105,7 +106,7 @@ def is_hyponym_of(class1, class2):
 non_word_classes = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
-    'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left'
+    'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior'
 ]
 
 # Inflect don't handle some strings well, ignore these
