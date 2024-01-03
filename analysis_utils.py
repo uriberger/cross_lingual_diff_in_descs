@@ -185,20 +185,18 @@ def compute_language_similarity(dataset_pair, sim_method, agg_method):
     if agg_method == 'l2_norm':
         return (-1)*np.linalg.norm(sim_list)
     
-def cluster_xm3600_langs(sim_method, agg_method, n_cluster):
-    from get_dataset import datasets
-    langs = [x.split('_')[1] for x in datasets if x.startswith('xm3600_')]
+def cluster_langs(langs, sim_method, agg_method, n_cluster, dataset_prefix):
     pairs = [(i, j) for i in range(len(langs)) for j in range(i+1, len(langs))]
     adj_mat = np.zeros((36, 36))
     for i, j in tqdm(pairs):
         lang1 = langs[i]
         lang2 = langs[j]
-        cur_adj = compute_language_similarity((f'xm3600_{lang1}', f'xm3600_{lang2}'), sim_method, agg_method)
+        cur_adj = compute_language_similarity((f'{dataset_prefix}_{lang1}', f'{dataset_prefix}_{lang2}'), sim_method, agg_method)
         adj_mat[i, j] = cur_adj
         adj_mat[j, i] = cur_adj
         
     adj_mat = adj_mat-np.min(adj_mat)
     sc = SpectralClustering(n_cluster, affinity='precomputed', n_init=100)
     sc.fit(adj_mat)
-
-    return [[langs[j] for j in range(36) if sc.labels_[j] == i] for i in range(n_cluster)]
+    
+    return [[langs[j] for j in range(len(langs)) if sc.labels_[j] == i] for i in range(n_cluster)]
