@@ -40,7 +40,7 @@ word_classes = [
     'string', 'stadium', 'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail',
     'cloak', 'tea', 'note', 'watch', 'paraglider', 'parachute', 'letter', 'heart', 'foam', 'gauge', 'grill', 'food',
     'sauce', 'cloud', 'figure', 'tunnel', 'ice', 'icing', 'sewer', 'surface', 'promontory', 'roof', 'lemon', 'pomegranate',
-    'lamp', 'lantern', 'coin'
+    'lamp', 'lantern', 'coin', 'paper'
     ]
 
 parent_to_children = {
