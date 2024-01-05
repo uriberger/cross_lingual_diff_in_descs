@@ -10,7 +10,31 @@ from irrCAC.raw import CAC
 from tqdm import tqdm
 from sklearn.cluster import SpectralClustering
 
-def get_class_to_image_prob(datasets):
+def get_class_to_image_prob(dataset):
+    all_classes = list(set(word_classes + list(parent_to_children.keys())))
+    with open(f'datasets/{dataset}.json', 'r') as fp:
+        data = json.load(fp)
+    class_to_image_count = {x: defaultdict(int) for x in all_classes}
+    image_count = defaultdict(int)
+    for sample in data:
+        if 'classes' not in sample or sample['classes'] is None:
+            continue
+        image_count[sample['image_id']] += 1
+        identified_classes = []
+        for cur_class in list(set(sample['classes'])):
+            identified_classes.append(cur_class)
+            inner_cur_class = cur_class
+            while inner_cur_class in child_to_parent:
+                inner_cur_class = child_to_parent[inner_cur_class]
+                identified_classes.append(inner_cur_class)
+        identified_classes = list(set(identified_classes))
+        for id_class in identified_classes:
+            class_to_image_count[id_class][sample['image_id']] += 1
+    class_to_image_prob = {x[0]: {y[0]: y[1]/image_count[y[0]] for y in x[1].items()} for x in class_to_image_count.items()}
+
+    return class_to_image_prob, class_to_image_count, image_count
+
+def get_class_to_image_prob_dataset_pair(datasets):
     all_classes = list(set(word_classes + list(parent_to_children.keys())))
     with open(f'datasets/{datasets[0]}.json', 'r') as fp:
         data1 = json.load(fp)
@@ -84,7 +108,7 @@ def compute_wilcoxon(dataset_pairs):
     res = []
     for dataset_pair in dataset_pairs:
         print(f'[Wilcoxon] starting {dataset_pair}')
-        class_to_image_prob, _, _, image_ids = get_class_to_image_prob(dataset_pair)
+        class_to_image_prob, _, _, image_ids = get_class_to_image_prob_dataset_pair(dataset_pair)
         res.append([])
         res[-1].append({})
         res[-1].append({})
@@ -120,7 +144,7 @@ def get_extreme_images(dataset_pairs):
     res = []
     for dataset_pair in dataset_pairs:
         print(f'[extreme_images] starting {dataset_pair}')
-        _, class_to_image_count, image_count, _ = get_class_to_image_prob(dataset_pair)
+        _, class_to_image_count, image_count, _ = get_class_to_image_prob_dataset_pair(dataset_pair)
         res.append([{}, {}])
         image_num_0 = dataset_to_image_num[dataset_pair[0]]
         image_num_1 = dataset_to_image_num[dataset_pair[1]]
@@ -135,7 +159,7 @@ def compute_diff_and_add_indexes(dataset_pairs):
     res = []
     for dataset_pair in dataset_pairs:
         print(f'[diff_add_index] starting {dataset_pair}')
-        class_to_image_prob, _, _, image_ids = get_class_to_image_prob(dataset_pair)
+        class_to_image_prob, _, _, image_ids = get_class_to_image_prob_dataset_pair(dataset_pair)
         diff_index = {}
         add_index = {}
         for cur_class in all_classes:
@@ -155,7 +179,7 @@ def compute_diff_and_add_indexes(dataset_pairs):
 def compute_correlation(dataset_pair):
     all_classes = list(set(word_classes + list(parent_to_children.keys())))
     print(f'[correlation] starting {dataset_pair}')
-    class_to_image_prob, _, _, image_ids = get_class_to_image_prob(dataset_pair)
+    class_to_image_prob, _, _, image_ids = get_class_to_image_prob_dataset_pair(dataset_pair)
     res = {}
     for cur_class in all_classes:
         lists = [[class_to_image_prob[i][cur_class][x] if x in class_to_image_prob[i][cur_class] else 0 for x in image_ids] for i in range(2)]
@@ -165,7 +189,7 @@ def compute_correlation(dataset_pair):
 
 def compute_vector_similarity(dataset_pair, sim_method):
     all_classes = list(set(word_classes + list(parent_to_children.keys())))
-    class_to_image_prob, _, _, image_ids = get_class_to_image_prob(dataset_pair)
+    class_to_image_prob, _, _, image_ids = get_class_to_image_prob_dataset_pair(dataset_pair)
     res = {}
     for cur_class in all_classes:
         lists = [[class_to_image_prob[i][cur_class][x] if x in class_to_image_prob[i][cur_class] else 0 for x in image_ids] for i in range(2)]
