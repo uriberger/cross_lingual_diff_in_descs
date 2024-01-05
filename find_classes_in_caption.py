@@ -627,7 +627,7 @@ def find_classes2(caption):
 
     classes = []
 
-    identified_inds = {}
+    identified_inds = set()
     # Two word phrases
     i = 0
     while i < len(token_list)-1:
