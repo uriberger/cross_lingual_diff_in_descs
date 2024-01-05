@@ -40,7 +40,7 @@ word_classes = [
     'string', 'stadium', 'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail',
     'cloak', 'tea', 'note', 'watch', 'paraglider', 'parachute', 'letter', 'heart', 'foam', 'gauge', 'grill', 'food',
     'sauce', 'cloud', 'figure', 'tunnel', 'ice', 'icing', 'sewer', 'surface', 'promontory', 'roof', 'lemon', 'pomegranate',
-    'lamp', 'lantern', 'coin', 'paper'
+    'lamp', 'lantern', 'coin', 'paper', 'log'
     ]
 
 parent_to_children = {
@@ -298,6 +298,10 @@ def is_noun(token_list, ind):
     
     # "orange slices" edge case: orange is considered adjective, but both should be considered a noun together
     if token_list[ind][0]['text'] == 'orange' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'slices':
+        return True
+    
+    # "german shepherd" edge case: german is considered adjective, but both should be considered a noun together
+    if token_list[ind][0]['text'] == 'greman' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'shepherd':
         return True
     
     return False
