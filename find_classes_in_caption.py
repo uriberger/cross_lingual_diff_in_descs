@@ -301,7 +301,7 @@ def is_noun(token_list, ind):
         return True
     
     # "german shepherd" edge case: german is considered adjective, but both should be considered a noun together
-    if token_list[ind][0]['text'] == 'greman' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'shepherd':
+    if token_list[ind][0]['text'] == 'german' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'shepherd':
         return True
     
     return False
