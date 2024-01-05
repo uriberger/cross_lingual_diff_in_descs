@@ -1,8 +1,8 @@
-from find_classes_in_caption import find_classes
+from find_classes_in_caption import find_classes, find_classes2
 from regression import RegressionHandler
 import time
 
-def run_regression():
+def run_regression(default_method=True):
     reg_obj = RegressionHandler()
     failed = []
     waived_and_passed = []
@@ -14,7 +14,10 @@ def run_regression():
             print(f'\tStarting sample {i} out of {len(reg_obj.reg)}, time from prev {time.time() - t}', flush=True)
             t = time.time()
         sample, gt = reg_obj.reg[i]
-        res = find_classes(sample['caption'])
+        if default_method:
+            res = find_classes(sample['caption'])
+        else:
+            res = find_classes2(sample['caption'])
         pred = [x[2] for x in res if x[2] is not None]
         if sorted(gt) != sorted(pred):
             if str(i) in reg_obj.waivers:

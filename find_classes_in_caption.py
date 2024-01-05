@@ -560,6 +560,44 @@ def plant_handling(token_list, start_ind, end_ind):
     
     return 'plant'
 
+def phrase_location_to_class(token_list, start_ind, end_ind, highest_ancestor_ind):
+    phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
+
+    # 1. We have a problem when there's a sport named the same as its ball (baseball, basketball etc.).
+    # The more common synset is the game, and when someone talks about the ball the algorithm always thinks it's the game.
+    # We'll try identifying these cases
+    if token_list[end_ind - 1][0]['text'].endswith('ball') or token_list[end_ind - 1][0]['text'].endswith('balls'):
+        phrase_class = ball_handling(token_list, end_ind - 1)
+
+    # 2. "top" is also a problem, as it might be clothing
+    elif token_list[start_ind][0]['text'] == 'top' and end_ind - start_ind == 1:
+        phrase_class = top_handling(token_list, start_ind)
+
+    # 3. "couple": if we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
+    # we do want. Distinguish by checking if we have a determiner (or this is the first phrase), and no "of" after it
+    elif token_list[highest_ancestor_ind][0]['text'] in ['couple', 'couples']:
+        phrase_class = couple_handling(token_list, highest_ancestor_ind)
+
+    # 4. "plant": people almost always mean plants and not factories. We'll always chooce plants except if we see the
+    # word "power" before
+    elif token_list[end_ind - 1][0]['text'] in ['plant', 'plants']:
+        phrase_class = plant_handling(token_list, start_ind, end_ind)
+
+    else:
+        phrase_class = find_phrase_classes(phrase)
+
+        # Check only the highest ancestor in the noun span
+        if phrase_class is None:
+            phrase = token_list[highest_ancestor_ind][0]['text']
+            phrase_class = find_phrase_classes(phrase)
+            start_ind = highest_ancestor_ind
+            end_ind = highest_ancestor_ind + 1
+
+        if type(phrase_class) is list:
+            phrase_class = choose_class_with_lm(token_list, start_ind, end_ind, phrase_class)
+
+    return phrase_class
+
 def find_classes(caption):
     caption = caption.lower()
     doc = nlp(caption)
@@ -573,41 +611,47 @@ def find_classes(caption):
     classes = []
 
     for start_ind, end_ind, highest_ancestor_ind in noun_spans:
-        phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
-
-        # 1. We have a problem when there's a sport named the same as its ball (baseball, basketball etc.).
-        # The more common synset is the game, and when someone talks about the ball the algorithm always thinks it's the game.
-        # We'll try identifying these cases
-        if token_list[end_ind - 1][0]['text'].endswith('ball') or token_list[end_ind - 1][0]['text'].endswith('balls'):
-            phrase_class = ball_handling(token_list, end_ind - 1)
-
-        # 2. "top" is also a problem, as it might be clothing
-        elif token_list[start_ind][0]['text'] == 'top' and end_ind - start_ind == 1:
-            phrase_class = top_handling(token_list, start_ind)
-
-        # 3. "couple": if we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
-        # we do want. Distinguish by checking if we have a determiner (or this is the first phrase), and no "of" after it
-        elif token_list[highest_ancestor_ind][0]['text'] in ['couple', 'couples']:
-            phrase_class = couple_handling(token_list, highest_ancestor_ind)
-
-        # 4. "plant": people almost always mean plants and not factories. We'll always chooce plants except if we see the
-        # word "power" before
-        elif token_list[end_ind - 1][0]['text'] in ['plant', 'plants']:
-            phrase_class = plant_handling(token_list, start_ind, end_ind)
-
-        else:
-            phrase_class = find_phrase_classes(phrase)
-
-            # Check only the highest ancestor in the noun span
-            if phrase_class is None:
-                phrase = token_list[highest_ancestor_ind][0]['text']
-                phrase_class = find_phrase_classes(phrase)
-                start_ind = highest_ancestor_ind
-                end_ind = highest_ancestor_ind + 1
-
-            if type(phrase_class) is list:
-                phrase_class = choose_class_with_lm(token_list, start_ind, end_ind, phrase_class)
-
+        phrase_class = phrase_location_to_class(token_list, start_ind, end_ind, highest_ancestor_ind)
         classes.append((start_ind, end_ind, phrase_class))
+    
+    return classes
+
+def find_classes2(caption):
+    caption = caption.lower()
+    doc = nlp(caption)
+    token_lists = [[x.to_dict() for x in y.tokens] for y in doc.sentences]
+    if len(token_lists) > 1:
+        return None
+    token_list = token_lists[0]
+    token_list = preprocess(token_list)
+
+    classes = []
+
+    identified_inds = {}
+    # Two word phrases
+    i = 0
+    while i < len(token_list)-1:
+        start_ind = i
+        end_ind = i+2
+        highest_ancestor_ind = start_ind
+        phrase_class = phrase_location_to_class(token_list, start_ind, end_ind, highest_ancestor_ind)
+        if phrase_class is not None:
+            classes.append((start_ind, end_ind, phrase_class))
+            identified_inds.add(start_ind)
+            identified_inds.add(start_ind+1)
+            i += 2
+        else:
+            i += 1
+    
+    # Single word phrases
+    for i in range(len(token_list)):
+        if i in identified_inds:
+            continue
+        start_ind = i
+        end_ind = i+1
+        highest_ancestor_ind = start_ind
+        phrase_class = phrase_location_to_class(token_list, start_ind, end_ind, highest_ancestor_ind)
+        if phrase_class is not None:
+            classes.append((start_ind, end_ind, phrase_class))
     
     return classes
