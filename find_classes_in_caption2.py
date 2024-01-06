@@ -39,7 +39,7 @@ word_classes = [
     'mannequin', 'oil_rig', 'newsstand', 'terrace', 'binoculars', 'garage', 'map', 'pool', 'sleeping_bag', 'bridge',
     'string', 'stadium', 'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail',
     'cloak', 'tea', 'note', 'watch', 'paraglider', 'parachute', 'letter', 'heart', 'foam', 'gauge', 'grill', 'food',
-    'sauce', 'cloud', 'figure', 'tunnel', 'ice', 'icing', 'sewer', 'surface', 'promontory', 'roof', 'lemon', 'pomegranate',
+    'sauce', 'cloud', 'tunnel', 'ice', 'icing', 'sewer', 'surface', 'promontory', 'roof', 'lemon', 'pomegranate',
     'lamp', 'lantern', 'coin', 'paper', 'log'
     ]
 
@@ -116,7 +116,7 @@ non_inflect_strs = [
 
 known_mappings = {
     'rail_road_track': 'railroad_track', 'tv': 'television', 'skate_board': 'skateboard', 'roller_blades': 'rollerblade',
-    'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote-control': 'remote', 'scooter': 'motorcycle',
+    'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote_control': 'remote', 'scooter': 'motorcycle',
     'hay': 'plant', 'van': 'car', 'walnut': 'nut', 'peanut': 'nut', 'children': 'child', 'diner': 'restaurant',
     'guy': 'man', 'tennis_racquet': 'tennis_racket', 'male': 'man', 'female': 'woman', 'adult': 'person',
     'plantain': 'banana', 'racer': 'person', 'young': 'person', 'clippers': 'scissors', 'pet': 'animal',
@@ -134,7 +134,7 @@ known_mappings = {
     'outfit': 'clothing', 'jean': 'pant', 'back': ['body_part', None], 'shorts': 'clothing',
     'glass': ['cup', 'eyeglasses'], 'bike': ['bicycle', 'motorcycle'], 'washer': 'washing_machine', 'lamb': 'sheep',
     'tower': 'building', 'factory': 'building', 'cloth': 'clothing', 'clothes': 'clothing', 'fortress': 'building',
-    'fort': 'building', 'subway': 'train', 'hotdog': 'sausage',
+    'fort': 'building', 'subway': 'train', 'hotdog': 'sausage', 'hot_dog': 'sausage',
     'dish': ['dish', 'tableware'], 'butt': 'body_part', 'python': 'snake', 'saucer': 'tableware',
     'surf_board': 'surfboard', 'snow_board': 'snowboard', 'railway': 'railroad_track', 'sea_floor': 'surface',
     'mountain_peak': 'mountain'
@@ -155,23 +155,6 @@ tokenizer = AutoTokenizer.from_pretrained('bert-large-uncased')
 mask_str = '[MASK]'
 clip_model, clip_preprocess = clip.load("ViT-B/32", device=device)
 
-def get_depth_at_ind(token_list, i, depths):
-    head_ind = token_list[i][0]['head'] - 1
-    if head_ind == -1:
-        depths[i] = 0
-        return depths
-    elif depths[head_ind] == -1:
-        depths = get_depth_at_ind(token_list, head_ind, depths)
-    depths[i] = depths[head_ind] + 1
-    return depths
-
-def get_depths(token_list):
-    depths = [-1]*len(token_list)
-    for i in range(len(token_list)):
-        if depths[i] == -1:
-            depths = get_depth_at_ind(token_list, i, depths)
-    return depths
-
 def get_synset_count(synset):
     count = 0
     for lemma in synset.lemmas():
@@ -190,44 +173,29 @@ def find_synset_classes(synset):
         classes += find_synset_classes(hypernym)
     return classes
 
-def is_phrase_hypernym_of_synset(synset, phrase):
-    for lemma in synset.lemmas():
-        word = lemma.name().lower()
-        if word == phrase:
-            return True
-    hypernyms = synset.hypernyms()
-    for hypernym in hypernyms:
-        if is_phrase_hypernym_of_synset(hypernym, phrase):
-            return True
-    return False
-
-def is_phrase_hypernym_of_phrase(phrase1, phrase2):
-    synsets = wn.synsets(phrase1)
-    for synset in synsets:
-        if is_phrase_hypernym_of_synset(synset, phrase2.lower()):
-            return True
-    return False
-
-def find_phrase_classes(phrase):
+def find_phrase_classes2(phrase):
     phrase = phrase.lower()
 
     singular_phrase_classes = None
     if phrase not in non_inflect_strs and inflect_engine.singular_noun(phrase) != False:
         singular_phrase = inflect_engine.singular_noun(phrase)
-        singular_phrase_classes = find_preprocessed_phrase_classes(singular_phrase)
+        singular_phrase_classes = find_preprocessed_phrase_classes2(singular_phrase)
 
     if singular_phrase_classes is not None:
         return singular_phrase_classes
     else:
-        return find_preprocessed_phrase_classes(phrase)
+        return find_preprocessed_phrase_classes2(phrase)
 
-def find_preprocessed_phrase_classes(phrase):
+def find_preprocessed_phrase_classes2(phrase):
     phrase = phrase.replace(' ', '_')
+    exact_match = False
 
     if phrase in known_mappings:
         phrase_class = known_mappings[phrase]
+        exact_match = True
     elif phrase in word_classes:
         phrase_class = phrase
+        exact_match = True
     elif phrase in non_word_classes:
         return None
     else:
@@ -276,110 +244,14 @@ def find_preprocessed_phrase_classes(phrase):
             else:
                 phrase_class = classes
 
-    return phrase_class
-
-def is_noun(token_list, ind):
-    head_ind = token_list[ind][0]['head'] - 1
-
-    if token_list[ind][0]['upos'] == 'NOUN':
-        # VBN edge cases: If we have a noun with a VBN parent (e.g., "flower-covered") the entire phrase is not a noun
-        if token_list[head_ind][0]['xpos'] == 'VBN' and token_list[ind][0]['deprel'] == 'compound':
-            return False
-        return True
-    
-    # "remote" edge cases: in many cases, when people say "remote" they mean "remote controller", i.e., a noun. But the
-    #  parser treats it as an adjective. To identify these cases, we'll find "remote" with non-noun heads
-    if token_list[ind][0]['text'].lower() == 'remote' and token_list[head_ind][0]['upos'] != 'NOUN':
-        return True
-    
-    # "baked goods" edge case: baked is considered adjective, but both should be considered a noun together
-    if token_list[ind][0]['text'] == 'baked' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'goods':
-        return True
-    
-    # "orange slices" edge case: orange is considered adjective, but both should be considered a noun together
-    if token_list[ind][0]['text'] == 'orange' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'slices':
-        return True
-    
-    # "german shepherd" edge case: german is considered adjective, but both should be considered a noun together
-    if token_list[ind][0]['text'] == 'german' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'shepherd':
-        return True
-    
-    return False
-
-def is_sequence_punctuation(token_list, ind):
-    if token_list[ind][0]['upos'] != 'PUNCT':
-        return False
-    
-    return token_list[ind][0]['text'] == '-'
-
-def is_like_construct(token_list, ind):
-    if token_list[ind][0]['text'] != 'like':
-        return False
-
-    if token_list[ind - 1][0]['upos'] != 'PUNCT':
-        return False
-    
-    return token_list[ind - 1][0]['text'] == '-'
-    
-def extract_noun_spans(token_list):
-    noun_spans = []
-
-    # First find sequences of nouns
-    noun_sequences = []
-    in_sequence = False
-    last_noun_ind = -1
-    for i in range(len(token_list)):
-        if is_noun(token_list, i):
-            last_noun_ind = i
-            if not in_sequence:
-                sequence_start = i
-                in_sequence = True
-        if (not is_noun(token_list, i)) and in_sequence and (not is_sequence_punctuation(token_list, i)):
-            in_sequence = False
-            # Need to make sure this is not a noun that became an adjective by adding "-like" (e.g., "bridge-like")
-            if not is_like_construct(token_list, i):
-                noun_sequences.append((sequence_start, last_noun_ind+1))
-    if in_sequence:
-        noun_sequences.append((sequence_start, last_noun_ind+1))
-
-    # Next, for each sequence, find- for each token in the sequence- the highest ancestor inside the sequence
-    for sequence_start, sequence_end in noun_sequences:
-        highest_ancestors = []
-        for token_ind in range(sequence_start, sequence_end):
-            cur_ancestor = token_ind
-            prev_cur_ancestor = cur_ancestor
-            while cur_ancestor >= sequence_start and cur_ancestor < sequence_end:
-                prev_cur_ancestor = cur_ancestor
-                cur_ancestor = token_list[cur_ancestor][0]['head'] - 1
-            highest_ancestors.append(prev_cur_ancestor)
-        # A sequence of the same highest ancestor is a noun sequence
-        noun_sequence_start = sequence_start
-        cur_highest_ancestor = highest_ancestors[0]
-        for i in range(1, len(highest_ancestors)):
-            if highest_ancestors[i] != cur_highest_ancestor:
-                noun_spans.append((noun_sequence_start, sequence_start + i, cur_highest_ancestor))
-                noun_sequence_start = sequence_start + i
-                cur_highest_ancestor = highest_ancestors[i]
-        # Edge case: in "X slice/slices" pairs (e.g., "orange slices") we want X to be the highest ancestor
-        if sequence_end - noun_sequence_start == 2 and token_list[sequence_end-1][0]['text'].lower() in ['slice', 'slices']:
-            noun_spans.append((noun_sequence_start, sequence_end, noun_sequence_start))
-        else:
-            noun_spans.append((noun_sequence_start, sequence_end, cur_highest_ancestor))
-
-    return noun_spans
+    return phrase_class, exact_match
 
 def preprocess(token_list):
     # Just solving some known issues
     
     # Replace phrases to make the parser's job easier
     replace_dict = [
-        # 1. Every time we have 'remote control' in a sentence, 'remote' is an adjective so the identified noun span is
-        # 'control', which isn't what we want. So we'll change it to 'remote'
-        (['remote', 'control'], 'remote'),
-        # 2. "hot dog": hot is considered an adjective, and the only identified noun is "dog"
-        (['hot', 'dog'], 'hotdog'),
-        (['hot', 'dogs'], 'hotdogs'),
-        # 3. "olive green": olive is considered a noun
+        # 1. "olive green": olive is considered a noun
         (['olive', 'green'], 'green'),
     ]
 
@@ -552,31 +424,29 @@ def couple_handling(token_list, ind):
 
 def plant_handling(token_list, start_ind, end_ind):
     # If we have a plant, it's the living thing- unless the word "power" is before it
-    if end_ind - start_ind == 1:
-        return 'plant'
-    
-    if token_list[end_ind - 2][0]['text'] == 'power':
+    if end_ind - start_ind == 2 and token_list[start_ind][0]['text'] == 'power':
         return 'building'
     
     return 'plant'
 
-def phrase_location_to_class(token_list, start_ind, end_ind, highest_ancestor_ind):
+def phrase_location_to_class2(token_list, start_ind, end_ind):
     phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
+    exact_match = True
 
     # 1. We have a problem when there's a sport named the same as its ball (baseball, basketball etc.).
     # The more common synset is the game, and when someone talks about the ball the algorithm always thinks it's the game.
     # We'll try identifying these cases
-    if token_list[end_ind - 1][0]['text'].endswith('ball') or token_list[end_ind - 1][0]['text'].endswith('balls'):
-        phrase_class = ball_handling(token_list, end_ind - 1)
+    if end_ind - start_ind == 1 and token_list[start_ind][0]['text'].endswith('ball') or token_list[start_ind][0]['text'].endswith('balls'):
+        phrase_class = ball_handling(token_list, start_ind)
 
     # 2. "top" is also a problem, as it might be clothing
-    elif token_list[start_ind][0]['text'] == 'top' and end_ind - start_ind == 1:
+    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'top':
         phrase_class = top_handling(token_list, start_ind)
 
     # 3. "couple": if we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
     # we do want. Distinguish by checking if we have a determiner (or this is the first phrase), and no "of" after it
-    elif token_list[highest_ancestor_ind][0]['text'] in ['couple', 'couples']:
-        phrase_class = couple_handling(token_list, highest_ancestor_ind)
+    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] in ['couple', 'couples']:
+        phrase_class = couple_handling(token_list, start_ind)
 
     # 4. "plant": people almost always mean plants and not factories. We'll always chooce plants except if we see the
     # word "power" before
@@ -584,21 +454,15 @@ def phrase_location_to_class(token_list, start_ind, end_ind, highest_ancestor_in
         phrase_class = plant_handling(token_list, start_ind, end_ind)
 
     else:
-        phrase_class = find_phrase_classes(phrase)
-
-        # Check only the highest ancestor in the noun span
-        if phrase_class is None:
-            phrase = token_list[highest_ancestor_ind][0]['text']
-            phrase_class = find_phrase_classes(phrase)
-            start_ind = highest_ancestor_ind
-            end_ind = highest_ancestor_ind + 1
+        phrase_class, exact_match = find_phrase_classes2(phrase)
 
         if type(phrase_class) is list:
             phrase_class = choose_class_with_lm(token_list, start_ind, end_ind, phrase_class)
 
-    return phrase_class
+    return phrase_class, exact_match
 
-def find_classes(caption):
+def find_classes2(caption):
+    ''' Count not only noun phrases, but all words. This currently doesn't work well. '''
     caption = caption.lower()
     doc = nlp(caption)
     token_lists = [[x.to_dict() for x in y.tokens] for y in doc.sentences]
@@ -607,11 +471,35 @@ def find_classes(caption):
     token_list = token_lists[0]
     token_list = preprocess(token_list)
 
-    noun_spans = extract_noun_spans(token_list)
     classes = []
 
-    for start_ind, end_ind, highest_ancestor_ind in noun_spans:
-        phrase_class = phrase_location_to_class(token_list, start_ind, end_ind, highest_ancestor_ind)
-        classes.append((start_ind, end_ind, phrase_class))
+    identified_inds = set()
+    # Two word phrases
+    i = 0
+    while i < len(token_list)-1:
+        start_ind = i
+        end_ind = i+2
+        highest_ancestor_ind = start_ind
+        phrase_class, exact_match = phrase_location_to_class2(token_list, start_ind, end_ind, highest_ancestor_ind)
+        if phrase_class is not None:
+            phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
+            classes.append((start_ind, end_ind, phrase, phrase_class, exact_match))
+            identified_inds.add(start_ind)
+            identified_inds.add(start_ind+1)
+            i += 2
+        else:
+            i += 1
+    
+    # Single word phrases
+    for i in range(len(token_list)):
+        if i in identified_inds:
+            continue
+        start_ind = i
+        end_ind = i+1
+        highest_ancestor_ind = start_ind
+        phrase_class, exact_match = phrase_location_to_class2(token_list, start_ind, end_ind, highest_ancestor_ind)
+        if phrase_class is not None:
+            phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
+            classes.append((start_ind, end_ind, phrase, phrase_class, exact_match))
     
     return classes

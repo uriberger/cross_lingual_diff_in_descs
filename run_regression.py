@@ -1,9 +1,10 @@
-from find_classes_in_caption import find_classes, find_classes2
+from find_classes_in_caption import find_classes
+from find_classes_in_caption2 import find_classes2
 from regression import RegressionHandler
 import time
 
 def run_regression(default_method=True):
-    reg_obj = RegressionHandler()
+    reg_obj = RegressionHandler(default_method)
     failed = []
     waived_and_passed = []
     waived_and_failed = []
