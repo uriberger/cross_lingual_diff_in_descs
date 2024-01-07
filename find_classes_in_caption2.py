@@ -479,8 +479,7 @@ def find_classes2(caption):
     while i < len(token_list)-1:
         start_ind = i
         end_ind = i+2
-        highest_ancestor_ind = start_ind
-        phrase_class, exact_match = phrase_location_to_class2(token_list, start_ind, end_ind, highest_ancestor_ind)
+        phrase_class, exact_match = phrase_location_to_class2(token_list, start_ind, end_ind)
         if phrase_class is not None:
             phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
             classes.append((start_ind, end_ind, phrase, phrase_class, exact_match))
@@ -496,8 +495,7 @@ def find_classes2(caption):
             continue
         start_ind = i
         end_ind = i+1
-        highest_ancestor_ind = start_ind
-        phrase_class, exact_match = phrase_location_to_class2(token_list, start_ind, end_ind, highest_ancestor_ind)
+        phrase_class, exact_match = phrase_location_to_class2(token_list, start_ind, end_ind)
         if phrase_class is not None:
             phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
             classes.append((start_ind, end_ind, phrase, phrase_class, exact_match))
