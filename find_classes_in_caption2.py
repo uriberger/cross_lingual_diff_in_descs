@@ -481,6 +481,10 @@ def is_noun(token_list, ind):
         if token_list[ind][0]['text'] == 'mini' and token_list[ind][0]['deprel'] == 'compound':
             return False
         
+        # uniform edge case: if the word "uniform" follows (e.g., "nurse uniform") this is not a noun
+        if ind < len(token_list - 1) and token_list[ind+1][0]['text'] == 'uniform':
+            return False
+        
         return True
     
     # "remote" edge cases: in many cases, when people say "remote" they mean "remote controller", i.e., a noun. But the
