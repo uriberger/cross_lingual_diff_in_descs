@@ -418,16 +418,6 @@ def top_handling(token_list, start_ind):
     
     return None
 
-def mini_handling(token_list, ind):
-    # Need to distinguish mini as a clothing from the adjective
-    if token_list[ind][0]['upos'] != 'NOUN':
-        return None
-    
-    if token_list[ind][0]['deprel'] == 'compound':
-        return None
-    
-    return 'clothing'
-
 def couple_handling(token_list, ind):
     # If we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
     # we do want. Distinguish by checking if we have no "of" after it
