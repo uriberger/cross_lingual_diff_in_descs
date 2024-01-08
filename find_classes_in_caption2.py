@@ -430,7 +430,7 @@ def mini_handling(token_list, ind):
 
 def orange_handling(token_list, ind):
     # Need to distinguish orange as a color from the fruit
-    if token_list[ind][0]['upos'] != 'NOUN':
+    if token_list[ind][0]['upos'] == 'NOUN':
         return 'orange'
     
     if ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] in ['slice', 'slices']:
