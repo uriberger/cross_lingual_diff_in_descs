@@ -477,9 +477,13 @@ def phrase_location_to_class2(token_list, start_ind, end_ind):
     elif token_list[end_ind - 1][0]['text'] in ['plant', 'plants']:
         phrase_class = plant_handling(token_list, start_ind, end_ind)
 
-    # 2. "mini" is also a problem, as it might be clothing
+    # 5. "mini" is also a problem, as it might be clothing
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'mini':
         phrase_class = mini_handling(token_list, start_ind)
+
+    # 6. "orange" may be color or fruit
+    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'orange':
+        phrase_class = orange_handling(token_list, start_ind)
 
     else:
         phrase_class, exact_match = find_phrase_classes2(phrase)
