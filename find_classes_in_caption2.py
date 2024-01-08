@@ -8,7 +8,7 @@ import math
 import clip
 from PIL import Image
 
-word_classes = [
+word_classes2 = [
     'man', 'woman', 'boy', 'girl', 'child', 'person', 'people', 'bicycle', 'car', 'motorcycle', 'airplane', 'blimp', 'bus',
     'train', 'truck', 'boat', 'ship', 'watercraft', 'traffic_light', 'fire_hydrant', 'sign', 'parking_meter', 'bench',
     'bird', 'penguin', 'ostrich', 'wasp', 'fish', 'tuna', 'cat', 'dog', 'horse', 'fox', 'sheep', 'cow', 'bull', 'elephant',
@@ -43,7 +43,7 @@ word_classes = [
     'lamp', 'lantern', 'coin', 'paper', 'log', 'grass'
     ]
 
-parent_to_children = {
+parent_to_children2 = {
     'person': ['man', 'woman', 'boy', 'girl', 'child', 'people'],
     'vehicle': ['bicycle', 'car', 'motorcycle', 'aircraft', 'bus', 'train', 'watercraft'],
     'car': ['truck'],
@@ -91,30 +91,30 @@ parent_to_children = {
     'surface': ['platform']
 }
 
-child_to_parent = {}
-for parent, children in parent_to_children.items():
+child_to_parent2 = {}
+for parent, children in parent_to_children2.items():
     for child in children:
-        child_to_parent[child] = parent
+        child_to_parent2[child] = parent
 
 def is_hyponym_of(class1, class2):
     if class1 == class2:
         return True
-    while class1 in child_to_parent:
-        return is_hyponym_of(child_to_parent[class1], class2)
+    while class1 in child_to_parent2:
+        return is_hyponym_of(child_to_parent2[class1], class2)
     return False
 
-non_word_classes = [
+non_word_classes2 = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
     'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly', 'young'
 ]
 
 # Inflect don't handle some strings well, ignore these
-non_inflect_strs = [
+non_inflect_strs2 = [
     'dress'
 ]
 
-known_mappings = {
+known_mappings2 = {
     'rail_road_track': 'railroad_track', 'tv': 'television', 'skate_board': 'skateboard', 'roller_blades': 'rollerblade',
     'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote_control': 'remote', 'scooter': 'motorcycle',
     'hay': 'plant', 'van': 'car', 'walnut': 'nut', 'peanut': 'nut', 'children': 'child', 'diner': 'restaurant',
@@ -140,7 +140,7 @@ known_mappings = {
     'mountain_peak': 'mountain'
 }
 
-word_to_replace_str = {
+word_to_replace_str2 = {
     'back': {'body_part': 'hand', None: 'rear'}, 'glasses': {'cup': 'cups', 'eyeglasses': 'sunglasses'},
     'dish': {'dish': 'dish', 'tableware': 'plate'}
 }
@@ -165,7 +165,7 @@ def find_synset_classes(synset):
     classes = []
     for lemma in synset.lemmas():
         word = lemma.name().lower()
-        if word in word_classes:
+        if word in word_classes2:
             return [word]
     classes = []
     hypernyms = synset.hypernyms()
@@ -177,7 +177,7 @@ def find_phrase_classes2(phrase):
     phrase = phrase.lower()
 
     singular_phrase_classes = None
-    if phrase not in non_inflect_strs and inflect_engine.singular_noun(phrase) != False:
+    if phrase not in non_inflect_strs2 and inflect_engine.singular_noun(phrase) != False:
         singular_phrase = inflect_engine.singular_noun(phrase)
         singular_phrase_classes, exact_match = find_preprocessed_phrase_classes2(singular_phrase)
 
@@ -190,13 +190,13 @@ def find_preprocessed_phrase_classes2(phrase):
     phrase = phrase.replace(' ', '_')
     exact_match = False
 
-    if phrase in known_mappings:
-        phrase_class = known_mappings[phrase]
+    if phrase in known_mappings2:
+        phrase_class = known_mappings2[phrase]
         exact_match = True
-    elif phrase in word_classes:
+    elif phrase in word_classes2:
         phrase_class = phrase
         exact_match = True
-    elif phrase in non_word_classes:
+    elif phrase in non_word_classes2:
         return None, False
     else:
         synsets = wn.synsets(phrase)
@@ -304,8 +304,8 @@ def choose_class_with_lm(token_list, start_ind, end_ind, class_list, selection_m
     after = [x[0]['text'].lower() for x in token_list[end_ind:]]
 
     orig_word = '_'.join([x[0]['text'] for x in token_list[start_ind:end_ind]])
-    if orig_word in word_to_replace_str:
-        class_to_repr_word = word_to_replace_str[orig_word]
+    if orig_word in word_to_replace_str2:
+        class_to_repr_word = word_to_replace_str2[orig_word]
     else:
         class_to_repr_word = {cur_class: cur_class for cur_class in class_list}
     
