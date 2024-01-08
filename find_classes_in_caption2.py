@@ -40,7 +40,7 @@ word_classes2 = [
     'string', 'stadium', 'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail',
     'cloak', 'tea', 'note', 'watch', 'paraglider', 'parachute', 'letter', 'heart', 'foam', 'gauge', 'grill', 'food',
     'sauce', 'cloud', 'tunnel', 'ice', 'icing', 'sewer', 'surface', 'promontory', 'roof', 'lemon', 'pomegranate',
-    'lamp', 'lantern', 'coin', 'paper', 'log', 'grass'
+    'lamp', 'lantern', 'coin', 'paper', 'log', 'grass', 'greyhound'
     ]
 
 parent_to_children2 = {
@@ -56,6 +56,7 @@ parent_to_children2 = {
                'chameleon', 'peacock', 'penguin', 'snake'],
     'mammal': ['cat', 'dog', 'horse', 'sheep', 'cow', 'wild_mammal', 'groundhog', 'pig', 'deer', 'gazelle', 'bunny',
                'beaver', 'fox', 'weasel', 'badger', 'llama', 'bull'],
+    'dog': ['greyhound'],
     'fish': ['tuna', 'piranha'],
     'insect': ['wasp', 'beetle', 'butterfly', 'bee', 'caterpillar'],
     'wild_mammal': ['elephant', 'bear', 'zebra', 'giraffe', 'tiger', 'wolverine', 'monkey'],
@@ -135,7 +136,7 @@ known_mappings2 = {
     'rope_line': 'rope', 'outfit': 'clothing', 'jean': 'pant', 'back': ['body_part', None], 'shorts': 'clothing',
     'glass': ['cup', 'eyeglasses'], 'bike': ['bicycle', 'motorcycle'], 'washer': 'washing_machine', 'lamb': 'sheep',
     'tower': 'building', 'factory': 'building', 'cloth': 'clothing', 'clothes': 'clothing', 'fortress': 'building',
-    'fort': 'building', 'subway': 'train', 'hotdog': 'sausage', 'hot_dog': 'sausage',
+    'fort': 'building', 'subway': 'train', 'hotdog': 'sausage', 'hot_dog': 'sausage', 'greyhound_dog': 'greyhound',
     'dish': ['dish', 'tableware'], 'butt': 'body_part', 'python': 'snake', 'saucer': 'tableware',
     'surf_board': 'surfboard', 'snow_board': 'snowboard', 'railway': 'railroad_track', 'sea_floor': 'surface',
     'mountain_peak': 'mountain'
