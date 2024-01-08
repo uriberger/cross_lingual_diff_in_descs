@@ -107,7 +107,7 @@ non_word_classes2 = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
     'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly', 'young', 'small_white',
-    'small', 'blue', 'skate', 'third'
+    'small', 'blue', 'skate', 'third', 'aged'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -428,16 +428,6 @@ def mini_handling(token_list, ind):
     
     return 'clothing'
 
-def orange_handling(token_list, ind):
-    # Need to distinguish orange as a color from the fruit
-    if token_list[ind][0]['upos'] == 'NOUN':
-        return 'orange'
-    
-    if ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] in ['slice', 'slices']:
-        return 'orange'
-    
-    return None
-
 def couple_handling(token_list, ind):
     # If we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
     # we do want. Distinguish by checking if we have no "of" after it
@@ -481,10 +471,6 @@ def phrase_location_to_class2(token_list, start_ind, end_ind):
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'mini':
         phrase_class = mini_handling(token_list, start_ind)
 
-    # 6. "orange" may be color or fruit
-    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'orange':
-        phrase_class = orange_handling(token_list, start_ind)
-
     else:
         phrase_class, exact_match = find_phrase_classes2(phrase)
 
@@ -492,6 +478,39 @@ def phrase_location_to_class2(token_list, start_ind, end_ind):
             phrase_class = choose_class_with_lm(token_list, start_ind, end_ind, phrase_class)
 
     return phrase_class, exact_match
+
+def is_noun(token_list, ind):
+    head_ind = token_list[ind][0]['head'] - 1
+
+    if token_list[ind][0]['upos'] == 'NOUN':
+        # VBN edge cases: If we have a noun with a VBN parent (e.g., "flower-covered") the entire phrase is not a noun
+        if token_list[head_ind][0]['xpos'] == 'VBN' and token_list[ind][0]['deprel'] == 'compound':
+            return False
+        
+        # "mini" edge case: when used as an adjective parser may call it a noun compound
+        if token_list[ind][0]['text'] == 'mini' and token_list[ind][0]['deprel'] == 'compound':
+            return False
+        
+        return True
+    
+    # "remote" edge cases: in many cases, when people say "remote" they mean "remote controller", i.e., a noun. But the
+    #  parser treats it as an adjective. To identify these cases, we'll find "remote" with non-noun heads
+    if token_list[ind][0]['text'].lower() == 'remote' and token_list[head_ind][0]['upos'] != 'NOUN':
+        return True
+    
+    # "baked goods" edge case: baked is considered adjective, but both should be considered a noun together
+    if token_list[ind][0]['text'] == 'baked' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'goods':
+        return True
+    
+    # "orange slices" edge case: orange is considered adjective, but both should be considered a noun together
+    if token_list[ind][0]['text'] == 'orange' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] in ['slice', 'slices']:
+        return True
+    
+    # "german shepherd" edge case: german is considered adjective, but both should be considered a noun together
+    if token_list[ind][0]['text'] == 'german' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'shepherd':
+        return True
+    
+    return False
 
 def find_classes2(caption):
     ''' Count not only noun phrases, but all words. This currently doesn't work well. '''
@@ -511,7 +530,9 @@ def find_classes2(caption):
     while i < len(token_list)-1:
         start_ind = i
         end_ind = i+2
-        phrase_class, exact_match = phrase_location_to_class2(token_list, start_ind, end_ind)
+        phrase_class = None
+        if is_noun(token_list, i) and is_noun(token_list, i+1):
+            phrase_class, exact_match = phrase_location_to_class2(token_list, start_ind, end_ind)
         if phrase_class is not None:
             phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
             classes.append((start_ind, end_ind, phrase, phrase_class, exact_match))
@@ -527,7 +548,9 @@ def find_classes2(caption):
             continue
         start_ind = i
         end_ind = i+1
-        phrase_class, exact_match = phrase_location_to_class2(token_list, start_ind, end_ind)
+        phrase_class = None
+        if is_noun(token_list, i):
+            phrase_class, exact_match = phrase_location_to_class2(token_list, start_ind, end_ind)
         if phrase_class is not None:
             phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
             classes.append((start_ind, end_ind, phrase, phrase_class, exact_match))
