@@ -17,9 +17,10 @@ def run_regression(default_method=True):
         sample, gt = reg_obj.reg[i]
         if default_method:
             res = find_classes(sample['caption'])
+            pred = [x[2] for x in res if x[2] is not None]
         else:
             res = find_classes2(sample['caption'])
-        pred = [x[2] for x in res if x[2] is not None]
+            pred = [x[3] for x in res]
         if sorted(gt) != sorted(pred):
             if str(i) in reg_obj.waivers:
                 waived_and_failed.append(i)
