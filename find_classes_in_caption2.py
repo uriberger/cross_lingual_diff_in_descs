@@ -181,7 +181,7 @@ def find_phrase_classes2(phrase):
         singular_phrase = inflect_engine.singular_noun(phrase)
         singular_phrase_classes = find_preprocessed_phrase_classes2(singular_phrase)
 
-    if singular_phrase_classes is not None:
+    if singular_phrase_classes[0] is not None:
         return singular_phrase_classes
     else:
         return find_preprocessed_phrase_classes2(phrase)
@@ -197,7 +197,7 @@ def find_preprocessed_phrase_classes2(phrase):
         phrase_class = phrase
         exact_match = True
     elif phrase in non_word_classes:
-        return None
+        return None, False
     else:
         synsets = wn.synsets(phrase)
         synsets = [synset for synset in synsets if synset.pos() == 'n']
