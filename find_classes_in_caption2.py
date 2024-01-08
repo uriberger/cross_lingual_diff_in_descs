@@ -107,7 +107,7 @@ non_word_classes2 = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
     'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly', 'young', 'small_white',
-    'small'
+    'small', 'blue'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -415,6 +415,16 @@ def top_handling(token_list, start_ind):
     
     return None
 
+def mini_handling(token_list, ind):
+    # Need to distinguish mini as a clothing from the adjective
+    if token_list[ind][0]['upos'] != 'NOUN':
+        return None
+    
+    if token_list[ind][0]['deprel'] == 'compound':
+        return None
+    
+    return 'clothing'
+
 def couple_handling(token_list, ind):
     # If we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
     # we do want. Distinguish by checking if we have no "of" after it
@@ -453,6 +463,10 @@ def phrase_location_to_class2(token_list, start_ind, end_ind):
     # word "power" before
     elif token_list[end_ind - 1][0]['text'] in ['plant', 'plants']:
         phrase_class = plant_handling(token_list, start_ind, end_ind)
+
+    # 2. "mini" is also a problem, as it might be clothing
+    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'mini':
+        phrase_class = mini_handling(token_list, start_ind)
 
     else:
         phrase_class, exact_match = find_phrase_classes2(phrase)
