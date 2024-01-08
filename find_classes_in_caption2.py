@@ -40,7 +40,7 @@ word_classes2 = [
     'string', 'stadium', 'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail',
     'cloak', 'tea', 'note', 'watch', 'paraglider', 'parachute', 'letter', 'heart', 'foam', 'gauge', 'grill', 'food',
     'sauce', 'cloud', 'tunnel', 'ice', 'icing', 'sewer', 'promontory', 'roof', 'lemon', 'pomegranate', 'lamp', 'lantern',
-    'coin', 'paper', 'log', 'grass', 'greyhound', 'ferry'
+    'coin', 'paper', 'log', 'grass'
     ]
 
 parent_to_children2 = {
@@ -48,7 +48,6 @@ parent_to_children2 = {
     'vehicle': ['bicycle', 'car', 'motorcycle', 'aircraft', 'bus', 'train', 'watercraft'],
     'car': ['truck'],
     'watercraft': ['boat', 'ship'],
-    'boat': ['ferry'],
     'aircraft': ['airplane', 'blimp'],
     'seat': ['bench', 'chair', 'couch'],
     'furniture': ['bed', 'seat', 'table', 'counter', 'shelf', 'rack'],
@@ -57,7 +56,6 @@ parent_to_children2 = {
                'chameleon', 'peacock', 'penguin', 'snake'],
     'mammal': ['cat', 'dog', 'horse', 'sheep', 'cow', 'wild_mammal', 'groundhog', 'pig', 'deer', 'gazelle', 'bunny',
                'beaver', 'fox', 'weasel', 'badger', 'llama', 'bull'],
-    'dog': ['greyhound'],
     'fish': ['tuna', 'piranha'],
     'insect': ['wasp', 'beetle', 'butterfly', 'bee', 'caterpillar'],
     'wild_mammal': ['elephant', 'bear', 'zebra', 'giraffe', 'tiger', 'wolverine', 'monkey'],
@@ -136,8 +134,8 @@ known_mappings2 = {
     'rope_line': 'rope', 'outfit': 'clothing', 'jean': 'pant', 'back': ['body_part', None], 'shorts': 'clothing',
     'glass': ['cup', 'eyeglasses'], 'bike': ['bicycle', 'motorcycle'], 'washer': 'washing_machine', 'lamb': 'sheep',
     'tower': 'building', 'factory': 'building', 'cloth': 'clothing', 'clothes': 'clothing', 'fortress': 'building',
-    'fort': 'building', 'subway': 'train', 'hotdog': 'sausage', 'hot_dog': 'sausage', 'greyhound_dog': 'greyhound',
-    'dish': ['dish', 'tableware'], 'butt': 'body_part', 'python': 'snake', 'saucer': 'tableware', 'ferry_boat': 'ferry',
+    'fort': 'building', 'subway': 'train', 'hotdog': 'sausage', 'hot_dog': 'sausage',
+    'dish': ['dish', 'tableware'], 'butt': 'body_part', 'python': 'snake', 'saucer': 'tableware',
     'surf_board': 'surfboard', 'snow_board': 'snowboard', 'railway': 'railroad_track', 'mountain_peak': 'mountain'
 }
 
@@ -511,6 +509,25 @@ def is_noun(token_list, ind):
     
     return False
 
+def postprocessing(classes):
+    # In many cases we have two subsequent nouns referring to the same thing, where the first is a hyponym of the second
+    # (e.g., "ferry boat"). In this case we want to reduce the two to one
+    final_classes = []
+    prev_sample = None
+    for sample in classes:
+        if prev_sample is not None and \
+            prev_sample[0] == prev_sample[1] - 1 and \
+            prev_sample[1] == sample[0] and \
+            sample[0] == sample[1] - 1 and \
+            is_hyponym_of(prev_sample[3], sample[3]):
+            final_classes = final_classes[:-1]
+            final_classes.append((prev_sample[0], sample[1], prev_sample[2], prev_sample[3], prev_sample[4]))
+        else:
+            final_classes.append(sample)
+        prev_sample = sample
+
+    return final_classes
+
 def find_classes2(caption):
     ''' Count not only noun phrases, but all words. This currently doesn't work well. '''
     caption = caption.lower()
@@ -553,5 +570,7 @@ def find_classes2(caption):
         if phrase_class is not None:
             phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
             classes.append((start_ind, end_ind, phrase, phrase_class, exact_match))
+
+    classes = postprocessing(classes)
     
     return classes
