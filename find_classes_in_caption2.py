@@ -34,7 +34,7 @@ word_classes2 = [
     'slicer',  'cutter', 'caboose', 'pinwheel', 'fireball', 'okra', 'siren', 'pen', 'pencil', 'chalk', 'shingle',
     'ethnic_group', 'stepper', 'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'rail', 'shelf', 'railroad_track', 'swing',
     'paint', 'toy',  'fan', 'writing_implement', 'escalator', 'carpet', 'sponge', 'tattoo', 'jewelry', 'necklace',
-    'bracelet', 'earring',  'gun', 'rifle', 'hair', 'cart', 'cutting_board', 'egg', 'dessert', 'rack', 'milk', 'cheese',
+    'bracelet', 'earring',  'gun', 'rifle', 'hair', 'cart', 'cutting_board', 'egg', 'rack', 'milk', 'cheese',
     'meat', 'window',  'fireplace', 'folder', 'star', 'engine', 'tire', 'coffee_maker', 'branch', 'slide', 'advertisement',
     'mannequin', 'oil_rig', 'newsstand', 'terrace', 'binoculars', 'garage', 'map', 'sleeping_bag', 'bridge',
     'string', 'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail',
@@ -68,7 +68,7 @@ parent_to_children2 = {
     'kitchen_utensil': ['tableware', 'can', 'bowl', 'tray', 'cutting_board', 'pot'],
     'tableware': ['plate', 'cup', 'fork', 'knife', 'spoon', 'chopstick'],
     'food': ['fruit', 'vegetable', 'sandwich', 'corn', 'sausage', 'pizza', 'fries', 'burrito', 'taco',
-             'baked_goods', 'dessert', 'milk', 'cheese', 'meat', 'soup', 'coleslaw', 'falafel', 'sashimi', 'rice', 'pasta',
+             'baked_goods', 'milk', 'cheese', 'meat', 'soup', 'coleslaw', 'falafel', 'sashimi', 'rice', 'pasta',
              'seafood', 'dish', 'sauce'],
     'baked_goods': ['donut', 'cake', 'biscuit', 'bread'],
     'bread': ['toast'],
@@ -484,8 +484,12 @@ def is_noun(token_list, ind):
         if ind < len(token_list) - 1 and token_list[ind+1][0]['text'] == 'uniform':
             return False
         
-        # glass edge case: if the word "glass" is followed by a noun (e.g., "glass diir") this is not a noun
+        # glass edge case: if the word "glass" is followed by a noun (e.g., "glass door") this is not a noun
         if token_list[ind][0]['text'] == 'glass' and ind < len(token_list) - 1 and token_list[ind+1][0]['upos'] == 'NOUN':
+            return False
+        
+        # tooth/teeth edge case: if the word "teeth"/"tooth" follows (e.g., "animal teeth") this is not a noun
+        if ind < len(token_list) - 1 and token_list[ind+1][0]['text'] in ['teeth', 'tooth']:
             return False
         
         return True
@@ -521,7 +525,7 @@ def postprocessing(classes):
             sample[0] == sample[1] - 1 and \
             is_hyponym_of(prev_sample[3], sample[3]):
             final_classes = final_classes[:-1]
-            final_classes.append((prev_sample[0], sample[1], prev_sample[2], prev_sample[3], prev_sample[4]))
+            final_classes.append((prev_sample[0], sample[1], prev_sample[2] + ' ' + sample[2], prev_sample[3], prev_sample[4]))
         else:
             final_classes.append(sample)
         prev_sample = sample
