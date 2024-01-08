@@ -28,7 +28,7 @@ word_classes2 = [
     'washing_machine', 'drier', 'white_goods', 'book', 'clock', 'vase', 'scissors', 'teddy_bear', 'doll', 'hair_drier',
     'toothbrush', 'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'hill', 'dune', 'beach',
     'kitchen', 'kitchen_utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'tooth', 'bathtub', 'wine',
-    'sea', 'lake', 'head', 'mouth', 'beak', 'ear', 'eye', 'nose', 'heel', 'body_part', 'platform', 'box', 'uniform',
+    'sea', 'head', 'mouth', 'beak', 'ear', 'eye', 'nose', 'heel', 'body_part', 'platform', 'box', 'uniform',
     'towel', 'stone', 'statue', 'sculpture', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket',
     'nail', 'hammer', 'shovel', 'hand_tool', 'guitar', 'piano', 'musical_instrument', 'newspaper', 'helmet', 'carrier',
     'slicer',  'cutter', 'caboose', 'pinwheel', 'fireball', 'okra', 'siren', 'pen', 'pencil', 'chalk', 'shingle',
