@@ -107,7 +107,7 @@ non_word_classes2 = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
     'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly', 'young', 'small_white',
-    'small', 'blue', 'skate', 'third', 'paintball'
+    'small', 'blue', 'skate', 'third'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -393,6 +393,10 @@ def ball_handling(token_list, ball_ind):
     if token_list[ball_ind][0]['text'].endswith('balls'):
         return 'ball'
 
+    # Paintball is not a ball
+    if token_list[ball_ind][0]['text'] == 'paintball':
+        return None
+    
     # If it's a single word at the beginning of the sentence or with a determiner before it- it's the ball,
     # otherwise it's the game
     if is_subtree_first(token_list, ball_ind):
