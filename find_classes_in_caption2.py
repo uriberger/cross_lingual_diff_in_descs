@@ -40,7 +40,7 @@ word_classes2 = [
     'string', 'stadium', 'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail',
     'cloak', 'tea', 'note', 'watch', 'paraglider', 'parachute', 'letter', 'heart', 'foam', 'gauge', 'grill', 'food',
     'sauce', 'cloud', 'tunnel', 'ice', 'icing', 'sewer', 'promontory', 'roof', 'lemon', 'pomegranate', 'lamp', 'lantern',
-    'coin', 'paper', 'log', 'grass', 'greyhound'
+    'coin', 'paper', 'log', 'grass', 'greyhound', 'ferry'
     ]
 
 parent_to_children2 = {
@@ -48,6 +48,7 @@ parent_to_children2 = {
     'vehicle': ['bicycle', 'car', 'motorcycle', 'aircraft', 'bus', 'train', 'watercraft'],
     'car': ['truck'],
     'watercraft': ['boat', 'ship'],
+    'boat': ['ferry'],
     'aircraft': ['airplane', 'blimp'],
     'seat': ['bench', 'chair', 'couch'],
     'furniture': ['bed', 'seat', 'table', 'counter', 'shelf', 'rack'],
@@ -136,7 +137,7 @@ known_mappings2 = {
     'glass': ['cup', 'eyeglasses'], 'bike': ['bicycle', 'motorcycle'], 'washer': 'washing_machine', 'lamb': 'sheep',
     'tower': 'building', 'factory': 'building', 'cloth': 'clothing', 'clothes': 'clothing', 'fortress': 'building',
     'fort': 'building', 'subway': 'train', 'hotdog': 'sausage', 'hot_dog': 'sausage', 'greyhound_dog': 'greyhound',
-    'dish': ['dish', 'tableware'], 'butt': 'body_part', 'python': 'snake', 'saucer': 'tableware',
+    'dish': ['dish', 'tableware'], 'butt': 'body_part', 'python': 'snake', 'saucer': 'tableware', 'ferry_boat': 'ferry',
     'surf_board': 'surfboard', 'snow_board': 'snowboard', 'railway': 'railroad_track', 'mountain_peak': 'mountain'
 }
 
