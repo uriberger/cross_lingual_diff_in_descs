@@ -106,7 +106,7 @@ non_word_classes2 = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
     'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly', 'young', 'small_white',
-    'small', 'blue', 'skate', 'third', 'aged', 'styrofoam', 'adult'
+    'small', 'blue', 'skate', 'third', 'aged', 'styrofoam', 'adult', 'dome'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -118,7 +118,7 @@ known_mappings2 = {
     'rail_road_track': 'railroad_track', 'tv': 'television', 'skate_board': 'skateboard', 'roller_blades': 'rollerblade',
     'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote_control': 'remote', 'scooter': 'motorcycle',
     'hay': 'plant', 'van': 'car', 'walnut': 'nut', 'peanut': 'nut', 'children': 'child', 'diner': 'restaurant',
-    'guy': 'man', 'tennis_racquet': 'tennis_racket', 'male': 'man', 'female': 'woman',
+    'guy': 'man', 'tennis_racquet': 'tennis_racket', 'male': 'man', 'female': 'woman', 'toy_car': 'toy',
     'plantain': 'banana', 'racer': 'person', 'clippers': 'scissors', 'pet': 'animal', 'automobile': 'car',
     'president': 'person', 'guide': 'person', 'climber': 'person', 'commuter': 'person', 'dalmatian': 'dog',
     'chick': 'chicken', 'gondola': 'boat', 'ewe': 'sheep', 'sailor': 'person', 'fighter': 'airplane', 'receiver': 'person',
