@@ -107,7 +107,7 @@ non_word_classes2 = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
     'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly', 'young', 'small_white',
-    'small', 'blue', 'skate', 'third', 'aged'
+    'small', 'blue', 'skate', 'third', 'aged', 'styrofoam'
 ]
 
 # Inflect don't handle some strings well, ignore these
