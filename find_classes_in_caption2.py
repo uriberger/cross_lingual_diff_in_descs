@@ -482,7 +482,7 @@ def is_noun(token_list, ind):
             return False
         
         # uniform edge case: if the word "uniform" follows (e.g., "nurse uniform") this is not a noun
-        if ind < len(token_list - 1) and token_list[ind+1][0]['text'] == 'uniform':
+        if ind < len(token_list) - 1 and token_list[ind+1][0]['text'] == 'uniform':
             return False
         
         return True
