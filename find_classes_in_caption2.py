@@ -106,7 +106,7 @@ def is_hyponym_of(class1, class2):
 non_word_classes = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
-    'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior'
+    'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly'
 ]
 
 # Inflect don't handle some strings well, ignore these
