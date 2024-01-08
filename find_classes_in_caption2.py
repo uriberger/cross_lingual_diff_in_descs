@@ -179,10 +179,10 @@ def find_phrase_classes2(phrase):
     singular_phrase_classes = None
     if phrase not in non_inflect_strs and inflect_engine.singular_noun(phrase) != False:
         singular_phrase = inflect_engine.singular_noun(phrase)
-        singular_phrase_classes = find_preprocessed_phrase_classes2(singular_phrase)
+        singular_phrase_classes, exact_match = find_preprocessed_phrase_classes2(singular_phrase)
 
-    if singular_phrase_classes[0] is not None:
-        return singular_phrase_classes
+    if singular_phrase_classes is not None:
+        return singular_phrase_classes, exact_match
     else:
         return find_preprocessed_phrase_classes2(phrase)
 
