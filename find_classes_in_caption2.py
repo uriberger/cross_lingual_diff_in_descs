@@ -39,8 +39,8 @@ word_classes2 = [
     'mannequin', 'oil_rig', 'newsstand', 'terrace', 'binoculars', 'garage', 'map', 'pool', 'sleeping_bag', 'bridge',
     'string', 'stadium', 'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail',
     'cloak', 'tea', 'note', 'watch', 'paraglider', 'parachute', 'letter', 'heart', 'foam', 'gauge', 'grill', 'food',
-    'sauce', 'cloud', 'tunnel', 'ice', 'icing', 'sewer', 'surface', 'promontory', 'roof', 'lemon', 'pomegranate',
-    'lamp', 'lantern', 'coin', 'paper', 'log', 'grass', 'greyhound'
+    'sauce', 'cloud', 'tunnel', 'ice', 'icing', 'sewer', 'promontory', 'roof', 'lemon', 'pomegranate', 'lamp', 'lantern',
+    'coin', 'paper', 'log', 'grass', 'greyhound'
     ]
 
 parent_to_children2 = {
@@ -88,8 +88,7 @@ parent_to_children2 = {
     'toy': ['teddy_bear', 'doll'],
     'writing_implement': ['pen', 'pencil', 'chalk'],
     'jewelry': ['necklace', 'bracelet', 'earring'],
-    'gun': ['rifle'],
-    'surface': ['platform']
+    'gun': ['rifle']
 }
 
 child_to_parent2 = {}
@@ -138,8 +137,7 @@ known_mappings2 = {
     'tower': 'building', 'factory': 'building', 'cloth': 'clothing', 'clothes': 'clothing', 'fortress': 'building',
     'fort': 'building', 'subway': 'train', 'hotdog': 'sausage', 'hot_dog': 'sausage', 'greyhound_dog': 'greyhound',
     'dish': ['dish', 'tableware'], 'butt': 'body_part', 'python': 'snake', 'saucer': 'tableware',
-    'surf_board': 'surfboard', 'snow_board': 'snowboard', 'railway': 'railroad_track', 'sea_floor': 'surface',
-    'mountain_peak': 'mountain'
+    'surf_board': 'surfboard', 'snow_board': 'snowboard', 'railway': 'railroad_track', 'mountain_peak': 'mountain'
 }
 
 word_to_replace_str2 = {
