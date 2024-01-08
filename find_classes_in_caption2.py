@@ -21,13 +21,13 @@ word_classes2 = [
     'spoon', 'bowl', 'chopstick', 'tableware', 'tray', 'banana', 'apple', 'kiwi', 'raspberry', 'watermelon', 'sandwich',
     'orange', 'mandarin', 'cucumber', 'tomato', 'chickpea', 'broccoli', 'brussel_sprout', 'carrot', 'corn', 'garlic',
     'onion', 'greens', 'soybean', 'sausage', 'cabbage', 'vegetable', 'fruit', 'hotdog', 'pizza', 'rice', 'pasta',
-    'coleslaw', 'noodle', 'fries', 'donut', 'cake', 'baked_goods', 'biscuit', 'burrito', 'taco', 'falafel', 'sashimi',
+    'coleslaw', 'noodle', 'fries', 'donut', 'cake', 'baked_goods', 'biscuit', 'burrito', 'taco', 'falafel',
     'soup', 'bread', 'toast', 'coffee', 'chair', 'seat', 'couch', 'plant', 'flower', 'bed', 'pillow', 'blanket', 'sheets',
     'mattress', 'table', 'counter', 'toilet', 'television', 'laptop', 'computer', 'monitor', 'mouse', 'remote',
     'controller', 'keyboard', 'phone', 'microwave', 'oven', 'stove', 'toaster', 'sink', 'refrigerator', 'dishwasher',
     'washing_machine', 'drier', 'white_goods', 'book', 'clock', 'vase', 'scissors', 'teddy_bear', 'doll', 'hair_drier',
     'toothbrush', 'door', 'windows', 'sidewalk', 'building', 'restaurant', 'mountain', 'hill', 'dune', 'beach',
-    'kitchen', 'kitchen_utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'tooth', 'bathtub', 'wine',
+    'kitchen_utensil', 'graffiti', 'tree', 'sky', 'sun', 'moon', 'camera', 'mirror', 'tooth', 'bathtub', 'wine',
     'sea', 'head', 'mouth', 'beak', 'ear', 'eye', 'nose', 'heel', 'body_part', 'platform', 'box', 'uniform',
     'towel', 'stone', 'statue', 'sculpture', 'candle', 'rope', 'nut', 'bag', 'pole', 'toothpick', 'wheel', 'basket',
     'nail', 'hammer', 'shovel', 'hand_tool', 'guitar', 'piano', 'musical_instrument', 'newspaper', 'helmet', 'carrier',
@@ -35,7 +35,7 @@ word_classes2 = [
     'ethnic_group', 'stepper', 'chimney', 'leaf', 'fence', 'vehicle', 'torch', 'rail', 'shelf', 'railroad_track', 'swing',
     'paint', 'toy',  'fan', 'writing_implement', 'escalator', 'carpet', 'sponge', 'tattoo', 'jewelry', 'necklace',
     'bracelet', 'earring',  'gun', 'rifle', 'hair', 'cart', 'cutting_board', 'egg', 'rack', 'milk', 'cheese',
-    'meat', 'window',  'fireplace', 'folder', 'star', 'engine', 'tire', 'coffee_maker', 'branch', 'slide', 'advertisement',
+    'meat', 'window',  'fireplace', 'folder', 'star', 'engine', 'tire', 'coffee_maker', 'branch', 'slide',
     'mannequin', 'oil_rig', 'newsstand', 'terrace', 'binoculars', 'garage', 'map', 'sleeping_bag', 'bridge',
     'string', 'cocktail', 'straw', 'bell', 'frame', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail',
     'cloak', 'tea', 'note', 'watch', 'paraglider', 'parachute', 'letter', 'heart', 'foam', 'gauge', 'grill', 'food',
@@ -68,7 +68,7 @@ parent_to_children2 = {
     'kitchen_utensil': ['tableware', 'can', 'bowl', 'tray', 'cutting_board', 'pot'],
     'tableware': ['plate', 'cup', 'fork', 'knife', 'spoon', 'chopstick'],
     'food': ['fruit', 'vegetable', 'sandwich', 'corn', 'sausage', 'pizza', 'fries', 'burrito', 'taco',
-             'baked_goods', 'milk', 'cheese', 'meat', 'soup', 'coleslaw', 'falafel', 'sashimi', 'rice', 'pasta',
+             'baked_goods', 'milk', 'cheese', 'meat', 'soup', 'coleslaw', 'falafel', 'rice', 'pasta',
              'seafood', 'dish', 'sauce'],
     'baked_goods': ['donut', 'cake', 'biscuit', 'bread'],
     'bread': ['toast'],
@@ -106,7 +106,7 @@ non_word_classes2 = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
     'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly', 'young', 'small_white',
-    'small', 'blue', 'skate', 'third', 'aged', 'styrofoam', 'adult', 'dome'
+    'small', 'blue', 'skate', 'third', 'aged', 'styrofoam', 'adult', 'dome', 'stadium', 'granite'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -130,7 +130,7 @@ known_mappings2 = {
     'brownstone': 'building', 'pussycat': 'cat', 'romper': 'clothing', 'warbler': 'bird', 'schooner': ['boat', 'glass'],
     'trawler': 'boat', 'hatchback': 'car', 'whaler': 'boat', 'jigger': 'cup', 'cock': 'chicken', 'mallet': 'hammer',
     'clipper': 'scissors', 'angler': 'person', 'weaver': 'person', 'predator': 'animal', 'arab': 'ethnic_group',
-    'asian': 'ethnic_group', 'african': 'ethnic_group', 'galley': ['boat', 'kitchen', 'caboose'], 'hulk': 'person',
+    'asian': 'ethnic_group', 'african': 'ethnic_group', 'hulk': 'person',
     'rope_line': 'rope', 'outfit': 'clothing', 'jean': 'pant', 'back': ['body_part', None], 'shorts': 'clothing',
     'glass': ['cup', 'eyeglasses'], 'bike': ['bicycle', 'motorcycle'], 'washer': 'washing_machine', 'lamb': 'sheep',
     'tower': 'building', 'factory': 'building', 'cloth': 'clothing', 'clothes': 'clothing', 'fortress': 'building',
