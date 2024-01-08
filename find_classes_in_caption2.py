@@ -119,7 +119,7 @@ known_mappings2 = {
     'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote_control': 'remote', 'scooter': 'motorcycle',
     'hay': 'plant', 'van': 'car', 'walnut': 'nut', 'peanut': 'nut', 'children': 'child', 'diner': 'restaurant',
     'guy': 'man', 'tennis_racquet': 'tennis_racket', 'male': 'man', 'female': 'woman', 'adult': 'person',
-    'plantain': 'banana', 'racer': 'person', 'young': 'person', 'clippers': 'scissors', 'pet': 'animal',
+    'plantain': 'banana', 'racer': 'person', 'clippers': 'scissors', 'pet': 'animal',
     'president': 'person', 'guide': 'person', 'climber': 'person', 'commuter': 'person', 'dalmatian': 'dog',
     'chick': 'chicken', 'gondola': 'boat', 'ewe': 'sheep', 'sailor': 'person', 'fighter': 'airplane', 'receiver': 'person',
     'sweeper': 'person', 'settee': 'couch', 'caster': 'person', 'mansion': 'building', 'pecker': 'bird',
