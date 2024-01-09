@@ -136,7 +136,8 @@ known_mappings2 = {
     'tower': 'building', 'factory': 'building', 'cloth': 'clothing', 'clothes': 'clothing', 'fortress': 'building',
     'fort': 'building', 'subway': 'train', 'hotdog': 'sausage', 'hot_dog': 'sausage', 'lavender': 'flower',
     'dish': ['dish', 'tableware'], 'butt': 'body_part', 'python': 'snake', 'saucer': 'tableware',
-    'surf_board': 'surfboard', 'snow_board': 'snowboard', 'railway': 'railroad_track', 'mountain_peak': 'mountain'
+    'surf_board': 'surfboard', 'snow_board': 'snowboard', 'railway': 'railroad_track', 'mountain_peak': 'mountain',
+    'coin_parking': 'parking_meter'
 }
 
 word_to_replace_str2 = {
