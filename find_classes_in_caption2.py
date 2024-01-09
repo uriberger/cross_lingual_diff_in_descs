@@ -184,7 +184,7 @@ def find_phrase_classes2(phrase):
         singular_phrase = inflect_engine.singular_noun(phrase)
         singular_phrase_classes = find_preprocessed_phrase_classes2(singular_phrase)
 
-    if len(singular_phrase_classes) > 0 and len([x for x in singular_phrase_classes if x[0] is not None]) > 0:
+    if singular_phrase_classes is not None and len(singular_phrase_classes) > 0 and len([x for x in singular_phrase_classes if x[0] is not None]) > 0:
         return singular_phrase_classes
     else:
         return find_preprocessed_phrase_classes2(phrase)
