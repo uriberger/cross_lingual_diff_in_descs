@@ -403,12 +403,9 @@ def has_determiner(token_list, ind):
     return len([x for x in token_list if x[0]['head'] == ind+1 and x[0]['upos'] == 'DET']) > 0
 
 def ball_handling(token_list, ball_ind):
-    if token_list[ball_ind][0]['text'] in ['ball', 'balls']:
-        return 'ball', True
-
     # Plural is always the ball, never the game
     if token_list[ball_ind][0]['text'].endswith('balls'):
-        return 'ball', False
+        return 'ball', token_list[ball_ind][0]['text'] == 'balls'
 
     # Paintball is not a ball
     if token_list[ball_ind][0]['text'] == 'paintball':
@@ -417,10 +414,10 @@ def ball_handling(token_list, ball_ind):
     # If it's a single word at the beginning of the sentence or with a determiner before it- it's the ball,
     # otherwise it's the game
     if is_subtree_first(token_list, ball_ind):
-        return 'ball', False
+        return 'ball', token_list[ball_ind][0]['text'] == 'ball'
     
     if has_determiner(token_list, ball_ind):
-        return 'ball', False
+        return 'ball', token_list[ball_ind][0]['text'] == 'ball'
     
     return None, False
 
