@@ -122,7 +122,7 @@ sister_term_mappings = {
     'clipper': 'scissors', 'toilet_tank': 'toilet', 'rope_line': 'rope', 'glass': ['cup', 'eyeglasses'],
     'bike': ['bicycle', 'motorcycle'], 'washer': 'washing_machine', 'lamb': 'sheep', 'cloth': 'clothing',
     'clothes': 'clothing', 'hotdog': 'sausage', 'hot_dog': 'sausage', 'dish': 'dish', 'surf_board': 'surfboard',
-    'snow_board': 'snowboard', 'railway': 'railroad_track', 'coin_parking': 'parking_meter'
+    'snow_board': 'snowboard', 'railway': 'railroad_track', 'coin_parking': 'parking_meter', 'sea_floor': 'sea'
 }
 
 hypernym_mappings = {
