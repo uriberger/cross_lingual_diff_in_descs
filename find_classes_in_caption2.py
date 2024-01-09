@@ -403,23 +403,26 @@ def has_determiner(token_list, ind):
     return len([x for x in token_list if x[0]['head'] == ind+1 and x[0]['upos'] == 'DET']) > 0
 
 def ball_handling(token_list, ball_ind):
+    if token_list[ball_ind][0]['text'] in ['ball', 'balls']:
+        return 'ball', True
+
     # Plural is always the ball, never the game
     if token_list[ball_ind][0]['text'].endswith('balls'):
-        return 'ball'
+        return 'ball', False
 
     # Paintball is not a ball
     if token_list[ball_ind][0]['text'] == 'paintball':
-        return None
+        return None, False
     
     # If it's a single word at the beginning of the sentence or with a determiner before it- it's the ball,
     # otherwise it's the game
     if is_subtree_first(token_list, ball_ind):
-        return 'ball'
+        return 'ball', False
     
     if has_determiner(token_list, ball_ind):
-        return 'ball'
+        return 'ball', False
     
-    return None
+    return None, False
 
 def top_handling(token_list, start_ind):
     # Need to distinguish top as a preposition from the clothing
@@ -428,56 +431,55 @@ def top_handling(token_list, start_ind):
         x[0]['upos'] == 'DET' and
         x[0]['text'].lower() in ['a', 'an']
         ]) > 0:
-        return 'clothing'
+        return 'clothing', False
     
-    return None
+    return None, False
 
 def couple_handling(token_list, ind):
     # If we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
     # we do want. Distinguish by checking if we have no "of" after it
     if ind < (len(token_list) - 1) and token_list[ind+1][0]['text'].lower() == 'of':
-        return None
+        return None, False
     
-    return 'person'
+    return 'person', False
 
 def plant_handling(token_list, start_ind, end_ind):
     # If we have a plant, it's the living thing- unless the word "power" is before it
     if end_ind - start_ind == 2 and token_list[start_ind][0]['text'] == 'power':
-        return 'building'
+        return 'building', False
     
-    return 'plant'
+    return 'plant', True
 
 def phrase_location_to_class2(token_list, start_ind, end_ind):
     phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
-    exact_match = True
 
     # 1. We have a problem when there's a sport named the same as its ball (baseball, basketball etc.).
     # The more common synset is the game, and when someone talks about the ball the algorithm always thinks it's the game.
     # We'll try identifying these cases
     if end_ind - start_ind == 1 and token_list[start_ind][0]['text'].endswith('ball') or token_list[start_ind][0]['text'].endswith('balls'):
-        phrase_class = ball_handling(token_list, start_ind)
+        phrase_class, exact_match = ball_handling(token_list, start_ind)
 
     # 2. "top" is also a problem, as it might be clothing
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'top':
-        phrase_class = top_handling(token_list, start_ind)
+        phrase_class, exact_match = top_handling(token_list, start_ind)
 
     # 3. "couple": if we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
     # we do want. Distinguish by checking if we have a determiner (or this is the first phrase), and no "of" after it
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] in ['couple', 'couples']:
-        phrase_class = couple_handling(token_list, start_ind)
+        phrase_class, exact_match = couple_handling(token_list, start_ind)
 
     # 4. "plant": people almost always mean plants and not factories. We'll always chooce plants except if we see the
     # word "power" before
     elif token_list[end_ind - 1][0]['text'] in ['plant', 'plants']:
-        phrase_class = plant_handling(token_list, start_ind, end_ind)
+        phrase_class, exact_match = plant_handling(token_list, start_ind, end_ind)
 
     else:
         phrase_classes = find_phrase_classes2(phrase)
 
         if len(phrase_classes) > 1:
-            phrase_class = choose_class_with_lm(token_list, start_ind, end_ind, phrase_classes)
+            phrase_class, exact_match = choose_class_with_lm(token_list, start_ind, end_ind, phrase_classes)
         else:
-            phrase_class = phrase_classes[0]
+            phrase_class, exact_match = phrase_classes[0]
 
     return phrase_class, exact_match
 
