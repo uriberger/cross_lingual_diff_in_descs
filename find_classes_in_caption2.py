@@ -355,7 +355,12 @@ def choose_class_with_lm(token_list, start_ind, end_ind, class_list, selection_m
             if class_prob > max_class_prob:
                 max_class_prob = class_prob
                 class_with_max_prob = cur_class
-    return class_with_max_prob, class_to_exact_match[class_with_max_prob]
+
+    if class_with_max_prob is None:
+        exact_match = False
+    else:
+        exact_match = class_to_exact_match[class_with_max_prob]
+    return class_with_max_prob, exact_match
 
 def choose_class_with_clip(token_list, start_ind, end_ind, class_list, image_path):
     before = [x[0]['text'].lower() for x in token_list[:start_ind]]
