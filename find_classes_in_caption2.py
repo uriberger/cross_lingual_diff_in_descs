@@ -114,30 +114,33 @@ non_inflect_strs2 = [
     'dress'
 ]
 
-known_mappings2 = {
+sister_term_mappings = {
     'rail_road_track': 'railroad_track', 'tv': 'television', 'skate_board': 'skateboard', 'roller_blades': 'rollerblade',
-    'snowboarder': 'person', 'surfer': 'person', 'ocean': 'sea', 'remote_control': 'remote', 'scooter': 'motorcycle',
-    'hay': 'plant', 'van': 'car', 'walnut': 'nut', 'peanut': 'nut', 'children': 'child', 'diner': 'restaurant',
-    'guy': 'man', 'tennis_racquet': 'tennis_racket', 'male': 'man', 'female': 'woman', 'toy_car': 'toy',
-    'plantain': 'banana', 'racer': 'person', 'clippers': 'scissors', 'pet': 'animal', 'automobile': 'car',
-    'president': 'person', 'guide': 'person', 'climber': 'person', 'commuter': 'person', 'dalmatian': 'dog',
-    'chick': 'chicken', 'gondola': 'boat', 'ewe': 'sheep', 'sailor': 'person', 'fighter': 'airplane', 'receiver': 'person',
+    'ocean': 'sea', 'remote_control': 'remote', 'children': 'child',  'tennis_racquet': 'tennis_racket', 'male': 'man',
+    'female': 'woman', 'automobile': 'car', 'chick': 'chicken', 'frank': 'sausage', 'brat': 'sausage', 'snoot': 'nose',
+    'tangerine': 'mandarin', 'sharpie': 'pen', 'pussycat': 'cat', 'cock': 'chicken', 'mallet': 'hammer',
+    'clipper': 'scissors', 'toilet_tank': 'toilet', 'rope_line': 'rope', 'glass': ['cup', 'eyeglasses'],
+    'bike': ['bicycle', 'motorcycle'], 'washer': 'washing_machine', 'lamb': 'sheep', 'cloth': 'clothing',
+    'clothes': 'clothing', 'hotdog': 'sausage', 'hot_dog': 'sausage', 'dish': 'dish', 'surf_board': 'surfboard',
+    'snow_board': 'snowboard', 'railway': 'railroad_track', 'coin_parking': 'parking_meter'
+}
+
+hypernym_mappings = {
+    'snowboarder': 'person', 'surfer': 'person', 'scooter': 'motorcycle', 'hay': 'plant', 'van': 'car', 'walnut': 'nut',
+    'peanut': 'nut', 'diner': 'restaurant', 'guy': 'man', 'toy_car': 'toy', 'plantain': 'banana', 'racer': 'person',
+    'pet': 'animal', 'president': 'person', 'guide': 'person', 'climber': 'person', 'commuter': 'person',
+    'dalmatian': 'dog', 'gondola': 'boat', 'ewe': 'sheep', 'sailor': 'person', 'fighter': 'airplane', 'receiver': 'person',
     'sweeper': 'person', 'settee': 'couch', 'caster': 'person', 'mansion': 'building', 'pecker': 'bird',
-    'emperor': 'person', 'smoker': 'person', 'medic': 'person', 'frank': 'sausage', 'canary': 'bird', 'chestnut': 'nut',
-    'lounger': 'chair', 'brat': 'sausage', 'snoot': 'nose', 'cardigan': 'sweater', 'tangerine': 'mandarin',
-    'wrecker': 'truck', 'setter': 'dog', 'sharpie': 'pen', 'jumper': ['person', 'clothing'], 'digger': ['person', 'truck'],
-    'prey': 'animal', 'excavator': ['person', 'truck'], 'watchdog': 'dog', 'barker': 'person', 'sphinx': 'statue',
-    'brownstone': 'building', 'pussycat': 'cat', 'romper': 'clothing', 'warbler': 'bird', 'schooner': ['boat', 'glass'],
-    'trawler': 'boat', 'hatchback': 'car', 'whaler': 'boat', 'jigger': 'cup', 'cock': 'chicken', 'mallet': 'hammer',
-    'clipper': 'scissors', 'angler': 'person', 'weaver': 'person', 'predator': 'animal', 'arab': 'ethnic_group',
-    'asian': 'ethnic_group', 'african': 'ethnic_group', 'hulk': 'person', 'toilet_tank': 'toilet',
-    'rope_line': 'rope', 'outfit': 'clothing', 'jean': 'pant', 'back': ['body_part', None], 'shorts': 'clothing',
-    'glass': ['cup', 'eyeglasses'], 'bike': ['bicycle', 'motorcycle'], 'washer': 'washing_machine', 'lamb': 'sheep',
-    'tower': 'building', 'factory': 'building', 'cloth': 'clothing', 'clothes': 'clothing', 'fortress': 'building',
-    'fort': 'building', 'subway': 'train', 'hotdog': 'sausage', 'hot_dog': 'sausage', 'lavender': 'flower',
-    'dish': ['dish', 'tableware'], 'butt': 'body_part', 'python': 'snake', 'saucer': 'tableware',
-    'surf_board': 'surfboard', 'snow_board': 'snowboard', 'railway': 'railroad_track', 'mountain_peak': 'mountain',
-    'coin_parking': 'parking_meter'
+    'emperor': 'person', 'smoker': 'person', 'medic': 'person', 'canary': 'bird', 'chestnut': 'nut', 'lounger': 'chair',
+    'cardigan': 'sweater', 'wrecker': 'truck', 'setter': 'dog', 'jumper': ['person', 'clothing'],
+    'digger': ['person', 'truck'], 'prey': 'animal', 'excavator': ['person', 'truck'], 'watchdog': 'dog',
+    'barker': 'person', 'sphinx': 'statue', 'brownstone': 'building', 'romper': 'clothing', 'warbler': 'bird',
+    'schooner': ['boat', 'glass'], 'trawler': 'boat', 'hatchback': 'car', 'whaler': 'boat', 'jigger': 'cup',
+    'angler': 'person', 'weaver': 'person', 'predator': 'animal', 'arab': 'ethnic_group', 'asian': 'ethnic_group',
+    'african': 'ethnic_group', 'hulk': 'person', 'outfit': 'clothing', 'jean': 'pant', 'back': ['body_part', None],
+    'shorts': 'clothing', 'tower': 'building', 'factory': 'building', 'fortress': 'building', 'fort': 'building',
+    'subway': 'train', 'lavender': 'flower', 'dish': 'tableware', 'butt': 'body_part', 'python': 'snake',
+    'saucer': 'tableware',
 }
 
 word_to_replace_str2 = {
@@ -179,25 +182,36 @@ def find_phrase_classes2(phrase):
     singular_phrase_classes = None
     if phrase not in non_inflect_strs2 and inflect_engine.singular_noun(phrase) != False:
         singular_phrase = inflect_engine.singular_noun(phrase)
-        singular_phrase_classes, exact_match = find_preprocessed_phrase_classes2(singular_phrase)
+        singular_phrase_classes = find_preprocessed_phrase_classes2(singular_phrase)
 
-    if singular_phrase_classes is not None:
-        return singular_phrase_classes, exact_match
+    if len(singular_phrase_classes) > 0 and len([x for x in singular_phrase_classes if x[0] is not None]) > 0:
+        return singular_phrase_classes
     else:
         return find_preprocessed_phrase_classes2(phrase)
 
 def find_preprocessed_phrase_classes2(phrase):
     phrase = phrase.replace(' ', '_')
-    exact_match = False
 
-    if phrase in known_mappings2:
-        phrase_class = known_mappings2[phrase]
-        exact_match = True
+    phrase_mappings = []
+    if phrase in sister_term_mappings:
+        sister_term_mapping = sister_term_mappings[phrase]
+        if type(sister_term_mapping) == list:
+            phrase_mappings += [(x, True) for x in sister_term_mapping]
+        else:
+            phrase_mappings.append((sister_term_mapping, True))
+    if phrase in hypernym_mappings:
+        hypernym_mapping = hypernym_mappings[phrase]
+        if type(hypernym_mapping) == list:
+            phrase_mappings += [(x, False) for x in hypernym_mapping]
+        else:
+            phrase_mappings.append((hypernym_mapping, False))
+
+    if len(phrase_mappings) > 0:
+        return phrase_mappings
     elif phrase in word_classes2:
-        phrase_class = phrase
-        exact_match = True
+        return [(phrase, True)]
     elif phrase in non_word_classes2:
-        return None, False
+        return [(None, False)]
     else:
         synsets = wn.synsets(phrase)
         synsets = [synset for synset in synsets if synset.pos() == 'n']
@@ -208,7 +222,7 @@ def find_preprocessed_phrase_classes2(phrase):
                 classes += find_synset_classes(synset)
         classes = list(set(classes))
         if len(classes) == 0:
-            phrase_class = None
+            return [(None, False)]
         else:
             # First, reduce classes to hyponyms only
             to_remove = {}
@@ -239,12 +253,9 @@ def find_preprocessed_phrase_classes2(phrase):
             elif len(classes) == 2 and is_hyponym_of(classes[1], classes[0]):
                 classes = [classes[1]]
 
-            if len(classes) == 1:
-                phrase_class = classes[0]
-            else:
-                phrase_class = classes
+            classes = [(x, False) for x in classes]
 
-    return phrase_class, exact_match
+    return classes
 
 def preprocess(token_list):
     # Just solving some known issues
@@ -300,6 +311,9 @@ def is_an_word(word):
     return inflected.startswith('an')
 
 def choose_class_with_lm(token_list, start_ind, end_ind, class_list, selection_method='probs'):
+    class_to_exact_match = {x[0]: x[1] for x in class_list}
+    only_class_list = [x[0] for x in class_list]
+
     before = [x[0]['text'].lower() for x in token_list[:start_ind]]
     after = [x[0]['text'].lower() for x in token_list[end_ind:]]
 
@@ -307,13 +321,13 @@ def choose_class_with_lm(token_list, start_ind, end_ind, class_list, selection_m
     if orig_word in word_to_replace_str2:
         class_to_repr_word = word_to_replace_str2[orig_word]
     else:
-        class_to_repr_word = {cur_class: cur_class for cur_class in class_list}
+        class_to_repr_word = {cur_class: cur_class for cur_class in only_class_list}
     
     # To prevent unwanted bias, check if we need to consider a/an
     if len(before) > 0 and before[-1] in ['a', 'an']:
         a_classes = []
         an_classes = []
-        for cur_class in class_list:
+        for cur_class in only_class_list:
             if is_an_word(class_to_repr_word[cur_class]):
                 an_classes.append(cur_class)
             else:
@@ -326,7 +340,7 @@ def choose_class_with_lm(token_list, start_ind, end_ind, class_list, selection_m
     else:
         text = ' '.join(before + [mask_str] + after)
         probs = get_probs_from_lm(text, selection_method)
-        prob_class_list = [(probs, class_list)]
+        prob_class_list = [(probs, only_class_list)]
 
     max_class_prob = (-1)*math.inf
     class_with_max_prob = None
@@ -341,7 +355,7 @@ def choose_class_with_lm(token_list, start_ind, end_ind, class_list, selection_m
             if class_prob > max_class_prob:
                 max_class_prob = class_prob
                 class_with_max_prob = cur_class
-    return class_with_max_prob
+    return class_with_max_prob, class_to_exact_match[class_with_max_prob]
 
 def choose_class_with_clip(token_list, start_ind, end_ind, class_list, image_path):
     before = [x[0]['text'].lower() for x in token_list[:start_ind]]
@@ -457,15 +471,13 @@ def phrase_location_to_class2(token_list, start_ind, end_ind):
     elif token_list[end_ind - 1][0]['text'] in ['plant', 'plants']:
         phrase_class = plant_handling(token_list, start_ind, end_ind)
 
-    # 5. "mini" is also a problem, as it might be clothing
-    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'mini':
-        phrase_class = mini_handling(token_list, start_ind)
-
     else:
-        phrase_class, exact_match = find_phrase_classes2(phrase)
+        phrase_classes = find_phrase_classes2(phrase)
 
-        if type(phrase_class) is list:
-            phrase_class = choose_class_with_lm(token_list, start_ind, end_ind, phrase_class)
+        if len(phrase_classes) > 1:
+            phrase_class = choose_class_with_lm(token_list, start_ind, end_ind, phrase_classes)
+        else:
+            phrase_class = phrase_classes[0]
 
     return phrase_class, exact_match
 
