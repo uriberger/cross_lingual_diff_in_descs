@@ -1,4 +1,4 @@
-from find_classes_in_caption import *
+from find_classes_in_caption2 import *
 from collections import defaultdict
 import json
 import scipy.stats as stats
@@ -11,7 +11,7 @@ from tqdm import tqdm
 from sklearn.cluster import SpectralClustering
 
 def get_class_to_image_prob(dataset):
-    all_classes = list(set(word_classes + list(parent_to_children.keys())))
+    all_classes = list(set(word_classes2 + list(parent_to_children2.keys())))
     with open(f'datasets/{dataset}.json', 'r') as fp:
         data = json.load(fp)
     class_to_image_count = {x: defaultdict(int) for x in all_classes}
@@ -24,8 +24,8 @@ def get_class_to_image_prob(dataset):
         for cur_class in list(set(sample['classes'])):
             identified_classes.append(cur_class)
             inner_cur_class = cur_class
-            while inner_cur_class in child_to_parent:
-                inner_cur_class = child_to_parent[inner_cur_class]
+            while inner_cur_class in child_to_parent2:
+                inner_cur_class = child_to_parent2[inner_cur_class]
                 identified_classes.append(inner_cur_class)
         identified_classes = list(set(identified_classes))
         for id_class in identified_classes:
@@ -35,7 +35,7 @@ def get_class_to_image_prob(dataset):
     return class_to_image_prob, class_to_image_count, image_count
 
 def get_class_to_image_prob_dataset_pair(datasets):
-    all_classes = list(set(word_classes + list(parent_to_children.keys())))
+    all_classes = list(set(word_classes2 + list(parent_to_children2.keys())))
     with open(f'datasets/{datasets[0]}.json', 'r') as fp:
         data1 = json.load(fp)
     with open(f'datasets/{datasets[1]}.json', 'r') as fp:
@@ -59,8 +59,8 @@ def get_class_to_image_prob_dataset_pair(datasets):
             for cur_class in list(set(cur_data[i]['classes'])):
                 identified_classes.append(cur_class)
                 inner_cur_class = cur_class
-                while inner_cur_class in child_to_parent:
-                    inner_cur_class = child_to_parent[inner_cur_class]
+                while inner_cur_class in child_to_parent2:
+                    inner_cur_class = child_to_parent2[inner_cur_class]
                     identified_classes.append(inner_cur_class)
             identified_classes = list(set(identified_classes))
             for id_class in identified_classes:
@@ -70,7 +70,7 @@ def get_class_to_image_prob_dataset_pair(datasets):
     return class_to_image_prob, class_to_image_count, image_count, image_ids
 
 def get_annotator_agreement(dataset):
-    all_classes = list(set(word_classes + list(parent_to_children.keys())))
+    all_classes = list(set(word_classes2 + list(parent_to_children2.keys())))
     with open(f'datasets/{dataset}.json', 'r') as fp:
         data = json.load(fp)
 
@@ -103,7 +103,7 @@ def get_annotator_agreement(dataset):
     return class_to_agreement
 
 def compute_wilcoxon(dataset_pairs):
-    all_classes = list(set(word_classes + list(parent_to_children.keys())))
+    all_classes = list(set(word_classes2 + list(parent_to_children2.keys())))
 
     res = []
     for dataset_pair in dataset_pairs:
@@ -155,7 +155,7 @@ def get_extreme_images(dataset_pairs):
     return res
 
 def compute_diff_and_add_indexes(dataset_pairs):
-    all_classes = list(set(word_classes + list(parent_to_children.keys())))
+    all_classes = list(set(word_classes2 + list(parent_to_children2.keys())))
     res = []
     for dataset_pair in dataset_pairs:
         print(f'[diff_add_index] starting {dataset_pair}')
@@ -177,7 +177,7 @@ def compute_diff_and_add_indexes(dataset_pairs):
     return res
 
 def compute_correlation(dataset_pair):
-    all_classes = list(set(word_classes + list(parent_to_children.keys())))
+    all_classes = list(set(word_classes2 + list(parent_to_children2.keys())))
     print(f'[correlation] starting {dataset_pair}')
     class_to_image_prob, _, _, image_ids = get_class_to_image_prob_dataset_pair(dataset_pair)
     res = {}
@@ -188,7 +188,7 @@ def compute_correlation(dataset_pair):
     return res
 
 def compute_vector_similarity(dataset_pair, sim_method):
-    all_classes = list(set(word_classes + list(parent_to_children.keys())))
+    all_classes = list(set(word_classes2 + list(parent_to_children2.keys())))
     class_to_image_prob, _, _, image_ids = get_class_to_image_prob_dataset_pair(dataset_pair)
     res = {}
     for cur_class in all_classes:
