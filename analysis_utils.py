@@ -21,7 +21,7 @@ def get_class_to_image_prob(dataset):
             continue
         image_count[sample['image_id']] += 1
         identified_classes = []
-        for cur_class in list(set(sample['classes'])):
+        for cur_class in list(set([x[3] for x in sample['classes']])):
             identified_classes.append(cur_class)
             inner_cur_class = cur_class
             while inner_cur_class in child_to_parent2:
@@ -56,7 +56,7 @@ def get_class_to_image_prob_dataset_pair(datasets):
         for i in range(len(cur_data)):
             image_count[j][cur_data[i]['image_id']] += 1
             identified_classes = []
-            for cur_class in list(set(cur_data[i]['classes'])):
+            for cur_class in list(set([x[3] for x in cur_data[i]['classes']])):
                 identified_classes.append(cur_class)
                 inner_cur_class = cur_class
                 while inner_cur_class in child_to_parent2:
@@ -87,7 +87,7 @@ def get_annotator_agreement(dataset):
         for j in range(max_annotator_num):
             if j < len(captions):
                 for cur_class in captions[j]['classes']:
-                    class_to_annotator_data[cur_class][i, j] = 1
+                    class_to_annotator_data[cur_class[3]][i, j] = 1
             else:
                 for cur_class in all_classes:
                     class_to_annotator_data[cur_class][i, j] = np.nan
