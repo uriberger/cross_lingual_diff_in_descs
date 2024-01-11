@@ -40,7 +40,7 @@ word_classes2 = [
     'string', 'cocktail', 'straw', 'bell', 'battery', 'menu', 'planter', 'dish', 'pot', 'tail',
     'cloak', 'tea', 'note', 'watch', 'paraglider', 'parachute', 'letter', 'heart', 'foam', 'gauge', 'grill', 'food',
     'sauce', 'cloud', 'tunnel', 'ice', 'icing', 'sewer', 'promontory', 'lemon', 'pomegranate', 'lamp', 'lantern', 'coin',
-    'paper', 'log', 'grass', 'bus_stop'
+    'paper', 'log', 'grass', 'bus_stop', 'cheetah'
     ]
 
 parent_to_children2 = {
@@ -58,7 +58,7 @@ parent_to_children2 = {
                'beaver', 'fox', 'weasel', 'badger', 'llama', 'bull'],
     'fish': ['tuna', 'piranha'],
     'insect': ['wasp', 'beetle', 'butterfly', 'bee', 'caterpillar'],
-    'wild_mammal': ['elephant', 'bear', 'zebra', 'giraffe', 'tiger', 'wolverine', 'monkey'],
+    'wild_mammal': ['elephant', 'bear', 'zebra', 'giraffe', 'tiger', 'wolverine', 'monkey', 'cheetah'],
     'bag': ['backpack', 'suitcase', 'basket'],
     'clothing': ['tie', 'hat', 'sunglasses', 'shirt', 'sweater', 'pant', 'diaper', 'dress', 'coat', 'helmet', 'boa',
                  'eyeglasses', 'cloak'],
