@@ -187,6 +187,16 @@ def compute_correlation(dataset_pair):
     
     return res
 
+def compute_similarity_by_class(dataset_pair, sim_method, cur_class):
+    class_to_image_prob, _, _, image_ids = get_class_to_image_prob_dataset_pair(dataset_pair)
+    lists = [[class_to_image_prob[i][cur_class][x] if x in class_to_image_prob[i][cur_class] else 0 for x in image_ids] for i in range(2)]
+    vec1 = np.array(lists[0])
+    vec2 = np.array(lists[1])
+    if sim_method == 'l2_norm':
+        return (-1)*np.linalg.norm(vec1-vec2)
+    elif sim_method == 'cosine':
+        return 1 - spatial.distance.cosine(vec1, vec2)
+
 def compute_vector_similarity(dataset_pair, sim_method):
     all_classes = list(set(word_classes2 + list(parent_to_children2.keys())))
     class_to_image_prob, _, _, image_ids = get_class_to_image_prob_dataset_pair(dataset_pair)
@@ -202,8 +212,8 @@ def compute_vector_similarity(dataset_pair, sim_method):
     return res
 
 def compute_language_similarity(dataset_pair, sim_method, agg_method, cur_class):
-    per_class_similarity = compute_vector_similarity(dataset_pair, sim_method)
     if cur_class is None:
+        per_class_similarity = compute_vector_similarity(dataset_pair, sim_method)
         # Use all classes an aggregeate using agg_method
         sim_list = [x[1] for x in sorted(list(per_class_similarity.items()), key=lambda y:y[0])]
         if agg_method == 'mean':
@@ -211,7 +221,7 @@ def compute_language_similarity(dataset_pair, sim_method, agg_method, cur_class)
         if agg_method == 'l2_norm':
             return (-1)*np.linalg.norm(sim_list)
     else:
-        return per_class_similarity[cur_class]
+        return compute_similarity_by_class(dataset_pair, sim_method, cur_class)
     
 def cluster_langs(langs, sim_method, agg_method, n_cluster, dataset_prefix, cur_class=None):
     pairs = [(i, j) for i in range(len(langs)) for j in range(i+1, len(langs))]
