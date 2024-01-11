@@ -201,21 +201,25 @@ def compute_vector_similarity(dataset_pair, sim_method):
             res[cur_class] = 1 - spatial.distance.cosine(vec1, vec2)
     return res
 
-def compute_language_similarity(dataset_pair, sim_method, agg_method):
+def compute_language_similarity(dataset_pair, sim_method, agg_method, cur_class):
     per_class_similarity = compute_vector_similarity(dataset_pair, sim_method)
-    sim_list = [x[1] for x in sorted(list(per_class_similarity.items()), key=lambda y:y[0])]
-    if agg_method == 'mean':
-        return sum(sim_list)/len(sim_list)
-    if agg_method == 'l2_norm':
-        return (-1)*np.linalg.norm(sim_list)
+    if cur_class is None:
+        # Use all classes an aggregeate using agg_method
+        sim_list = [x[1] for x in sorted(list(per_class_similarity.items()), key=lambda y:y[0])]
+        if agg_method == 'mean':
+            return sum(sim_list)/len(sim_list)
+        if agg_method == 'l2_norm':
+            return (-1)*np.linalg.norm(sim_list)
+    else:
+        return per_class_similarity[cur_class]
     
-def cluster_langs(langs, sim_method, agg_method, n_cluster, dataset_prefix):
+def cluster_langs(langs, sim_method, agg_method, n_cluster, dataset_prefix, cur_class=None):
     pairs = [(i, j) for i in range(len(langs)) for j in range(i+1, len(langs))]
     adj_mat = np.zeros((36, 36))
     for i, j in tqdm(pairs):
         lang1 = langs[i]
         lang2 = langs[j]
-        cur_adj = compute_language_similarity((f'{dataset_prefix}_{lang1}', f'{dataset_prefix}_{lang2}'), sim_method, agg_method)
+        cur_adj = compute_language_similarity((f'{dataset_prefix}_{lang1}', f'{dataset_prefix}_{lang2}'), sim_method, agg_method, cur_class)
         adj_mat[i, j] = cur_adj
         adj_mat[j, i] = cur_adj
         
