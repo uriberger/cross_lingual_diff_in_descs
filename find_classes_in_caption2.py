@@ -75,7 +75,7 @@ parent_to_children2 = {
     'fruit': ['banana', 'apple', 'orange', 'mandarin', 'kiwi', 'raspberry', 'nut', 'watermelon', 'lemon', 'pomegranate'],
     'vegetable': ['cucumber', 'tomato', 'broccoli', 'brussel_sprout', 'carrot', 'garlic', 'onion', 'cabbage', 'chickpea',
                   'okra', 'soybean', 'greens'],
-    'plant': ['tree', 'flower'],
+    'plant': ['tree', 'flower', 'grass'],
     'electornics': ['television', 'computer', 'monitor', 'mouse', 'remote', 'controller', 'keyboard', 'phone',
     'microwave', 'oven', 'stove', 'toaster', 'white_goods'],
     'computer': ['laptop'],
