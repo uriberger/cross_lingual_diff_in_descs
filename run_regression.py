@@ -5,7 +5,7 @@ from regression import RegressionHandler
 import time
 
 def run_regression(method='final'):
-    reg_obj = RegressionHandler(default_method)
+    reg_obj = RegressionHandler(method)
     failed = []
     waived_and_passed = []
     waived_and_failed = []

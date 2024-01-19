@@ -14,6 +14,8 @@ class_phrases = [
     'body_of_water', 'hand_tool', 'musical_instrument', 'writing_implement', 'jewelry', 'weapon', 'timepiece'
     # Riding device
     'riding_device', 'ski', 'surfboard', 'snowboard', 'skateboard', 'rollerblade',
+    # Things I added manually
+    'factory'
     # Things that are not under any class and I don't know what to do with them
     #'ball', 'computer', 'book', 'door', 'window', 'bridge'
     ]
@@ -21,7 +23,8 @@ class_phrases = [
 parent_to_children3 = {
     'riding_device': ['ski', 'surfboard', 'snowboard', 'skateboard', 'rollerblade'],
     'tableware': ['plate'],
-    'pepper': ['chili_pepper']
+    'pepper': ['chili_pepper'],
+    'building': ['factory']
 }
 
 child_to_parent3 = {}
@@ -40,7 +43,7 @@ non_class_phrases = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
     'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly', 'young', 'small_white',
-    'small', 'blue', 'skate', 'third', 'aged', 'styrofoam', 'adult', 'dome', 'stadium', 'granite', 'machine'
+    'small', 'blue', 'skate', 'third', 'aged', 'styrofoam', 'adult', 'dome', 'stadium', 'granite', 'machine', 'string'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -396,7 +399,7 @@ def couple_handling(token_list, ind):
 def plant_handling(token_list, start_ind, end_ind):
     # If we have a plant, it's the living thing- unless the word "power" is before it
     if end_ind - start_ind == 2 and token_list[start_ind][0]['text'] == 'power':
-        return 'building', 1
+        return 'factory', 0
     
     return 'plant', 0
 
@@ -490,7 +493,7 @@ def postprocessing(classes):
             sample[0] == sample[1] - 1 and \
             is_hyponym_of(prev_sample[3], sample[3]):
             final_classes = final_classes[:-1]
-            final_classes.append((prev_sample[0], sample[1], prev_sample[2] + ' ' + sample[2], prev_sample[3], prev_sample[4]))
+            final_classes.append((prev_sample[0], sample[1], prev_sample[2], prev_sample[3], prev_sample[4]))
         else:
             final_classes.append(sample)
         prev_sample = sample
