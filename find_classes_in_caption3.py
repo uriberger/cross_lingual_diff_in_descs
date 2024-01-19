@@ -18,23 +18,23 @@ word_classes3 = [
     #'ball', 'computer', 'book', 'door', 'window', 'bridge'
     ]
 
-parent_to_children2 = {
+parent_to_children3 = {
     'riding_device': ['ski', 'surfboard', 'snowboard', 'skateboard', 'rollerblade'],
 }
 
-child_to_parent2 = {}
-for parent, children in parent_to_children2.items():
+child_to_parent3 = {}
+for parent, children in parent_to_children3.items():
     for child in children:
-        child_to_parent2[child] = parent
+        child_to_parent3[child] = parent
 
 def is_hyponym_of(class1, class2):
     if class1 == class2:
         return True
-    while class1 in child_to_parent2:
-        return is_hyponym_of(child_to_parent2[class1], class2)
+    while class1 in child_to_parent3:
+        return is_hyponym_of(child_to_parent3[class1], class2)
     return False
 
-non_word_classes2 = [
+non_word_classes3 = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
     'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly', 'young', 'small_white',
@@ -42,7 +42,7 @@ non_word_classes2 = [
 ]
 
 # Inflect don't handle some strings well, ignore these
-non_inflect_strs2 = [
+non_inflect_strs3 = [
     'dress'
 ]
 
@@ -68,7 +68,7 @@ hypernym_mappings = {
     # 'saucer': 'tableware',
 }
 
-word_to_replace_str2 = {
+word_to_replace_str3 = {
     # 'back': {'body_part': 'hand', None: 'rear'}, 'glasses': {'cup': 'cups', 'eyeglasses': 'sunglasses'},
     # 'dish': {'dish': 'dish', 'tableware': 'plate'}
 }
@@ -90,24 +90,25 @@ def get_synset_count(synset):
     return count
 
 def find_synset_classes3(synset):
-    classes = []
     for lemma in synset.lemmas():
         word = lemma.name().lower()
         if word in word_classes3:
-            return [word, 0]
+            return [[word, 0]]
     classes = []
     hypernyms = synset.hypernyms()
     for hypernym in hypernyms:
         cur_classes = find_synset_classes3(hypernym)
         for i in range(len(cur_classes)):
             cur_classes[i][1] += 1
+        classes += cur_classes
     return classes
 
 def find_phrase_classes3(phrase):
     phrase = phrase.lower()
 
+    # First, preprocess: if in plural, convert to singular
     singular_phrase_classes = None
-    if phrase not in non_inflect_strs2 and inflect_engine.singular_noun(phrase) != False:
+    if phrase not in non_inflect_strs3 and inflect_engine.singular_noun(phrase) != False:
         singular_phrase = inflect_engine.singular_noun(phrase)
         singular_phrase_classes = find_preprocessed_phrase_classes3(singular_phrase)
 
@@ -116,8 +117,64 @@ def find_phrase_classes3(phrase):
     else:
         return find_preprocessed_phrase_classes3(phrase)
 
+def search_in_wordnet(phrase):
+    synsets = wn.synsets(phrase)
+    synsets = [synset for synset in synsets if synset.pos() == 'n']
+    classes = []
+    all_synsets_count = sum([get_synset_count(x) for x in synsets])
+    for synset in synsets:
+        if all_synsets_count == 0 or get_synset_count(synset)/all_synsets_count >= 0.2:
+            classes += find_synset_classes3(synset)
+
+    class_to_lowest_num = {}
+    for cur_class, num in classes:
+        if cur_class not in class_to_lowest_num or num < class_to_lowest_num[cur_class]:
+            class_to_lowest_num[cur_class] = num
+
+    classes = list(class_to_lowest_num.items())
+    if len(classes) == 0:
+        return [(None, 0)]
+    else:
+        # First, reduce classes to hyponyms only
+        to_remove = {}
+        for i in range(len(classes)):
+            for j in range(i+1, len(classes)):
+                if is_hyponym_of(classes[i][0], classes[j][0]):
+                    to_remove[j] = True
+                elif is_hyponym_of(classes[j][0], classes[i][0]):
+                    to_remove[i] = True
+        classes = [classes[i] for i in range(len(classes)) if i not in to_remove]
+
+        # If you have a word that can be refered to both as a fruit and as plant (e.g., 'raspberry') choose a fruit
+        strong_classes = ['fruit', 'vegetable']
+        def is_hyponym_of_strong_class(phrase):
+            for strong_class in strong_classes:
+                if is_hyponym_of(phrase, strong_class):
+                    return True
+            return False
+        
+        if len(classes) == 2 and is_hyponym_of_strong_class(classes[0][0]) and is_hyponym_of(classes[1][0], 'plant'):
+            classes = [classes[0]]
+        if len(classes) == 2 and is_hyponym_of_strong_class(classes[1][0]) and is_hyponym_of(classes[0][0], 'plant'):
+            classes = [classes[1]]
+
+        # If we got 2 classes, one of which is a hypernym of the other, we'll take the lower one
+        if len(classes) == 2 and is_hyponym_of(classes[0][0], classes[1][0]):
+            classes = [classes[0]]
+        elif len(classes) == 2 and is_hyponym_of(classes[1][0], classes[0][0]):
+            classes = [classes[1]]
+
+    return classes
+
 def find_preprocessed_phrase_classes3(phrase):
     phrase = phrase.replace(' ', '_')
+
+    ''' Phrase class may be found in:
+    1. Known mappings from phrases to classes.
+    2. Exact match: the phrase is in the list of class phrases
+    3. Exact mismatch: the phrase is in the list of non-class phrases
+    4. WordNet: Search in the wordnet onthology
+    '''
 
     phrase_mappings = []
     if phrase in sister_term_mappings:
@@ -137,56 +194,10 @@ def find_preprocessed_phrase_classes3(phrase):
         return phrase_mappings
     elif phrase in word_classes3:
         return [(phrase, 0)]
-    elif phrase in non_word_classes2:
+    elif phrase in non_word_classes3:
         return [(None, 0)]
     else:
-        synsets = wn.synsets(phrase)
-        synsets = [synset for synset in synsets if synset.pos() == 'n']
-        classes = []
-        all_synsets_count = sum([get_synset_count(x) for x in synsets])
-        for synset in synsets:
-            if all_synsets_count == 0 or get_synset_count(synset)/all_synsets_count >= 0.2:
-                classes += find_synset_classes3(synset)
-
-        class_to_lowest_num = {}
-        for cur_class, num in classes:
-            if cur_class not in class_to_lowest_num or num < class_to_lowest_num[cur_class]:
-                class_to_lowest_num[cur_class] = num
-
-        classes = list(class_to_lowest_num.items())
-        if len(classes) == 0:
-            return [(None, 0)]
-        else:
-            # First, reduce classes to hyponyms only
-            to_remove = {}
-            for i in range(len(classes)):
-                for j in range(i+1, len(classes)):
-                    if is_hyponym_of(classes[i][0], classes[j][0]):
-                        to_remove[j] = True
-                    elif is_hyponym_of(classes[j][0], classes[i][0]):
-                        to_remove[i] = True
-            classes = [classes[i] for i in range(len(classes)) if i not in to_remove]
-
-            # If you have a word that can be refered to both as a fruit and as plant (e.g., 'raspberry') choose a fruit
-            strong_classes = ['fruit', 'vegetable']
-            def is_hyponym_of_strong_class(phrase):
-                for strong_class in strong_classes:
-                    if is_hyponym_of(phrase, strong_class):
-                        return True
-                return False
-            
-            if len(classes) == 2 and is_hyponym_of_strong_class(classes[0][0]) and is_hyponym_of(classes[1][0], 'plant'):
-                classes = [classes[0]]
-            if len(classes) == 2 and is_hyponym_of_strong_class(classes[1][0]) and is_hyponym_of(classes[0][0], 'plant'):
-                classes = [classes[1]]
-
-            # If we got 2 classes, one of which is a hypernym of the other, we'll take the lower one
-            if len(classes) == 2 and is_hyponym_of(classes[0][0], classes[1][0]):
-                classes = [classes[0]]
-            elif len(classes) == 2 and is_hyponym_of(classes[1][0], classes[0][0]):
-                classes = [classes[1]]
-
-    return classes
+        return search_in_wordnet(phrase)
 
 def preprocess(token_list):
     # Just solving some known issues
@@ -249,8 +260,8 @@ def choose_class_with_lm(token_list, start_ind, end_ind, class_list, selection_m
     after = [x[0]['text'].lower() for x in token_list[end_ind:]]
 
     orig_word = '_'.join([x[0]['text'] for x in token_list[start_ind:end_ind]])
-    if orig_word in word_to_replace_str2:
-        class_to_repr_word = word_to_replace_str2[orig_word]
+    if orig_word in word_to_replace_str3:
+        class_to_repr_word = word_to_replace_str3[orig_word]
     else:
         class_to_repr_word = {cur_class: cur_class for cur_class in only_class_list}
     
@@ -480,7 +491,7 @@ def postprocessing(classes):
 
     return final_classes
 
-def find_classes2(caption):
+def find_classes3(caption):
     ''' Count not only noun phrases, but all words. This currently doesn't work well. '''
     caption = caption.lower()
     doc = nlp(caption)
