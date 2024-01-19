@@ -1,9 +1,10 @@
 from find_classes_in_caption import find_classes
 from find_classes_in_caption2 import find_classes2
+from find_classes_in_caption3 import find_classes3
 from regression import RegressionHandler
 import time
 
-def run_regression(default_method=True):
+def run_regression(method='final'):
     reg_obj = RegressionHandler(default_method)
     failed = []
     waived_and_passed = []
@@ -15,11 +16,14 @@ def run_regression(default_method=True):
             print(f'\tStarting sample {i} out of {len(reg_obj.reg)}, time from prev {time.time() - t}', flush=True)
             t = time.time()
         sample, gt = reg_obj.reg[i]
-        if default_method:
+        if method == 'orig':
             res = find_classes(sample['caption'])
             pred = [x[2] for x in res if x[2] is not None]
-        else:
+        elif method =='alternative':
             res = find_classes2(sample['caption'])
+            pred = [x[3] for x in res if x[3] is not None]
+        elif method =='final':
+            res = find_classes3(sample['caption'])
             pred = [x[3] for x in res if x[3] is not None]
         if sorted(gt) != sorted(pred):
             if str(i) in reg_obj.waivers:

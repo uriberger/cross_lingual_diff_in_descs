@@ -8,7 +8,7 @@ import math
 import clip
 from PIL import Image
 
-word_classes3 = [
+class_phrases = [
     'person', 'vehicle', 'furniture', 'animal', 'food', 'bag', 'clothing', 'tableware', 'plant', 'electronic_equipment',
     'home_appliance', 'toy', 'building', 'mountain', 'kitchen_utensil', 'sky', 'celestial_body', 'body_part',
     'body_of_water', 'hand_tool', 'musical_instrument', 'writing_implement', 'jewelry', 'weapon', 'timepiece'
@@ -20,6 +20,8 @@ word_classes3 = [
 
 parent_to_children3 = {
     'riding_device': ['ski', 'surfboard', 'snowboard', 'skateboard', 'rollerblade'],
+    'tableware': ['plate'],
+    'pepper': ['chili_pepper']
 }
 
 child_to_parent3 = {}
@@ -34,11 +36,11 @@ def is_hyponym_of(class1, class2):
         return is_hyponym_of(child_to_parent3[class1], class2)
     return False
 
-non_word_classes3 = [
+non_class_phrases = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
     'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly', 'young', 'small_white',
-    'small', 'blue', 'skate', 'third', 'aged', 'styrofoam', 'adult', 'dome', 'stadium', 'granite'
+    'small', 'blue', 'skate', 'third', 'aged', 'styrofoam', 'adult', 'dome', 'stadium', 'granite', 'machine'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -92,7 +94,7 @@ def get_synset_count(synset):
 def find_synset_classes3(synset):
     for lemma in synset.lemmas():
         word = lemma.name().lower()
-        if word in word_classes3:
+        if word in class_phrases:
             return [[word, 0]]
     classes = []
     hypernyms = synset.hypernyms()
@@ -191,12 +193,16 @@ def find_preprocessed_phrase_classes3(phrase):
     #         phrase_mappings.append((hypernym_mapping, False))
 
     if len(phrase_mappings) > 0:
+        # 1. Known mappings
         return phrase_mappings
-    elif phrase in word_classes3:
+    elif phrase in class_phrases:
+        # 2. Exact match
         return [(phrase, 0)]
-    elif phrase in non_word_classes3:
+    elif phrase in non_class_phrases:
+        # Exact mismatch
         return [(None, 0)]
     else:
+        # Wordnet
         return search_in_wordnet(phrase)
 
 def preprocess(token_list):
