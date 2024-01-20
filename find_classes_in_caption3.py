@@ -263,11 +263,19 @@ def choose_class_with_lm(token_list, start_ind, end_ind, class_list, selection_m
     before = [x[0]['text'].lower() for x in token_list[:start_ind]]
     after = [x[0]['text'].lower() for x in token_list[end_ind:]]
 
+    plural = False
     orig_word = '_'.join([x[0]['text'] for x in token_list[start_ind:end_ind]])
+    if orig_word not in non_inflect_strs3 and inflect_engine.singular_noun(orig_word) != False:
+        orig_word = inflect_engine.singular_noun(orig_word)
+        plural = True
+    
     if orig_word in word_to_replace_str3:
         class_to_repr_word = word_to_replace_str3[orig_word]
     else:
         class_to_repr_word = {cur_class: cur_class for cur_class in only_class_list}
+    if plural:
+        for cur_class, repr_word in class_to_repr_word.items():
+            class_to_repr_word[cur_class] = inflect_engine.plural_noun(repr_word)
     
     # To prevent unwanted bias, check if we need to consider a/an
     if len(before) > 0 and before[-1] in ['a', 'an']:
