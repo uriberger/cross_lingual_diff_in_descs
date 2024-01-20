@@ -7,18 +7,10 @@ from torch import nn
 import math
 import clip
 from PIL import Image
+import json
 
-class_phrases = [
-    'person', 'vehicle', 'furniture', 'animal', 'food', 'bag', 'clothing', 'tableware', 'plant', 'electronic_equipment',
-    'home_appliance', 'toy', 'building', 'mountain', 'kitchen_utensil', 'sky', 'celestial_body', 'body_part',
-    'body_of_water', 'hand_tool', 'musical_instrument', 'writing_implement', 'jewelry', 'weapon', 'timepiece'
-    # Riding device
-    'riding_device', 'ski', 'surfboard', 'snowboard', 'skateboard', 'rollerblade',
-    # Things I added manually
-    'factory'
-    # Things that are not under any class and I don't know what to do with them
-    #'ball', 'computer', 'book', 'door', 'window', 'bridge'
-    ]
+with open('class_phrases.json', 'r') as fp:
+    class_phrases = json.load(fp)
 
 parent_to_children3 = {
     'riding_device': ['ski', 'surfboard', 'snowboard', 'skateboard', 'rollerblade'],
@@ -43,7 +35,8 @@ non_class_phrases = [
     'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
     'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly', 'young', 'small_white',
-    'small', 'blue', 'skate', 'third', 'aged', 'styrofoam', 'adult', 'dome', 'stadium', 'granite', 'machine', 'string'
+    'small', 'blue', 'skate', 'third', 'aged', 'styrofoam', 'adult', 'dome', 'stadium', 'granite', 'machine', 'string',
+    'conveyor'
 ]
 
 # Inflect don't handle some strings well, ignore these
