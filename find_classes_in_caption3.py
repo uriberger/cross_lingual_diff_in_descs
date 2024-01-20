@@ -64,7 +64,7 @@ hypernym_mappings = {
     # 'shorts': 'clothing', 'tower': 'building', 'factory': 'building', 'fortress': 'building', 'fort': 'building',
     # 'subway': 'train', 'lavender': 'flower', 'dish': 'tableware', 'butt': 'body_part', 'python': 'snake',
     # 'saucer': 'tableware',
-    'vessel': ['vehicle', 'boat']
+    'vessel': ['vehicle', None]
 }
 
 word_to_replace_str3 = {
