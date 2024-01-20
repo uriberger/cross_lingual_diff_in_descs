@@ -64,6 +64,7 @@ hypernym_mappings = {
     # 'shorts': 'clothing', 'tower': 'building', 'factory': 'building', 'fortress': 'building', 'fort': 'building',
     # 'subway': 'train', 'lavender': 'flower', 'dish': 'tableware', 'butt': 'body_part', 'python': 'snake',
     # 'saucer': 'tableware',
+    'vessel': ['vehicle', 'boat']
 }
 
 word_to_replace_str3 = {
@@ -182,12 +183,12 @@ def find_preprocessed_phrase_classes3(phrase):
             phrase_mappings += [(x, 0) for x in sister_term_mapping]
         else:
             phrase_mappings.append((sister_term_mapping, 0))
-    # if phrase in hypernym_mappings:
-    #     hypernym_mapping = hypernym_mappings[phrase]
-    #     if type(hypernym_mapping) == list:
-    #         phrase_mappings += [(x, False) for x in hypernym_mapping]
-    #     else:
-    #         phrase_mappings.append((hypernym_mapping, False))
+    if phrase in hypernym_mappings:
+        hypernym_mapping = hypernym_mappings[phrase]
+        if type(hypernym_mapping) == list:
+            phrase_mappings += [(x, 1) for x in hypernym_mapping]
+        else:
+            phrase_mappings.append((hypernym_mapping, 1))
 
     if len(phrase_mappings) > 0:
         # 1. Known mappings
