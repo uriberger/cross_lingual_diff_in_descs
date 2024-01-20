@@ -8,6 +8,7 @@ import math
 import clip
 from PIL import Image
 import json
+from copy import deepcopy
 
 with open('class_phrases.json', 'r') as fp:
     class_phrases = json.load(fp)
@@ -270,7 +271,7 @@ def choose_class_with_lm(token_list, start_ind, end_ind, class_list, selection_m
         plural = True
     
     if orig_word in word_to_replace_str3:
-        class_to_repr_word = word_to_replace_str3[orig_word]
+        class_to_repr_word = deepcopy(word_to_replace_str3[orig_word])
     else:
         class_to_repr_word = {cur_class: cur_class for cur_class in only_class_list}
     if plural:
