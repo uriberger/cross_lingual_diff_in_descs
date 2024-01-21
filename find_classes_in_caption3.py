@@ -37,7 +37,7 @@ non_class_phrases = [
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
     'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly', 'young', 'small_white',
     'small', 'blue', 'skate', 'third', 'aged', 'styrofoam', 'adult', 'dome', 'stadium', 'granite', 'machine', 'string',
-    'conveyor'
+    'conveyor', 'computer_mouse'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -46,7 +46,7 @@ non_inflect_strs3 = [
 ]
 
 sister_term_mappings = {
-    'people': 'person'
+    'people': 'person', 'mouse': ['mouse', None]
 }
 
 hypernym_mappings = {
@@ -71,7 +71,7 @@ hypernym_mappings = {
 word_to_replace_str3 = {
     # 'back': {'body_part': 'hand', None: 'rear'}, 'glasses': {'cup': 'cups', 'eyeglasses': 'sunglasses'},
     # 'dish': {'dish': 'dish', 'tableware': 'plate'}
-    'vessel': {'vehicle': 'boat', None: 'container'}
+    'vessel': {'vehicle': 'boat', None: 'container'}, 'mouse': {'mouse': 'rat', None: 'keyboard'}
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
