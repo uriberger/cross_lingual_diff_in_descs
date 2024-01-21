@@ -71,7 +71,7 @@ hypernym_mappings = {
 word_to_replace_str3 = {
     # 'back': {'body_part': 'hand', None: 'rear'}, 'glasses': {'cup': 'cups', 'eyeglasses': 'sunglasses'},
     # 'dish': {'dish': 'dish', 'tableware': 'plate'}
-    'vessel': {'vehicle': 'boat', None: 'vase'}
+    'vessel': {'vehicle': 'boat', None: 'container'}
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
