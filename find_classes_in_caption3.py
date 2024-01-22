@@ -13,12 +13,8 @@ from copy import deepcopy
 with open('class_phrases.json', 'r') as fp:
     class_phrases = json.load(fp)
 
-parent_to_children3 = {
-    'riding_device': ['ski', 'surfboard', 'snowboard', 'skateboard', 'rollerblade'],
-    'tableware': ['plate'],
-    'pepper': ['chili_pepper'],
-    'building': ['factory']
-}
+with open('p2c.json', 'r') as fp:
+    parent_to_children3 = json.load(fp)
 
 child_to_parent3 = {}
 for parent, children in parent_to_children3.items():
@@ -37,7 +33,7 @@ non_class_phrases = [
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
     'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly', 'young', 'small_white',
     'small', 'blue', 'skate', 'third', 'aged', 'styrofoam', 'adult', 'dome', 'stadium', 'granite', 'machine', 'string',
-    'conveyor', 'computer_mouse', 'trunk'
+    'conveyor', 'computer_mouse', 'trunk', 'construction', 'seat'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -65,13 +61,14 @@ hypernym_mappings = {
     # 'shorts': 'clothing', 'tower': 'building', 'factory': 'building', 'fortress': 'building', 'fort': 'building',
     # 'subway': 'train', 'lavender': 'flower', 'dish': 'tableware', 'butt': 'body_part', 'python': 'snake',
     # 'saucer': 'tableware',
-    'vessel': ['vehicle', None]
+    'vessel': ['vehicle', None], 'pot': ['pot', None]
 }
 
 word_to_replace_str3 = {
     # 'back': {'body_part': 'hand', None: 'rear'}, 'glasses': {'cup': 'cups', 'eyeglasses': 'sunglasses'},
     # 'dish': {'dish': 'dish', 'tableware': 'plate'}
-    'vessel': {'vehicle': 'boat', None: 'container'}, 'mouse': {'mouse': 'rat', None: 'keyboard'}
+    'vessel': {'vehicle': 'boat', None: 'container'}, 'mouse': {'mouse': 'rat', None: 'keyboard'},
+    'pot': {'pot': 'pan', None: 'vase'}
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
