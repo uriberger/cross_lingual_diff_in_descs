@@ -37,7 +37,7 @@ non_class_phrases = [
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
     'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly', 'young', 'small_white',
     'small', 'blue', 'skate', 'third', 'aged', 'styrofoam', 'adult', 'dome', 'stadium', 'granite', 'machine', 'string',
-    'conveyor', 'computer_mouse'
+    'conveyor', 'computer_mouse', 'trunk'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -46,7 +46,7 @@ non_inflect_strs3 = [
 ]
 
 sister_term_mappings = {
-    'people': 'person', 'mouse': ['mouse', None]
+    'people': 'person', 'mouse': ['mouse', None], 'edible_fruit': 'fruit'
 }
 
 hypernym_mappings = {
