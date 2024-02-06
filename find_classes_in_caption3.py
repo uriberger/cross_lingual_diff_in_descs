@@ -10,6 +10,10 @@ from PIL import Image
 import json
 from copy import deepcopy
 
+# Root class phrases:
+#   person, vehicle, furniture, animal, food, bag, clothing, tableware, plan', electronic_equipment, 'home_appliance',
+#   toy, building, mountain, kitchen_utensil, sky, celestial_body, body_part, body_of_water, hand_tool, musical_instrument,
+#   writing_implement, jewelry, weapon, timepiece, riding_device
 with open('class_phrases.json', 'r') as fp:
     class_phrases = json.load(fp)
 
@@ -29,20 +33,26 @@ def is_hyponym_of(class1, class2):
     return False
 
 non_class_phrases = [
-    'sport', 'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
+    'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
     'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
     'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly', 'young', 'small_white',
-    'small', 'blue', 'skate', 'third', 'aged', 'styrofoam', 'adult', 'dome', 'stadium', 'granite', 'machine', 'string',
-    'conveyor', 'computer_mouse', 'trunk', 'construction', 'seat'
+    'small', 'blue', 'skate', 'third', 'aged', 'styrofoam', 'adult',
+    # Now comes a list of words that became classes through a synset which is not really used, so we don't want them as classes
+    'dome', 'stadium', 'granite', 'machine', 'string', 'conveyor', 'computer_mouse', 'trunk', 'construction', 'seat',
+    'can', 'canal', 'mug', 'accessory', 'cabinet', 'booth', 'wheel', 'string', 'guest', 'chess', 'gray', 'pile',
+    'controller', 'sport', 'vintage', 'napkin', 'mannequin', 'hanger', 'arch', 'fan', 'steel', 'brand', 'bust', 'stack'
 ]
 
 # Inflect don't handle some strings well, ignore these
 non_inflect_strs3 = [
-    'dress'
+    'dress', 'chess', 'lotus', 'cactus', 'asparagus', 'cross', 'gps'
 ]
 
 sister_term_mappings = {
-    'people': 'person', 'mouse': ['mouse', None], 'edible_fruit': 'fruit'
+    'people': 'person', 'mouse': ['mouse', None], 'edible_fruit': 'fruit', 'pot': ['pot', None], 'palace': 'castle',
+    'plane': 'airplane', 'bike': ['bicycle', 'motorcycle'], 'sofa': 'couch', 'player': 'participant',
+    'architecture': ['architecture', None], 'water': ['water', 'body_of_water'], 'cacti': 'cactus',
+    'dress': ['dress', 'clothing']
 }
 
 hypernym_mappings = {
@@ -61,14 +71,15 @@ hypernym_mappings = {
     # 'shorts': 'clothing', 'tower': 'building', 'factory': 'building', 'fortress': 'building', 'fort': 'building',
     # 'subway': 'train', 'lavender': 'flower', 'dish': 'tableware', 'butt': 'body_part', 'python': 'snake',
     # 'saucer': 'tableware',
-    'vessel': ['vehicle', None], 'pot': ['pot', None]
+    'vessel': [('vehicle', 2), (None, 0)], 'guest_house': ('hotel', 1), 'saxophone': ('musical_instrument', 5)
 }
 
 word_to_replace_str3 = {
     # 'back': {'body_part': 'hand', None: 'rear'}, 'glasses': {'cup': 'cups', 'eyeglasses': 'sunglasses'},
     # 'dish': {'dish': 'dish', 'tableware': 'plate'}
     'vessel': {'vehicle': 'boat', None: 'container'}, 'mouse': {'mouse': 'rat', None: 'keyboard'},
-    'pot': {'pot': 'pan', None: 'vase'}
+    'pot': {'pot': 'pan', None: 'vase'}, 'architecture': {'architecture': 'building', None: 'style'},
+    'water': {'water': 'liquid', 'body_of_water': 'sea'}, 'dress': {'dress': 'skirt', 'clothing': 'outfit'}
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
@@ -184,9 +195,9 @@ def find_preprocessed_phrase_classes3(phrase):
     if phrase in hypernym_mappings:
         hypernym_mapping = hypernym_mappings[phrase]
         if type(hypernym_mapping) == list:
-            phrase_mappings += [(x, 1) for x in hypernym_mapping]
+            phrase_mappings += hypernym_mapping
         else:
-            phrase_mappings.append((hypernym_mapping, 1))
+            phrase_mappings.append(hypernym_mapping)
 
     if len(phrase_mappings) > 0:
         # 1. Known mappings
@@ -395,7 +406,7 @@ def couple_handling(token_list, ind):
     if ind < (len(token_list) - 1) and token_list[ind+1][0]['text'].lower() == 'of':
         return None, 0
     
-    return 'person', 1
+    return 'couple', 0
 
 def plant_handling(token_list, start_ind, end_ind):
     # If we have a plant, it's the living thing- unless the word "power" is before it
@@ -403,6 +414,20 @@ def plant_handling(token_list, start_ind, end_ind):
         return 'factory', 0
     
     return 'plant', 0
+
+def pool_handling(token_list, start_ind):
+    # It's a swimming pool only if the word swimming precedes the pool
+    if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'swimming':
+        return None, 0
+    
+    return [('pond', 0), ('puddle', 0)]
+
+def water_handling(token_list, start_ind):
+    # If there's a "the" before (e.g., "A dolphin swimming in the water") it's the body of water meaning
+    if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'the':
+        return 'body_of_water', 0
+    
+    return [('water', 0), ('body_of_water', 0)]
 
 def phrase_location_to_class3(token_list, start_ind, end_ind):
     phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
@@ -426,6 +451,14 @@ def phrase_location_to_class3(token_list, start_ind, end_ind):
     # word "power" before
     elif token_list[end_ind - 1][0]['text'] in ['plant', 'plants']:
         phrase_class, dist_from_match = plant_handling(token_list, start_ind, end_ind)
+
+    # 5. "pool": can be either a swimming pool, in which case it's not in our classes, or a puddle, which is in our classes
+    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'pool':
+        phrase_class, dist_from_match = pool_handling(token_list, start_ind)
+
+    # 6. "water": can be either a body of water or the liquid
+    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'water':
+        phrase_class, dist_from_match = water_handling(token_list, start_ind)
 
     else:
         phrase_classes = find_phrase_classes3(phrase)
@@ -530,7 +563,7 @@ def find_classes3(caption):
             i += 2
         else:
             i += 1
-    
+
     # Single word phrases
     for i in range(len(token_list)):
         if i in identified_inds:
