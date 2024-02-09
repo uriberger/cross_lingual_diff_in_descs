@@ -33,6 +33,10 @@ all_synsets = set([x for outer in phrase2synsets.values() for x in outer]).union
 
 with open('phrase2replace_str.json', 'r') as fp:
     phrase2replace_str = json.load(fp)
+    for x,y in phrase2replace_str.items():
+        if 'null' in y:
+            phrase2replace_str[x][None] = phrase2replace_str[x]['null']
+            del phrase2replace_str[x]['null']
 
 def is_hyponym_of(synset1, synset2):
     if synset1 == synset2:
