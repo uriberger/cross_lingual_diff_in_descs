@@ -1,6 +1,6 @@
 from find_classes_in_caption import find_classes
 from find_classes_in_caption2 import find_classes2
-from find_classes_in_caption3 import find_classes3
+from find_synsets_in_captions import find_synsets
 from regression import RegressionHandler
 import time
 
@@ -23,7 +23,7 @@ def run_regression(method='final'):
             res = find_classes2(sample['caption'])
             pred = [x[3] for x in res if x[3] is not None]
         elif method =='final':
-            res = find_classes3(sample['caption'])
+            res = find_synsets(sample['caption'])
             pred = [x[3] for x in res if x[3] is not None]
         if sorted(gt) != sorted(pred):
             if str(i) in reg_obj.waivers:

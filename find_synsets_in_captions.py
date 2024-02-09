@@ -26,7 +26,7 @@ parent2children = defaultdict(list)
 for child, parent in child2parent.items():
     parent2children[parent].append(child)
 
-with open('implicit_synsets.json', 'r'):
+with open('implicit_synsets.json', 'r') as fp:
     implicit_synsets = json.load(fp)
 
 all_synsets = set([x for outer in list(phrase2synsets).values() for x in outer]).union(implicit_synsets)
