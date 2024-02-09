@@ -329,36 +329,36 @@ def top_handling(token_list, start_ind):
         x[0]['upos'] == 'DET' and
         x[0]['text'].lower() in ['a', 'an']
         ]) > 0:
-        return 'top.n.10', 0
+        return [('top.n.10', 0)]
     
-    return None, 0
+    return [(None, 0)]
 
 def couple_handling(token_list, ind):
     # If we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
     # we do want. Distinguish by checking if we have no "of" after it
     if ind < (len(token_list) - 1) and token_list[ind+1][0]['text'].lower() == 'of':
-        return None, 0
+        return [(None, 0)]
     
-    return 'couple.n.01', 0
+    return [('couple.n.01', 0)]
 
 def plant_handling(token_list, start_ind, end_ind):
     # If we have a plant, it's the living thing- unless the word "power" is before it
     if end_ind - start_ind == 2 and token_list[start_ind][0]['text'] == 'power':
-        return 'factory.n.01', 0
+        return [('factory.n.01', 0)]
     
-    return 'plant.n.02', 0
+    return [('plant.n.02', 0)]
 
 def pool_handling(token_list, start_ind):
     # It's a swimming pool only if the word swimming precedes the pool
     if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'swimming':
-        return None, 0
+        return [(None, 0)]
     
     return [('pond.n.01', 0), ('pool.n.06', 0)]
 
 def water_handling(token_list, start_ind):
     # If there's a "the" before (e.g., "A dolphin swimming in the water") it's the body of water meaning
     if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'the':
-        return 'body_of_water.n.01', 0
+        return [('body_of_water.n.01', 0)]
     
     return [('water.n.06', 0), ('body_of_water.n.01', 0)]
 
@@ -373,33 +373,33 @@ def phrase_location_to_synset(token_list, start_ind, end_ind):
 
     # 2. "top" is also a problem, as it might be clothing
     if end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'top':
-        synset, dist_from_match = top_handling(token_list, start_ind)
+        synsets = top_handling(token_list, start_ind)
 
     # 3. "couple": if we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
     # we do want. Distinguish by checking if we have a determiner (or this is the first phrase), and no "of" after it
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] in ['couple', 'couples']:
-        synset, dist_from_match = couple_handling(token_list, start_ind)
+        synsets = couple_handling(token_list, start_ind)
 
     # 4. "plant": people almost always mean plants and not factories. We'll always chooce plants except if we see the
     # word "power" before
     elif token_list[end_ind - 1][0]['text'] in ['plant', 'plants']:
-        synset, dist_from_match = plant_handling(token_list, start_ind, end_ind)
+        synsets = plant_handling(token_list, start_ind, end_ind)
 
     # 5. "pool": can be either a swimming pool, in which case it's not in our classes, or a puddle, which is in our classes
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'pool':
-        synset, dist_from_match = pool_handling(token_list, start_ind)
+        synsets = pool_handling(token_list, start_ind)
 
     # 6. "water": can be either a body of water or the liquid
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'water':
-        synset, dist_from_match = water_handling(token_list, start_ind)
+        synsets = water_handling(token_list, start_ind)
 
     else:
         synsets = find_phrase_synsets(phrase)
 
-        if len(synsets) > 1:
-            synset, dist_from_match = choose_synset_with_lm(token_list, start_ind, end_ind, synsets)
-        else:
-            synset, dist_from_match = synsets[0]
+    if len(synsets) > 1:
+        synset, dist_from_match = choose_synset_with_lm(token_list, start_ind, end_ind, synsets)
+    else:
+        synset, dist_from_match = synsets[0]
 
     return synset, dist_from_match
 
