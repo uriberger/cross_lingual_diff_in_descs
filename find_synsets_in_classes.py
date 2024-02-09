@@ -5,88 +5,52 @@ from transformers import AutoModelForMaskedLM, AutoTokenizer
 import torch
 from torch import nn
 import math
-import clip
-from PIL import Image
 import json
 from copy import deepcopy
+from collections import defaultdict
 
-# Root class phrases:
+# Root phrases:
 #   person, vehicle, furniture, animal, food, bag, clothing, tableware, plant, electronic_equipment, home_appliance,
 #   toy, building, mountain, kitchen_utensil, sky, celestial_body, body_part, body_of_water, hand_tool, musical_instrument,
 #   writing_implement, jewelry, weapon, timepiece, riding_device
-with open('class_phrases.json', 'r') as fp:
-    class_phrases = json.load(fp)
+with open('phrase2synsets', 'r') as fp:
+    phrase2synsets = json.load(fp)
 
-with open('p2c.json', 'r') as fp:
-    parent_to_children3 = json.load(fp)
+with open('phrase2hypernym', 'r') as fp:
+    phrase2hypernym = json.load(fp)
 
-child_to_parent3 = {}
-for parent, children in parent_to_children3.items():
-    for child in children:
-        child_to_parent3[child] = parent
+with open('synsets_c2p.json', 'r') as fp:
+    child2parent = json.load(fp)
 
-def is_hyponym_of(class1, class2):
-    if class1 == class2:
+parent2children = defaultdict(list)
+for child, parent in child2parent.items():
+    parent2children[parent].append(child)
+
+with open('implicit_synsets.json', 'r'):
+    implicit_synsets = json.load(fp)
+
+all_synsets = set([x for outer in list(phrase2synsets).values() for x in outer]).union(implicit_synsets)
+
+with open('phrase2replace_str.json', 'r') as fp:
+    phrase2replace_str = json.load(fp)
+
+def is_hyponym_of(synset1, synset2):
+    if synset1 == synset2:
         return True
-    while class1 in child_to_parent3:
-        return is_hyponym_of(child_to_parent3[class1], class2)
+    while synset1 in child2parent:
+        return is_hyponym_of(child2parent[synset1], synset2)
     return False
 
-non_class_phrases = [
-    'amazon', 'quarry', 'aa', 'cob', 'chat', 'maroon', 'white', 'header', 'gravel', 'black', 'bleachers',
-    'middle', 'lot', 'lots', 'gear', 'rear', 'bottom', 'nationality', 'overlay', 'city_center', 'center', 'recording',
-    'lid', 'region', 'meal', 'pair', 'upside', 'front', 'left', 'exterior', 'an', 'elderly', 'young', 'small_white',
-    'small', 'blue', 'skate', 'third', 'aged', 'styrofoam', 'adult',
-    # Now comes a list of words that became classes through a synset which is not really used, so we don't want them as classes
-    'dome', 'stadium', 'granite', 'machine', 'string', 'conveyor', 'computer_mouse', 'trunk', 'construction', 'seat',
-    'can', 'canal', 'mug', 'accessory', 'cabinet', 'booth', 'wheel', 'string', 'guest', 'chess', 'gray', 'pile',
-    'controller', 'sport', 'vintage', 'napkin', 'mannequin', 'hanger', 'arch', 'fan', 'steel', 'brand', 'bust', 'stack',
-    'saint'
-]
+with open('non_synset_phrases.json', 'r') as fp:
+    non_synset_phrases = set(json.load(fp))
+
+with open('identical_synsets_mapping.json', 'r') as fp:
+    identical_synsets_mapping = json.load(fp)
 
 # Inflect don't handle some strings well, ignore these
-non_inflect_strs3 = [
+non_inflect_strs = [
     'dress', 'chess', 'lotus', 'cactus', 'asparagus', 'cross', 'gps'
 ]
-
-sister_term_mappings = {
-    'people': 'person', 'mouse': ['mouse', None], 'edible_fruit': 'fruit', 'pot': ['pot', None], 'palace': 'castle',
-    'plane': 'airplane', 'bike': ['bicycle', 'motorcycle'], 'sofa': 'couch', 'player': 'participant',
-    'architecture': ['architecture', None], 'water': ['water', 'body_of_water'], 'cacti': 'cactus',
-    'dress': ['dress', 'clothing']
-}
-
-hypernym_mappings = {
-    # 'snowboarder': 'person', 'surfer': 'person', 'scooter': 'motorcycle', 'hay': 'plant', 'van': 'car', 'walnut': 'nut',
-    # 'peanut': 'nut', 'diner': 'restaurant', 'guy': 'man', 'toy_car': 'toy', 'plantain': 'banana', 'racer': 'person',
-    # 'pet': 'animal', 'president': 'person', 'guide': 'person', 'climber': 'person', 'commuter': 'person',
-    # 'dalmatian': 'dog', 'gondola': 'boat', 'ewe': 'sheep', 'sailor': 'person', 'fighter': 'airplane', 'receiver': 'person',
-    # 'sweeper': 'person', 'settee': 'couch', 'caster': 'person', 'mansion': 'building', 'pecker': 'bird',
-    # 'emperor': 'person', 'smoker': 'person', 'medic': 'person', 'canary': 'bird', 'chestnut': 'nut', 'lounger': 'chair',
-    # 'cardigan': 'sweater', 'wrecker': 'truck', 'setter': 'dog', 'jumper': ['person', 'clothing'],
-    # 'digger': ['person', 'truck'], 'prey': 'animal', 'excavator': ['person', 'truck'], 'watchdog': 'dog',
-    # 'barker': 'person', 'sphinx': 'statue', 'brownstone': 'building', 'romper': 'clothing', 'warbler': 'bird',
-    # 'schooner': ['boat', 'glass'], 'trawler': 'boat', 'hatchback': 'car', 'whaler': 'boat', 'jigger': 'cup',
-    # 'angler': 'person', 'weaver': 'person', 'predator': 'animal', 'arab': 'ethnic_group', 'asian': 'ethnic_group',
-    # 'african': 'ethnic_group', 'hulk': 'person', 'outfit': 'clothing', 'jean': 'pant', 'back': ['body_part', None],
-    # 'shorts': 'clothing', 'tower': 'building', 'factory': 'building', 'fortress': 'building', 'fort': 'building',
-    # 'subway': 'train', 'lavender': 'flower', 'dish': 'tableware', 'butt': 'body_part', 'python': 'snake',
-    # 'saucer': 'tableware',
-    'vessel': [('vehicle', 2), (None, 0)], 'guest_house': ('hotel', 1), 'saxophone': ('musical_instrument', 5)
-}
-
-word_to_replace_str3 = {
-    # 'back': {'body_part': 'hand', None: 'rear'}, 'glasses': {'cup': 'cups', 'eyeglasses': 'sunglasses'},
-    # 'dish': {'dish': 'dish', 'tableware': 'plate'}
-    'vessel': {'vehicle': 'boat', None: 'container'}, 'mouse': {'mouse': 'rat', None: 'keyboard'},
-    'pot': {'pot': 'pan', None: 'vase'}, 'architecture': {'architecture': 'building', None: 'style'},
-    'water': {'water': 'liquid', 'body_of_water': 'sea'}, 'dress': {'dress': 'skirt', 'clothing': 'outfit'}
-}
-
-identical_synsets_mapping = {
-    'food.n.02': 'food.n.01', 'participant.n.01': 'player.n.01', 'rider.n.03': 'rider.n.01', 'priest.n.01': 'priest.n.02',
-    'bag.n.04': 'bag.n.01', 'bag.n.06': 'bag.n.01'
-}
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
 inflect_engine = inflect.engine()
@@ -96,7 +60,6 @@ bert_model = bert_model.to(device)
 bert_model = bert_model.eval()
 tokenizer = AutoTokenizer.from_pretrained('bert-large-uncased')
 mask_str = '[MASK]'
-clip_model, clip_preprocess = clip.load("ViT-B/32", device=device)
 
 def get_synset_count(synset):
     count = 0
@@ -104,114 +67,103 @@ def get_synset_count(synset):
         count += lemma.count()
     return count
 
-def find_synset_classes3(synset):
-    for lemma in synset.lemmas():
-        word = lemma.name().lower()
-        if word in class_phrases:
-            return [[word, 0]]
-    classes = []
+def identify_synset(synset):
+    # Identify whether the synset is in our subtree of the entire WordNet tree (or is a descendant of a node in our subtree)
+    if synset.name() in all_synsets:
+        return [[synset.name(), 0]]
+    identified_synsets = []
     hypernyms = synset.hypernyms()
     for hypernym in hypernyms:
-        cur_classes = find_synset_classes3(hypernym)
-        for i in range(len(cur_classes)):
-            cur_classes[i][1] += 1
-        classes += cur_classes
-    return classes
+        cur_identified_synsets = identify_synset(hypernym)
+        for i in range(len(cur_identified_synsets)):
+            cur_identified_synsets[i][1] += 1
+        identified_synsets += cur_identified_synsets
+    return identified_synsets
 
-def find_phrase_classes3(phrase):
+def find_phrase_synsets(phrase):
     phrase = phrase.lower()
 
     # First, preprocess: if in plural, convert to singular
-    singular_phrase_classes = None
-    if phrase not in non_inflect_strs3 and inflect_engine.singular_noun(phrase) != False:
+    singular_phrase_synsets = None
+    if phrase not in non_inflect_strs and inflect_engine.singular_noun(phrase) != False:
         singular_phrase = inflect_engine.singular_noun(phrase)
-        singular_phrase_classes = find_preprocessed_phrase_classes3(singular_phrase)
+        singular_phrase_synsets = find_preprocessed_phrase_synsets(singular_phrase)
 
-    if singular_phrase_classes is not None and len(singular_phrase_classes) > 0 and len([x for x in singular_phrase_classes if x[0] is not None]) > 0:
-        return singular_phrase_classes
+    if singular_phrase_synsets is not None and len(singular_phrase_synsets) > 0 and len([x for x in singular_phrase_synsets if x[0] is not None]) > 0:
+        return singular_phrase_synsets
     else:
-        return find_preprocessed_phrase_classes3(phrase)
+        return find_preprocessed_phrase_synsets(phrase)
 
 def search_in_wordnet(phrase):
-    synsets = wn.synsets(phrase)
-    synsets = [synset for synset in synsets if synset.pos() == 'n']
-    classes = []
-    all_synsets_count = sum([get_synset_count(x) for x in synsets])
-    for synset in synsets:
+    phrase_synsets = wn.synsets(phrase)
+    phrase_synsets = [synset for synset in phrase_synsets if synset.pos() == 'n']
+    identified_synsets = []
+    all_synsets_count = sum([get_synset_count(x) for x in phrase_synsets])
+    for synset in phrase_synsets:
         if all_synsets_count == 0 or get_synset_count(synset)/all_synsets_count >= 0.2:
-            classes += find_synset_classes3(synset)
+            identified_synsets += identify_synset(synset)
 
-    class_to_lowest_num = {}
-    for cur_class, num in classes:
-        if cur_class not in class_to_lowest_num or num < class_to_lowest_num[cur_class]:
-            class_to_lowest_num[cur_class] = num
+    synset_to_lowest_num = {}
+    for synset, num in identified_synsets:
+        if synset not in synset_to_lowest_num or num < synset_to_lowest_num[synset]:
+            synset_to_lowest_num[synset] = num
 
-    classes = list(class_to_lowest_num.items())
-    if len(classes) == 0:
+    synsets = list(synset_to_lowest_num.items())
+    if len(synsets) == 0:
         return [(None, 0)]
     else:
-        # First, reduce classes to hyponyms only
+        # First, reduce synsets to hyponyms only
         to_remove = {}
-        for i in range(len(classes)):
-            for j in range(i+1, len(classes)):
-                if is_hyponym_of(classes[i][0], classes[j][0]):
+        for i in range(len(synsets)):
+            for j in range(i+1, len(synsets)):
+                if is_hyponym_of(synsets[i][0], synsets[j][0]):
                     to_remove[j] = True
-                elif is_hyponym_of(classes[j][0], classes[i][0]):
+                elif is_hyponym_of(synsets[j][0], synsets[i][0]):
                     to_remove[i] = True
-        classes = [classes[i] for i in range(len(classes)) if i not in to_remove]
+        synsets = [synsets[i] for i in range(len(synsets)) if i not in to_remove]
 
         # If you have a word that can be refered to both as a fruit and as plant (e.g., 'raspberry') choose a fruit
-        strong_classes = ['fruit', 'vegetable']
-        def is_hyponym_of_strong_class(phrase):
-            for strong_class in strong_classes:
-                if is_hyponym_of(phrase, strong_class):
+        strong_synsets = ['edible_fruit.n.01', 'vegetable.n.01']
+        def is_hyponym_of_strong_synset(phrase):
+            for strong_synset in strong_synsets:
+                if is_hyponym_of(phrase, strong_synset):
                     return True
             return False
         
-        if len(classes) == 2 and is_hyponym_of_strong_class(classes[0][0]) and is_hyponym_of(classes[1][0], 'plant'):
-            classes = [classes[0]]
-        if len(classes) == 2 and is_hyponym_of_strong_class(classes[1][0]) and is_hyponym_of(classes[0][0], 'plant'):
-            classes = [classes[1]]
+        if len(synsets) == 2 and is_hyponym_of_strong_synset(synsets[0][0]) and is_hyponym_of(synsets[1][0], 'plant'):
+            synsets = [synsets[0]]
+        if len(synsets) == 2 and is_hyponym_of_strong_synset(synsets[1][0]) and is_hyponym_of(synsets[0][0], 'plant'):
+            synsets = [synsets[1]]
 
-        # If we got 2 classes, one of which is a hypernym of the other, we'll take the lower one
-        if len(classes) == 2 and is_hyponym_of(classes[0][0], classes[1][0]):
-            classes = [classes[0]]
-        elif len(classes) == 2 and is_hyponym_of(classes[1][0], classes[0][0]):
-            classes = [classes[1]]
+        # If we got 2 synsets, one of which is a hypernym of the other, we'll take the lower one
+        if len(synsets) == 2 and is_hyponym_of(synsets[0][0], synsets[1][0]):
+            synsets = [synsets[0]]
+        elif len(synsets) == 2 and is_hyponym_of(synsets[1][0], synsets[0][0]):
+            synsets = [synsets[1]]
 
-    return classes
+    return synsets
 
-def find_preprocessed_phrase_classes3(phrase):
+def find_preprocessed_phrase_synsets(phrase):
     phrase = phrase.replace(' ', '_')
 
-    ''' Phrase class may be found in:
-    1. Known mappings from phrases to classes.
-    2. Exact match: the phrase is in the list of class phrases
-    3. Exact mismatch: the phrase is in the list of non-class phrases
-    4. WordNet: Search in the wordnet onthology
+    ''' Synsets may be found in:
+    1. Known mappings from phrases to synsets.
+    2. The phrase is in the list of non-synset phrases
+    3. WordNet: Search in the wordnet onthology
     '''
 
     phrase_mappings = []
-    if phrase in sister_term_mappings:
-        sister_term_mapping = sister_term_mappings[phrase]
-        if type(sister_term_mapping) == list:
-            phrase_mappings += [(x, 0) for x in sister_term_mapping]
-        else:
-            phrase_mappings.append((sister_term_mapping, 0))
-    if phrase in hypernym_mappings:
-        hypernym_mapping = hypernym_mappings[phrase]
-        if type(hypernym_mapping) == list:
-            phrase_mappings += hypernym_mapping
-        else:
-            phrase_mappings.append(hypernym_mapping)
+    if phrase in phrase2synsets:
+        direct_synset_mapping = phrase2synsets[phrase]
+        phrase_mappings += [(x, 0) for x in direct_synset_mapping]
+    if phrase in phrase2hypernym:
+        hypernym_mapping = phrase2hypernym[phrase]
+        phrase_mappings += hypernym_mapping
 
     if len(phrase_mappings) > 0:
         # 1. Known mappings
         return phrase_mappings
-    elif phrase in class_phrases:
-        # 2. Exact match
-        return [(phrase, 0)]
-    elif phrase in non_class_phrases:
+    elif phrase in non_synset_phrases:
         # Exact mismatch
         return [(None, 0)]
     else:
@@ -267,94 +219,69 @@ def get_probs_from_lm(text, returned_vals):
     else:
         assert False
 
-def is_an_word(word):
-    inflected = inflect_engine.a(word)
+def is_an_phrase(phrase):
+    inflected = inflect_engine.a(phrase)
     return inflected.startswith('an')
 
-def choose_class_with_lm(token_list, start_ind, end_ind, class_list, selection_method='probs'):
-    class_to_dist_from_match = {x[0]: x[1] for x in class_list}
-    only_class_list = [x[0] for x in class_list]
+def choose_synset_with_lm(token_list, start_ind, end_ind, synset_list, selection_method='probs'):
+    synset_to_dist_from_match = {x[0]: x[1] for x in synset_list}
+    only_synset_list = [x[0] for x in synset_list]
 
     before = [x[0]['text'].lower() for x in token_list[:start_ind]]
     after = [x[0]['text'].lower() for x in token_list[end_ind:]]
 
     plural = False
-    orig_word = '_'.join([x[0]['text'] for x in token_list[start_ind:end_ind]])
-    if orig_word not in non_inflect_strs3 and inflect_engine.singular_noun(orig_word) != False:
-        orig_word = inflect_engine.singular_noun(orig_word)
+    orig_phrase = '_'.join([x[0]['text'] for x in token_list[start_ind:end_ind]])
+    if orig_phrase not in non_inflect_strs and inflect_engine.singular_noun(orig_phrase) != False:
+        orig_phrase = inflect_engine.singular_noun(orig_phrase)
         plural = True
     
-    if orig_word in word_to_replace_str3:
-        class_to_repr_word = deepcopy(word_to_replace_str3[orig_word])
+    if orig_phrase in phrase2replace_str:
+        synset_to_repr_phrase = deepcopy(phrase2replace_str[orig_phrase])
     else:
-        class_to_repr_word = {cur_class: cur_class for cur_class in only_class_list}
+        synset_to_repr_phrase = {synset: wn.synset(synset).lemmas()[0].name() for synset in only_synset_list}
     if plural:
-        for cur_class, repr_word in class_to_repr_word.items():
-            class_to_repr_word[cur_class] = inflect_engine.plural_noun(repr_word)
+        for synset, repr_phrase in synset_to_repr_phrase.items():
+            synset_to_repr_phrase[synset] = inflect_engine.plural_noun(repr_phrase)
     
     # To prevent unwanted bias, check if we need to consider a/an
     if len(before) > 0 and before[-1] in ['a', 'an']:
-        a_classes = []
-        an_classes = []
-        for cur_class in only_class_list:
-            if is_an_word(class_to_repr_word[cur_class]):
-                an_classes.append(cur_class)
+        a_synsets = []
+        an_synsets = []
+        for synset in only_synset_list:
+            if is_an_phrase(synset_to_repr_phrase[synset]):
+                an_synsets.append(synset)
             else:
-                a_classes.append(cur_class)
+                a_synsets.append(synset)
         a_text = ' '.join(before[:-1] + ['a', mask_str] + after)
         a_probs = get_probs_from_lm(a_text, selection_method)
         an_text = ' '.join(before[:-1] + ['an', mask_str] + after)
         an_probs = get_probs_from_lm(an_text, selection_method)
-        prob_class_list = [(a_probs, a_classes), (an_probs, an_classes)]
+        prob_synset_list = [(a_probs, a_synsets), (an_probs, an_synsets)]
     else:
         text = ' '.join(before + [mask_str] + after)
         probs = get_probs_from_lm(text, selection_method)
-        prob_class_list = [(probs, only_class_list)]
+        prob_synset_list = [(probs, only_synset_list)]
 
-    max_class_prob = (-1)*math.inf
-    class_with_max_prob = None
-    for probs, classes in prob_class_list:
-        for cur_class in classes:
-            repr_word = class_to_repr_word[cur_class]
-            if repr_word not in tokenizer.vocab:
+    max_synset_prob = (-1)*math.inf
+    synset_with_max_prob = None
+    for probs, synsets in prob_synset_list:
+        for synset in synsets:
+            repr_phrase = synset_to_repr_phrase[synset]
+            if repr_phrase not in tokenizer.vocab:
                 # For now, don't handle
                 continue
-            class_id = tokenizer.vocab[repr_word]
-            class_prob = probs[class_id]
-            if class_prob > max_class_prob:
-                max_class_prob = class_prob
-                class_with_max_prob = cur_class
+            synset_id = tokenizer.vocab[repr_phrase]
+            synset_prob = probs[synset_id]
+            if synset_prob > max_synset_prob:
+                max_synset_prob = synset_prob
+                synset_with_max_prob = synset
 
-    if class_with_max_prob is None:
+    if synset_with_max_prob is None:
         dist_from_match = 0
     else:
-        dist_from_match = class_to_dist_from_match[class_with_max_prob]
-    return class_with_max_prob, dist_from_match
-
-def choose_class_with_clip(token_list, start_ind, end_ind, class_list, image_path):
-    before = [x[0]['text'].lower() for x in token_list[:start_ind]]
-    after = [x[0]['text'].lower() for x in token_list[end_ind:]]
-
-    class_text_list = []
-    # To prevent unwanted bias, check if we need to consider a/an
-    if len(before) > 0 and before[-1] in ['a', 'an']:
-        for cur_class in class_list:
-            if is_an_word(cur_class):
-                det_str = 'an'
-            else:
-                det_str = 'a'
-            class_text_list.append((cur_class, ' '.join(before[:-1] + [det_str, cur_class] + after)))
-    else:
-        class_text_list = [(cur_class, ' '.join(before + [cur_class] + after)) for cur_class in class_list]
-
-    image = clip_preprocess(Image.open(image_path)).unsqueeze(0).to(device)
-    text = clip.tokenize([x[1] for x in class_text_list]).to(device)
-
-    with torch.no_grad():
-        logits_per_image, _ = clip_model(image, text)
-        probs = logits_per_image.softmax(dim=-1).cpu().numpy()
-
-    return class_list[probs.argmax()]
+        dist_from_match = synset_to_dist_from_match[synset_with_max_prob]
+    return synset_with_max_prob, dist_from_match
 
 def is_subtree_first(token_list, ind):
     adjusted_ind = ind + 1
@@ -402,7 +329,7 @@ def top_handling(token_list, start_ind):
         x[0]['upos'] == 'DET' and
         x[0]['text'].lower() in ['a', 'an']
         ]) > 0:
-        return 'clothing', 2
+        return 'top.n.10', 0
     
     return None, 0
 
@@ -412,30 +339,30 @@ def couple_handling(token_list, ind):
     if ind < (len(token_list) - 1) and token_list[ind+1][0]['text'].lower() == 'of':
         return None, 0
     
-    return 'couple', 0
+    return 'couple.n.01', 0
 
 def plant_handling(token_list, start_ind, end_ind):
     # If we have a plant, it's the living thing- unless the word "power" is before it
     if end_ind - start_ind == 2 and token_list[start_ind][0]['text'] == 'power':
-        return 'factory', 0
+        return 'factory.n.01', 0
     
-    return 'plant', 0
+    return 'plant.n.02', 0
 
 def pool_handling(token_list, start_ind):
     # It's a swimming pool only if the word swimming precedes the pool
     if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'swimming':
         return None, 0
     
-    return [('pond', 0), ('puddle', 0)]
+    return [('pond.n.01', 0), ('pool.n.06', 0)]
 
 def water_handling(token_list, start_ind):
     # If there's a "the" before (e.g., "A dolphin swimming in the water") it's the body of water meaning
     if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'the':
-        return 'body_of_water', 0
+        return 'body_of_water.n.01', 0
     
-    return [('water', 0), ('body_of_water', 0)]
+    return [('water.n.06', 0), ('body_of_water.n.01', 0)]
 
-def phrase_location_to_class3(token_list, start_ind, end_ind):
+def phrase_location_to_synset(token_list, start_ind, end_ind):
     phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
 
     # 1. We have a problem when there's a sport named the same as its ball (baseball, basketball etc.).
@@ -446,35 +373,35 @@ def phrase_location_to_class3(token_list, start_ind, end_ind):
 
     # 2. "top" is also a problem, as it might be clothing
     if end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'top':
-        phrase_class, dist_from_match = top_handling(token_list, start_ind)
+        synset, dist_from_match = top_handling(token_list, start_ind)
 
     # 3. "couple": if we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
     # we do want. Distinguish by checking if we have a determiner (or this is the first phrase), and no "of" after it
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] in ['couple', 'couples']:
-        phrase_class, dist_from_match = couple_handling(token_list, start_ind)
+        synset, dist_from_match = couple_handling(token_list, start_ind)
 
     # 4. "plant": people almost always mean plants and not factories. We'll always chooce plants except if we see the
     # word "power" before
     elif token_list[end_ind - 1][0]['text'] in ['plant', 'plants']:
-        phrase_class, dist_from_match = plant_handling(token_list, start_ind, end_ind)
+        synset, dist_from_match = plant_handling(token_list, start_ind, end_ind)
 
     # 5. "pool": can be either a swimming pool, in which case it's not in our classes, or a puddle, which is in our classes
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'pool':
-        phrase_class, dist_from_match = pool_handling(token_list, start_ind)
+        synset, dist_from_match = pool_handling(token_list, start_ind)
 
     # 6. "water": can be either a body of water or the liquid
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'water':
-        phrase_class, dist_from_match = water_handling(token_list, start_ind)
+        synset, dist_from_match = water_handling(token_list, start_ind)
 
     else:
-        phrase_classes = find_phrase_classes3(phrase)
+        synsets = find_phrase_synsets(phrase)
 
-        if len(phrase_classes) > 1:
-            phrase_class, dist_from_match = choose_class_with_lm(token_list, start_ind, end_ind, phrase_classes)
+        if len(synsets) > 1:
+            synset, dist_from_match = choose_synset_with_lm(token_list, start_ind, end_ind, synsets)
         else:
-            phrase_class, dist_from_match = phrase_classes[0]
+            synset, dist_from_match = synsets[0]
 
-    return phrase_class, dist_from_match
+    return synset, dist_from_match
 
 def is_noun(token_list, ind):
     head_ind = token_list[ind][0]['head'] - 1
@@ -521,27 +448,26 @@ def is_noun(token_list, ind):
     
     return False
 
-def postprocessing(classes):
+def postprocessing(synsets):
     # In many cases we have two subsequent nouns referring to the same thing, where the first is a hyponym of the second
     # (e.g., "ferry boat"). In this case we want to reduce the two to one
-    final_classes = []
+    final_synsets = []
     prev_sample = None
-    for sample in classes:
+    for sample in synsets:
         if prev_sample is not None and \
             prev_sample[0] == prev_sample[1] - 1 and \
             prev_sample[1] == sample[0] and \
             sample[0] == sample[1] - 1 and \
             is_hyponym_of(prev_sample[3], sample[3]):
-            final_classes = final_classes[:-1]
-            final_classes.append((prev_sample[0], sample[1], prev_sample[2], prev_sample[3], prev_sample[4]))
+            final_synsets = final_synsets[:-1]
+            final_synsets.append((prev_sample[0], sample[1], prev_sample[2], prev_sample[3], prev_sample[4]))
         else:
-            final_classes.append(sample)
+            final_synsets.append(sample)
         prev_sample = sample
 
-    return final_classes
+    return final_synsets
 
-def find_classes3(caption):
-    ''' Count not only noun phrases, but all words. This currently doesn't work well. '''
+def find_synsets(caption):
     caption = caption.lower()
     doc = nlp(caption)
     token_lists = [[x.to_dict() for x in y.tokens] for y in doc.sentences]
@@ -550,7 +476,7 @@ def find_classes3(caption):
     token_list = token_lists[0]
     token_list = preprocess(token_list)
 
-    classes = []
+    synsets = []
 
     identified_inds = set()
     # Two word phrases
@@ -558,12 +484,12 @@ def find_classes3(caption):
     while i < len(token_list)-1:
         start_ind = i
         end_ind = i+2
-        phrase_class = None
+        synset = None
         if is_noun(token_list, i) and is_noun(token_list, i+1):
-            phrase_class, dist_from_match = phrase_location_to_class3(token_list, start_ind, end_ind)
-        if phrase_class is not None:
+            synset, dist_from_match = phrase_location_to_synset(token_list, start_ind, end_ind)
+        if synset is not None:
             phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
-            classes.append((start_ind, end_ind, phrase, phrase_class, dist_from_match))
+            synsets.append((start_ind, end_ind, phrase, synset, dist_from_match))
             identified_inds.add(start_ind)
             identified_inds.add(start_ind+1)
             i += 2
@@ -576,13 +502,13 @@ def find_classes3(caption):
             continue
         start_ind = i
         end_ind = i+1
-        phrase_class = None
+        synset = None
         if is_noun(token_list, i):
-            phrase_class, dist_from_match = phrase_location_to_class3(token_list, start_ind, end_ind)
-        if phrase_class is not None:
+            synset, dist_from_match = phrase_location_to_synset(token_list, start_ind, end_ind)
+        if synset is not None:
             phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
-            classes.append((start_ind, end_ind, phrase, phrase_class, dist_from_match))
+            synsets.append((start_ind, end_ind, phrase, synset, dist_from_match))
 
-    classes = postprocessing(classes)
+    synsets = postprocessing(synsets)
     
-    return classes
+    return synsets
