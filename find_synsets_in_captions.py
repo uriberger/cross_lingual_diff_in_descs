@@ -19,7 +19,7 @@ with open('phrase2synsets.json', 'r') as fp:
 with open('phrase2hypernym.json', 'r') as fp:
     phrase2hypernym = json.load(fp)
 
-with open('synsets_c2p.json.json', 'r') as fp:
+with open('synsets_c2p.json', 'r') as fp:
     child2parent = json.load(fp)
 
 parent2children = defaultdict(list)
