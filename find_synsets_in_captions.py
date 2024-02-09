@@ -13,13 +13,13 @@ from collections import defaultdict
 #   person, vehicle, furniture, animal, food, bag, clothing, tableware, plant, electronic_equipment, home_appliance,
 #   toy, building, mountain, kitchen_utensil, sky, celestial_body, body_part, body_of_water, hand_tool, musical_instrument,
 #   writing_implement, jewelry, weapon, timepiece, riding_device
-with open('phrase2synsets', 'r') as fp:
+with open('phrase2synsets.json', 'r') as fp:
     phrase2synsets = json.load(fp)
 
-with open('phrase2hypernym', 'r') as fp:
+with open('phrase2hypernym.json', 'r') as fp:
     phrase2hypernym = json.load(fp)
 
-with open('synsets_c2p.json', 'r') as fp:
+with open('synsets_c2p.json.json', 'r') as fp:
     child2parent = json.load(fp)
 
 parent2children = defaultdict(list)
