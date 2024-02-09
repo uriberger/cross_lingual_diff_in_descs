@@ -11,7 +11,7 @@ import json
 from copy import deepcopy
 
 # Root class phrases:
-#   person, vehicle, furniture, animal, food, bag, clothing, tableware, plan', electronic_equipment, 'home_appliance',
+#   person, vehicle, furniture, animal, food, bag, clothing, tableware, plant, electronic_equipment, home_appliance,
 #   toy, building, mountain, kitchen_utensil, sky, celestial_body, body_part, body_of_water, hand_tool, musical_instrument,
 #   writing_implement, jewelry, weapon, timepiece, riding_device
 with open('class_phrases.json', 'r') as fp:
@@ -40,7 +40,8 @@ non_class_phrases = [
     # Now comes a list of words that became classes through a synset which is not really used, so we don't want them as classes
     'dome', 'stadium', 'granite', 'machine', 'string', 'conveyor', 'computer_mouse', 'trunk', 'construction', 'seat',
     'can', 'canal', 'mug', 'accessory', 'cabinet', 'booth', 'wheel', 'string', 'guest', 'chess', 'gray', 'pile',
-    'controller', 'sport', 'vintage', 'napkin', 'mannequin', 'hanger', 'arch', 'fan', 'steel', 'brand', 'bust', 'stack'
+    'controller', 'sport', 'vintage', 'napkin', 'mannequin', 'hanger', 'arch', 'fan', 'steel', 'brand', 'bust', 'stack',
+    'saint'
 ]
 
 # Inflect don't handle some strings well, ignore these
@@ -80,6 +81,11 @@ word_to_replace_str3 = {
     'vessel': {'vehicle': 'boat', None: 'container'}, 'mouse': {'mouse': 'rat', None: 'keyboard'},
     'pot': {'pot': 'pan', None: 'vase'}, 'architecture': {'architecture': 'building', None: 'style'},
     'water': {'water': 'liquid', 'body_of_water': 'sea'}, 'dress': {'dress': 'skirt', 'clothing': 'outfit'}
+}
+
+identical_synsets_mapping = {
+    'food.n.02': 'food.n.01', 'participant.n.01': 'player.n.01', 'rider.n.03': 'rider.n.01', 'priest.n.01': 'priest.n.02',
+    'bag.n.04': 'bag.n.01', 'bag.n.06': 'bag.n.01'
 }
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
