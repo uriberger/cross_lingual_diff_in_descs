@@ -457,6 +457,14 @@ def is_noun(token_list, ind):
     
     return False
 
+def post_traverse_handling(token_list, start_ind, end_ind, synsets):
+    if end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'architecture':
+        # The word 'architecture' will be considered a building only if no other building was mentioned in the sentence
+        if len([synset for synset in synsets if is_hyponym_of(synset, 'building.n.01')]) == 0:
+            return 'architecture.n.01', 0
+        else:
+            return None, 0
+
 def postprocessing(synsets):
     # In many cases we have two subsequent nouns referring to the same thing, where the first is a hyponym of the second
     # (e.g., "ferry boat"). In this case we want to reduce the two to one
@@ -517,6 +525,21 @@ def find_synsets(caption):
         if synset is not None:
             phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
             synsets.append((start_ind, end_ind, phrase, synset, dist_from_match))
+            identified_inds.add(start_ind)
+
+    # Phrases that require handling only once other synsets were identified
+    for i in range(len(token_list)):
+        if i in identified_inds:
+            continue
+        start_ind = i
+        end_ind = i+1
+        synset = None
+        if is_noun(token_list, i):
+            synset, dist_from_match = post_traverse_handling(token_list, start_ind, end_ind, synsets)
+        if synset is not None:
+            phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
+            synsets.append((start_ind, end_ind, phrase, synset, dist_from_match))
+            identified_inds.add(start_ind)
 
     synsets = postprocessing(synsets)
     
