@@ -460,7 +460,7 @@ def is_noun(token_list, ind):
 def post_traverse_handling(token_list, start_ind, end_ind, synsets):
     if end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'architecture':
         # The word 'architecture' will be considered a building only if no other building was mentioned in the sentence
-        if len([synset for synset in synsets if is_hyponym_of(synset, 'building.n.01')]) == 0:
+        if len([synset for synset in synsets if is_hyponym_of(synset[3], 'building.n.01')]) == 0:
             return 'architecture.n.01', 0
         else:
             return None, 0
