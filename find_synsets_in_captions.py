@@ -11,7 +11,7 @@ from collections import defaultdict
 
 # Root phrases:
 #   person, vehicle, furniture, animal, food, bag, clothing, tableware, plant, electronic_equipment, home_appliance,
-#   toy, building, mountain, kitchen_utensil, sky, celestial_body, body_part, body_of_water, hand_tool, musical_instrument,
+#   toy, building, mountain, kitchen_utensil, sky, sun, body_part, body_of_water, hand_tool, musical_instrument,
 #   writing_implement, jewelry, weapon, timepiece, riding_device
 with open('phrase2synsets.json', 'r') as fp:
     phrase2synsets = json.load(fp)
