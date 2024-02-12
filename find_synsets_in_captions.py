@@ -464,6 +464,8 @@ def post_traverse_handling(token_list, start_ind, end_ind, synsets):
             return 'architecture.n.01', 0
         else:
             return None, 0
+    
+    return None, 0
 
 def postprocessing(synsets):
     # In many cases we have two subsequent nouns referring to the same thing, where the first is a hyponym of the second
