@@ -372,6 +372,13 @@ def water_handling(token_list, start_ind):
     
     return [('water.n.06', 0), ('body_of_water.n.01', 0)]
 
+def bed_handling(token_list, start_ind):
+    # If it's a flower bed, it's not a bed
+    if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'flower':
+        return [(None, 0)]
+    
+    return [('bed.n.01', 0)]
+
 def phrase_location_to_synset(token_list, start_ind, end_ind):
     phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
 
@@ -402,6 +409,10 @@ def phrase_location_to_synset(token_list, start_ind, end_ind):
     # 6. "water": can be either a body of water or the liquid
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'water':
         synsets = water_handling(token_list, start_ind)
+
+    # 7. "bed": can be either a bed or a flower bed
+    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'bed':
+        synsets = bed_handling(token_list, start_ind)
 
     else:
         synsets = find_phrase_synsets(phrase)
