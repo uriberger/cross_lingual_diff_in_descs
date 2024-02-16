@@ -250,9 +250,6 @@ def choose_synset_with_lm(token_list, start_ind, end_ind, synset_list, selection
         synset_to_repr_phrase = deepcopy(phrase2replace_str[orig_phrase])
     else:
         synset_to_repr_phrase = {synset: wn.synset(synset).lemmas()[0].name() for synset in only_synset_list}
-    if plural:
-        for synset, repr_phrase in synset_to_repr_phrase.items():
-            synset_to_repr_phrase[synset] = inflect_engine.plural_noun(repr_phrase)
     
     # To prevent unwanted bias, check if we need to consider a/an
     if len(before) > 0 and before[-1] in ['a', 'an']:
