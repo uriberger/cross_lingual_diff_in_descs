@@ -109,7 +109,7 @@ def search_in_wordnet(phrase):
     identified_synsets = []
     all_synsets_count = sum([get_synset_count(x) for x in phrase_synsets])
     for synset in phrase_synsets:
-        if all_synsets_count == 0 or get_synset_count(synset)/all_synsets_count >= 0.2:
+        if all_synsets_count == 0 or get_synset_count(synset)/all_synsets_count >= 0.1:
             identified_synsets += identify_synset(synset)
 
     synset_to_lowest_num = {}
@@ -186,6 +186,7 @@ def preprocess(token_list):
     replace_dict = [
         # 1. "olive green": olive is considered a noun
         (['olive', 'green'], 'green'),
+        (['lion', 'fish'], 'lionfish')
     ]
 
     tokens = [x[0]['text'].lower() for x in token_list]
