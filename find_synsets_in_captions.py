@@ -88,7 +88,7 @@ def find_phrase_synsets(phrase):
     phrase = phrase.lower()
 
     # First, preprocess: if in plural, convert to singular
-    if phrase not in non_inflect_strs and inflect_engine.singular_noun(phrase) != False:
+    if phrase not in non_inflect_strs and inflect_engine.singular_noun(phrase) != False and inflect_engine.singular_noun(phrase) != phrase:
         singular_phrase = inflect_engine.singular_noun(phrase)
         singular_phrase_synsets = find_preprocessed_phrase_synsets(singular_phrase)
         if singular_phrase_synsets is not None and len(singular_phrase_synsets) > 0 and len([x for x in singular_phrase_synsets if x[0] is not None]) > 0:
@@ -242,7 +242,7 @@ def choose_synset_with_lm(token_list, start_ind, end_ind, synset_list, selection
 
     plural = False
     orig_phrase = '_'.join([x[0]['text'] for x in token_list[start_ind:end_ind]])
-    if orig_phrase not in non_inflect_strs and inflect_engine.singular_noun(orig_phrase) != False:
+    if orig_phrase not in non_inflect_strs and inflect_engine.singular_noun(orig_phrase) != False and inflect_engine.singular_noun(orig_phrase) != orig_phrase:
         orig_phrase = inflect_engine.singular_noun(orig_phrase)
         plural = True
     
