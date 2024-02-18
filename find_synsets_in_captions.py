@@ -186,7 +186,10 @@ def preprocess(token_list):
     replace_dict = [
         # 1. "olive green": olive is considered a noun
         (['olive', 'green'], 'green'),
-        (['lion', 'fish'], 'lionfish')
+        # 2. Lionfish: unite, otherwise we will identify a lion
+        (['lion', 'fish'], 'lionfish'),
+        # 3. Car park: replace, otherwise we will identify a car
+        (['car', 'park'], 'park')
     ]
 
     tokens = [x[0]['text'].lower() for x in token_list]
