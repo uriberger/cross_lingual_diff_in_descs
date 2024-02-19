@@ -75,6 +75,8 @@ def identify_synset(synset):
     # Identify whether the synset is in our subtree of the entire WordNet tree (or is a descendant of a node in our subtree)
     if synset.name() in all_synsets:
         return [[synset.name(), 0]]
+    if synset.name() in identical_synsets_mapping:
+        return [[identical_synsets_mapping[synset.name()], 0]]
     identified_synsets = []
     hypernyms = synset.hypernyms()
     for hypernym in hypernyms:
