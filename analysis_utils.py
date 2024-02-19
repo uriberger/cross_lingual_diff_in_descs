@@ -64,7 +64,7 @@ def get_synset_to_image_prob_dataset_pair(datasets):
             identified_synsets = list(set(identified_synsets))
             for id_synset in identified_synsets:
                 synset_to_image_count[j][id_synset][cur_data[i]['image_id']] += 1
-        synset_to_image_count.append({x[0]: {y[0]: y[1]/image_count[j][y[0]] for y in x[1].items()} for x in synset_to_image_count[j].items()})
+        synset_to_image_prob.append({x[0]: {y[0]: y[1]/image_count[j][y[0]] for y in x[1].items()} for x in synset_to_image_count[j].items()})
 
     return synset_to_image_prob, synset_to_image_count, image_count, image_ids
 
