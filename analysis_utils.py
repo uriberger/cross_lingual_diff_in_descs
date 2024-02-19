@@ -1,4 +1,4 @@
-from find_classes_in_caption2 import *
+from find_synsets_in_captions import *
 from collections import defaultdict
 import json
 import scipy.stats as stats
@@ -11,7 +11,7 @@ from tqdm import tqdm
 from sklearn.cluster import SpectralClustering
 
 def get_class_to_image_prob(dataset):
-    all_classes = list(set(word_classes2 + list(parent_to_children2.keys())))
+    all_classes = list(set(class_phrases))
     with open(f'datasets/{dataset}.json', 'r') as fp:
         data = json.load(fp)
     class_to_image_count = {x: defaultdict(int) for x in all_classes}
@@ -34,8 +34,7 @@ def get_class_to_image_prob(dataset):
 
     return class_to_image_prob, class_to_image_count, image_count
 
-def get_class_to_image_prob_dataset_pair(datasets):
-    all_classes = list(set(word_classes2 + list(parent_to_children2.keys())))
+def get_synset_to_image_prob_dataset_pair(datasets):
     with open(f'datasets/{datasets[0]}.json', 'r') as fp:
         data1 = json.load(fp)
     with open(f'datasets/{datasets[1]}.json', 'r') as fp:
@@ -44,30 +43,30 @@ def get_class_to_image_prob_dataset_pair(datasets):
     data1 = [x for x in data1 if x['image_id'] in image_ids and x['classes'] is not None]
     data2 = [x for x in data2 if x['image_id'] in image_ids and x['classes'] is not None]
     data = [data1, data2]
-    class_to_image_count = []
+    synset_to_image_count = []
     image_count = []
-    class_to_image_prob = []
+    synset_to_image_prob = []
     for _ in range(len(datasets)):
-        class_to_image_count.append({x: defaultdict(int) for x in all_classes})
+        synset_to_image_count.append({x: defaultdict(int) for x in all_synsets})
     for _ in range(len(datasets)):
         image_count.append(defaultdict(int))
     for j in range(len(data)):
         cur_data = data[j]
         for i in range(len(cur_data)):
             image_count[j][cur_data[i]['image_id']] += 1
-            identified_classes = []
-            for cur_class in list(set([x[3] for x in cur_data[i]['classes']])):
-                identified_classes.append(cur_class)
-                inner_cur_class = cur_class
-                while inner_cur_class in child_to_parent2:
-                    inner_cur_class = child_to_parent2[inner_cur_class]
-                    identified_classes.append(inner_cur_class)
-            identified_classes = list(set(identified_classes))
-            for id_class in identified_classes:
-                class_to_image_count[j][id_class][cur_data[i]['image_id']] += 1
-        class_to_image_prob.append({x[0]: {y[0]: y[1]/image_count[j][y[0]] for y in x[1].items()} for x in class_to_image_count[j].items()})		
+            identified_synsets = []
+            for synset in list(set([x[3] for x in cur_data[i]['classes']])):
+                identified_synsets.append(synset)
+                inner_synset = synset
+                while inner_synset in child2parent:
+                    inner_synset = child2parent[inner_synset]
+                    identified_synsets.append(inner_synset)
+            identified_synsets = list(set(identified_synsets))
+            for id_synset in identified_synsets:
+                synset_to_image_count[j][id_synset][cur_data[i]['image_id']] += 1
+        synset_to_image_count.append({x[0]: {y[0]: y[1]/image_count[j][y[0]] for y in x[1].items()} for x in synset_to_image_count[j].items()})		
 
-    return class_to_image_prob, class_to_image_count, image_count, image_ids
+    return synset_to_image_prob, synset_to_image_count, image_count, image_ids
 
 def get_annotator_agreement(dataset):
     all_classes = list(set(word_classes2 + list(parent_to_children2.keys())))
@@ -187,9 +186,9 @@ def compute_correlation(dataset_pair):
     
     return res
 
-def compute_similarity_by_class(dataset_pair, sim_method, cur_class):
-    class_to_image_prob, _, _, image_ids = get_class_to_image_prob_dataset_pair(dataset_pair)
-    lists = [[class_to_image_prob[i][cur_class][x] if x in class_to_image_prob[i][cur_class] else 0 for x in image_ids] for i in range(2)]
+def compute_similarity_by_synset(dataset_pair, sim_method, synset):
+    synset_to_image_prob, _, _, image_ids = get_synset_to_image_prob_dataset_pair(dataset_pair)
+    lists = [[synset_to_image_prob[i][synset][x] if x in synset_to_image_prob[i][synset] else 0 for x in image_ids] for i in range(2)]
     vec1 = np.array(lists[0])
     vec2 = np.array(lists[1])
     if sim_method == 'l2_norm':
@@ -198,38 +197,37 @@ def compute_similarity_by_class(dataset_pair, sim_method, cur_class):
         return 1 - spatial.distance.cosine(vec1, vec2)
 
 def compute_vector_similarity(dataset_pair, sim_method):
-    all_classes = list(set(word_classes2 + list(parent_to_children2.keys())))
-    class_to_image_prob, _, _, image_ids = get_class_to_image_prob_dataset_pair(dataset_pair)
+    synset_to_image_prob, _, _, image_ids = get_synset_to_image_prob_dataset_pair(dataset_pair)
     res = {}
-    for cur_class in all_classes:
-        lists = [[class_to_image_prob[i][cur_class][x] if x in class_to_image_prob[i][cur_class] else 0 for x in image_ids] for i in range(2)]
+    for synset in all_synsets:
+        lists = [[synset_to_image_prob[i][synset][x] if x in synset_to_image_prob[i][synset] else 0 for x in image_ids] for i in range(2)]
         vec1 = np.array(lists[0])
         vec2 = np.array(lists[1])
         if sim_method == 'l2_norm':
-            res[cur_class] = (-1)*np.linalg.norm(vec1-vec2)
+            res[synset] = (-1)*np.linalg.norm(vec1-vec2)
         elif sim_method == 'cosine':
-            res[cur_class] = 1 - spatial.distance.cosine(vec1, vec2)
+            res[synset] = 1 - spatial.distance.cosine(vec1, vec2)
     return res
 
-def compute_language_similarity(dataset_pair, sim_method, agg_method, cur_class):
-    if cur_class is None:
-        per_class_similarity = compute_vector_similarity(dataset_pair, sim_method)
-        # Use all classes an aggregeate using agg_method
-        sim_list = [x[1] for x in sorted(list(per_class_similarity.items()), key=lambda y:y[0])]
+def compute_language_similarity(dataset_pair, sim_method, agg_method, synset):
+    if synset is None:
+        per_synset_similarity = compute_vector_similarity(dataset_pair, sim_method)
+        # Use all synsets an aggregeate using agg_method
+        sim_list = [x[1] for x in sorted(list(per_synset_similarity.items()), key=lambda y:y[0])]
         if agg_method == 'mean':
             return sum(sim_list)/len(sim_list)
         if agg_method == 'l2_norm':
             return (-1)*np.linalg.norm(sim_list)
     else:
-        return compute_similarity_by_class(dataset_pair, sim_method, cur_class)
+        return compute_similarity_by_synset(dataset_pair, sim_method, synset)
     
-def cluster_langs(langs, sim_method, agg_method, n_cluster, dataset_prefix, cur_class=None):
+def cluster_langs(langs, sim_method, agg_method, n_cluster, dataset_prefix, synset=None):
     pairs = [(i, j) for i in range(len(langs)) for j in range(i+1, len(langs))]
     adj_mat = np.zeros((36, 36))
     for i, j in tqdm(pairs):
         lang1 = langs[i]
         lang2 = langs[j]
-        cur_adj = compute_language_similarity((f'{dataset_prefix}_{lang1}', f'{dataset_prefix}_{lang2}'), sim_method, agg_method, cur_class)
+        cur_adj = compute_language_similarity((f'{dataset_prefix}_{lang1}', f'{dataset_prefix}_{lang2}'), sim_method, agg_method, synset)
         adj_mat[i, j] = cur_adj
         adj_mat[j, i] = cur_adj
         
