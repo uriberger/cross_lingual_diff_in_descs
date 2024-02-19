@@ -29,7 +29,7 @@ for child, parent in child2parent.items():
 with open('implicit_synsets.json', 'r') as fp:
     implicit_synsets = json.load(fp)
 
-all_synsets = set([x for outer in phrase2synsets.values() for x in outer]).union(implicit_synsets).union(child2parent)
+all_synsets = set([x for outer in phrase2synsets.values() for x in outer if x is not None]).union(implicit_synsets).union(child2parent)
 
 with open('phrase2replace_str.json', 'r') as fp:
     phrase2replace_str = json.load(fp)
