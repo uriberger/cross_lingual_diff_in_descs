@@ -10,29 +10,28 @@ from irrCAC.raw import CAC
 from tqdm import tqdm
 from sklearn.cluster import SpectralClustering
 
-def get_class_to_image_prob(dataset):
-    all_classes = list(set(class_phrases))
+def get_synset_to_image_prob(dataset):
     with open(f'datasets/{dataset}.json', 'r') as fp:
         data = json.load(fp)
-    class_to_image_count = {x: defaultdict(int) for x in all_classes}
+    synset_to_image_count = {x: defaultdict(int) for x in all_synsets}
     image_count = defaultdict(int)
     for sample in data:
-        if 'classes' not in sample or sample['classes'] is None:
+        if 'synsets' not in sample or sample['synsets'] is None:
             continue
         image_count[sample['image_id']] += 1
-        identified_classes = []
-        for cur_class in list(set([x[3] for x in sample['classes']])):
-            identified_classes.append(cur_class)
-            inner_cur_class = cur_class
-            while inner_cur_class in child_to_parent2:
-                inner_cur_class = child_to_parent2[inner_cur_class]
-                identified_classes.append(inner_cur_class)
-        identified_classes = list(set(identified_classes))
-        for id_class in identified_classes:
-            class_to_image_count[id_class][sample['image_id']] += 1
-    class_to_image_prob = {x[0]: {y[0]: y[1]/image_count[y[0]] for y in x[1].items()} for x in class_to_image_count.items()}
+        identified_synsets = []
+        for synset in list(set([x[3] for x in sample['synsets']])):
+            identified_synsets.append(synset)
+            inner_synset = synset
+            while inner_synset in child2parent:
+                inner_synset = child2parent[inner_synset]
+                identified_synsets.append(inner_synset)
+        identified_synsets = list(set(identified_synsets))
+        for id_synset in identified_synsets:
+            synset_to_image_count[id_synset][sample['image_id']] += 1
+    synset_to_image_prob = {x[0]: {y[0]: y[1]/image_count[y[0]] for y in x[1].items()} for x in synset_to_image_count.items()}
 
-    return class_to_image_prob, class_to_image_count, image_count
+    return synset_to_image_prob, synset_to_image_count, image_count
 
 def get_synset_to_image_prob_dataset_pair(datasets):
     with open(f'datasets/{datasets[0]}.json', 'r') as fp:
@@ -40,8 +39,8 @@ def get_synset_to_image_prob_dataset_pair(datasets):
     with open(f'datasets/{datasets[1]}.json', 'r') as fp:
         data2 = json.load(fp)
     image_ids = set([x['image_id'] for x in data1]).intersection([x['image_id'] for x in data2])
-    data1 = [x for x in data1 if x['image_id'] in image_ids and x['classes'] is not None]
-    data2 = [x for x in data2 if x['image_id'] in image_ids and x['classes'] is not None]
+    data1 = [x for x in data1 if x['image_id'] in image_ids and x['synsets'] is not None]
+    data2 = [x for x in data2 if x['image_id'] in image_ids and x['synsets'] is not None]
     data = [data1, data2]
     synset_to_image_count = []
     image_count = []
@@ -55,7 +54,7 @@ def get_synset_to_image_prob_dataset_pair(datasets):
         for i in range(len(cur_data)):
             image_count[j][cur_data[i]['image_id']] += 1
             identified_synsets = []
-            for synset in list(set([x[3] for x in cur_data[i]['classes']])):
+            for synset in list(set([x[3] for x in cur_data[i]['synsets']])):
                 identified_synsets.append(synset)
                 inner_synset = synset
                 while inner_synset in child2parent:
