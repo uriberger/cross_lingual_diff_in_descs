@@ -12,7 +12,7 @@ from collections import defaultdict
 # Root phrases:
 #   person, vehicle, furniture, animal, food, bag, clothing, tableware, plant, electronic_equipment, home_appliance,
 #   toy, building, mountain, kitchen_utensil, sky, sun, body_part, body_of_water, hand_tool, musical_instrument,
-#   writing_implement, jewelry, weapon, timepiece, riding_device
+#   writing_implement, jewelry, weapon, timepiece
 with open('phrase2synsets.json', 'r') as fp:
     phrase2synsets = json.load(fp)
 
@@ -41,7 +41,7 @@ with open('phrase2replace_str.json', 'r') as fp:
 def is_hyponym_of(synset1, synset2):
     if synset1 == synset2:
         return True
-    while synset1 in child2parent:
+    if synset1 in child2parent:
         return is_hyponym_of(child2parent[synset1], synset2)
     return False
 
