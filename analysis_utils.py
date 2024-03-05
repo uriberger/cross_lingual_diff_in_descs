@@ -9,6 +9,7 @@ import pandas as pd
 from irrCAC.raw import CAC
 from tqdm import tqdm
 from sklearn.cluster import SpectralClustering
+import matplotlib.pyplot as plt
 
 def get_synset_to_image_prob(dataset):
     with open(f'datasets/{dataset}.json', 'r') as fp:
@@ -235,3 +236,38 @@ def cluster_langs(langs, sim_method, agg_method, n_cluster, dataset_prefix, syns
     sc.fit(adj_mat)
     
     return [[langs[j] for j in range(len(langs)) if sc.labels_[j] == i] for i in range(n_cluster)]
+
+def plot_similarity_heatmap(langs):
+    sim_method = 'l2_norm'
+    agg_method = 'l2_norm'
+    synset = None
+    dataset_prefix = 'xm3600'
+
+    pairs = [(i, j) for i in range(len(langs)) for j in range(i+1, len(langs))]
+    adj_mat = np.zeros((36, 36))
+    for i, j in tqdm(pairs):
+        lang1 = langs[i]
+        lang2 = langs[j]
+        cur_adj = compute_language_similarity((f'{dataset_prefix}_{lang1}', f'{dataset_prefix}_{lang2}'), sim_method, agg_method, synset)
+        adj_mat[i, j] = cur_adj
+        adj_mat[j, i] = cur_adj
+
+    plt.clf()
+    plt.figure(figsize=(12,9))
+    my_langs = ['cs', 'da', 'de', 'el', 'es', 'fi', 'fr', 'hr', 'hu', 'it', 'nl', 'no', 'pl', 'pt', 'sv', 'id', 'ja', 'ko', 'th', 'vi', 'zh', 'ru', 'uk', 'ar', 'en', 'fa', 'fil', 'hi', 'quz', 'sw', 'te', 'tr', 'he', 'ro', 'bn', 'mi']
+    adj_mat2 = np.zeros((36, 36))
+    l2i = {langs[i]: i for i in range(36)}
+    for i in range(36):
+        for j in range(36):
+            adj_mat2[35-i, j] = adj_mat[l2i[my_langs[i]], l2i[my_langs[j]]]
+    for i in range(36):
+        adj_mat2[35-i,i] = adj_mat2[0,1]
+    for i in range(36):
+        adj_mat2[35-i,i] = np.max(adj_mat2)
+    plt.xticks(ticks=[x+0.5 for x in range(36)], labels=my_langs)
+    plt.yticks(ticks=[x+0.5 for x in range(36)], labels=[my_langs[35-i] for i in range(36)])
+    plt.tick_params(axis='x', bottom=False, top=True, labelbottom=False, labeltop=True)
+    plt.tick_params(axis='both', labelsize=10)
+    heatmap = plt.pcolor(adj_mat2, cmap='hot')
+    plt.colorbar(heatmap)
+    plt.savefig('del_me.png')
