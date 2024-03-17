@@ -10,6 +10,10 @@ from irrCAC.raw import CAC
 from tqdm import tqdm
 from sklearn.cluster import SpectralClustering
 import matplotlib.pyplot as plt
+import matplotlib.lines as mlines
+import torch
+import seaborn as sns
+import pandas as pd
 
 def get_synset_to_image_prob(dataset):
     with open(f'datasets/{dataset}.json', 'r') as fp:
@@ -271,3 +275,123 @@ def plot_similarity_heatmap(langs):
     heatmap = plt.pcolor(adj_mat2, cmap='hot')
     plt.colorbar(heatmap)
     plt.savefig('del_me.png')
+
+def get_object_num_by_location(langs, synset):
+    with open('../datasets/xm3600/captions.jsonl', 'r') as fp:
+        jl = list(fp)
+    data = [json.loads(x) for x in jl]
+    iid2l = {int(x['image/key'], 16): x['image/locale'] for x in data}
+    image_num = 100
+    l2iid2count = {lang: defaultdict(list) for lang in langs}
+    
+    for lang in langs:
+        with open(f'datasets/xm3600_{lang}.json', 'r') as fp:
+            data = json.load(fp)
+        for sample in data:
+            if synset is None:
+                l2iid2count[iid2l[sample['image_id']]][sample['image_id']].append(len(sample['synsets']))
+            else:
+                l2iid2count[iid2l[sample['image_id']]][sample['image_id']].append(len([x for x in sample['synsets'] if is_hyponym_of(x[3], synset)]))
+    
+    l2count = {x[0]: sum([sum(y)/len(y) for y in x[1].values()]) for x in l2iid2count.items()}
+    res = sorted([(x[0], '%.2f' % (x[1]/image_num)) for x in l2count.items()], key=lambda x:x[1])
+    
+    return res
+
+def get_object_num_by_language(langs, synset):
+    image_num = 3600
+    l2iid2count = {lang: defaultdict(list) for lang in langs}
+    
+    for lang in langs:
+        with open(f'datasets/xm3600_{lang}.json', 'r') as fp:
+            data = json.load(fp)
+        for sample in data:
+            if synset is None:
+                l2iid2count[lang][sample['image_id']].append(len(sample['synsets']))
+            else:
+                l2iid2count[lang][sample['image_id']].append(len([x for x in sample['synsets'] if is_hyponym_of(x[3], synset)]))
+    
+    l2count = {x[0]: sum([sum(y)/len(y) for y in x[1].values()]) for x in l2iid2count.items()}
+    res = sorted([(x[0], '%.2f' % (x[1]/image_num)) for x in l2count.items()], key=lambda x:x[1])
+    
+    return res
+
+def plot_object_num(langs, synset_list, by_location):
+    assert len(synset_list) == 3
+    
+    clusters = [['cs', 'da', 'de', 'el', 'es', 'fi', 'fr', 'hr', 'hu', 'it', 'nl', 'no', 'pl', 'pt', 'sv'], ['id', 'ja', 'ko', 'th', 'vi', 'zh'], ['ru', 'uk'], ['ar', 'en', 'fa', 'fil', 'hi', 'quz', 'sw', 'te', 'tr'], ['he', 'ro'], ['bn'], ['mi']]
+    l2c = {lang: [i for i in range(7) if lang in clusters[i]][0] for lang in langs}
+    colors = ['black', 'red', 'green', 'blue', 'orange', 'yellow', 'gray']
+    
+    plt.clf()
+    row_num = 2
+    col_num = 2
+    fig, axs = plt.subplots(row_num, col_num)
+    fig.set_size_inches(12,16)
+    
+    if by_location:
+        overall_res = get_object_num_by_location(langs, None)
+    else:
+        overall_res = get_object_num_by_language(langs, None)
+    
+    axs[0, 0].barh(range(36), width=[float(x[1]) for x in overall_res], color=[colors[l2c[x[0]]] for x in overall_res])
+    axs[0, 0].set_title('Overall')
+    axs[0, 0].set_yticks(ticks=range(36), labels=[x[0] for x in overall_res])
+    axs[0, 0].tick_params(axis='both', labelsize=10)
+    row = 0
+    col = 1
+    for i in range(3):
+        if by_location:
+            res = get_object_num_by_location(langs, synset_list[i])
+        else:
+            res = get_object_num_by_language(langs, synset_list[i])
+        axs[row, col].barh(range(36), width=[float(x[1]) for x in res], color=[colors[l2c[x[0]]] for x in res])
+        axs[row, col].set_title(synset_list[i])
+        axs[row, col].set_yticks(ticks=range(36), labels=[x[0] for x in res])
+        axs[row, col].tick_params(axis='both', labelsize=10)
+        col += 1
+        if col == col_num:
+            col = 0
+            row += 1
+    
+    plt.savefig('del_me.png')
+
+def plot_legend():
+    colors = ['black', 'red', 'green', 'blue', 'orange', 'yellow', 'gray']
+	
+    plt.clf()
+    row_num = 1
+    col_num = 3
+    fig, axs = plt.subplots(row_num, col_num)
+    fig.set_size_inches(40,15)
+    
+    fig.legend(handles=[mlines.Line2D([], [], color=colors[i], marker='s', ls='', label=f'Cluster {i+1}') for i in range(len(colors))], fontsize=25, loc='lower center', ncols=4)
+    
+    plt.savefig('del_me.png')
+
+def plot_saliency_heatmap():
+    sns.set_style('whitegrid')
+    plt.rcParams["font.family"] = "Times New Roman"
+
+    labels = [x.split('_')[1] for x in all_datasets if x.startswith('xm3600_')]
+    concepts = [x for x in all_synsets if x not in child2parent]
+    X = np.zeros((len(labels), len(concepts), 3600))
+
+    with open(f'datasets/xm3600_en.json', 'r') as fp:
+        data = json.load(fp)
+    all_images = list(set([x['image_id'] for x in data]))
+    for i, lang in tqdm(enumerate(labels)):
+        synset2prob = get_synset_to_image_prob(f'xm3600_{lang}')
+        for j, synset in enumerate(concepts):
+            for k, image_id in enumerate(all_images):
+                X[i, j, k] = synset2prob[synset][image_id]
+
+    X = X.sum(axis=-1)
+    X_mean = X.mean(axis=0, keepdims=True)
+    X_std = np.std(X, axis=0)
+    Z = (X - X_mean) / X_std
+    X = pd.DataFrame(Z.T, columns=labels, index=concepts)
+
+    ax = sns.heatmap(X, cmap="vlag",
+        center=0, annot=True, fmt=".1f", square=True, xticklabels=True, annot_kws={"fontsize":5})
+    plt.savefig('saliency_heatmap.pdf', bbox_inches='tight')
