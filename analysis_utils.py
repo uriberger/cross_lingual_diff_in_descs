@@ -369,7 +369,7 @@ def plot_legend():
     
     plt.savefig('del_me.png')
 
-def plot_saliency_heatmap():
+def plot_saliency_heatmap(sort_by_mean):
     sns.set_style('whitegrid')
     plt.rcParams["font.family"] = "Times New Roman"
 
@@ -391,8 +391,18 @@ def plot_saliency_heatmap():
     X_mean = X.mean(axis=0, keepdims=True)
     X_std = np.std(X, axis=0)
     Z = (X - X_mean) / X_std
+    if sort_by_mean:
+        Z = np.concatenate((Z, Z.mean(axis=1)[:, np.newaxis]), axis=1)
+        concepts.append('Mean')
+        lang_ind_mean_list = [(i, Z[i, -1]) for i in range(Z.shape[0])]
+        lang_ind_mean_list.sort(key=lambda x:x[1])
+        permutation = [[j for j in range(len(labels)) if lang_ind_mean_list[j][0] == i][0] for i in range(len(labels))]
+        idx = np.empty_like(permutation)
+        idx[permutation] = np.arange(len(permutation))
+        Z[:] = Z[idx, :]
+        labels = [labels[lang_ind_mean_list[i][0]] for i in range(len(labels))]
     X = pd.DataFrame(Z.T, columns=labels, index=concepts)
 
     ax = sns.heatmap(X, cmap="vlag",
-        center=0, annot=True, fmt=".1f", square=True, xticklabels=True, annot_kws={"fontsize":5})
+                     center=0, annot=True, fmt=".1f", square=True, xticklabels=True, yticklabels=True, annot_kws={"fontsize":5})
     plt.savefig('saliency_heatmap.pdf', bbox_inches='tight')
