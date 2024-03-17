@@ -381,10 +381,11 @@ def plot_saliency_heatmap():
         data = json.load(fp)
     all_images = list(set([x['image_id'] for x in data]))
     for i, lang in tqdm(enumerate(labels)):
-        synset2prob = get_synset_to_image_prob(f'xm3600_{lang}')
+        synset2prob = get_synset_to_image_prob(f'xm3600_{lang}')[0]
         for j, synset in enumerate(concepts):
             for k, image_id in enumerate(all_images):
-                X[i, j, k] = synset2prob[synset][image_id]
+                if image_id in synset2prob[synset]:
+                    X[i, j, k] = synset2prob[synset][image_id]
 
     X = X.sum(axis=-1)
     X_mean = X.mean(axis=0, keepdims=True)
