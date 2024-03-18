@@ -245,11 +245,12 @@ def choose_synset_with_lm(token_list, start_ind, end_ind, synset_list, selection
     before = [x[0]['text'].lower() for x in token_list[:start_ind]]
     after = [x[0]['text'].lower() for x in token_list[end_ind:]]
 
+    orig_phrase = '_'.join([x[0]['text'] for x in token_list[start_ind:end_ind]])
+
     if orig_phrase.endswith("'s"):
         orig_phrase = orig_phrase[:-2]
     
     plural = False
-    orig_phrase = '_'.join([x[0]['text'] for x in token_list[start_ind:end_ind]])
     if orig_phrase not in non_inflect_strs and inflect_engine.singular_noun(orig_phrase) != False and inflect_engine.singular_noun(orig_phrase) != orig_phrase:
         orig_phrase = inflect_engine.singular_noun(orig_phrase)
         plural = True
