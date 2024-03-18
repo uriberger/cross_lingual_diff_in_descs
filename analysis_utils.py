@@ -11,9 +11,11 @@ from tqdm import tqdm
 from sklearn.cluster import SpectralClustering
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
-import torch
 import seaborn as sns
 import pandas as pd
+from sklearn.metrics.pairwise import euclidean_distances as edist
+import lang2vec.lang2vec as l2v
+import mantel
 
 def get_synset_to_image_prob(dataset):
     with open(f'datasets/{dataset}.json', 'r') as fp:
@@ -369,10 +371,7 @@ def plot_legend():
     
     plt.savefig('del_me.png')
 
-def plot_saliency_heatmap(sort_by_mean):
-    sns.set_style('whitegrid')
-    plt.rcParams["font.family"] = "Times New Roman"
-
+def get_lang_root_synset_image_matrix():
     labels = [x.split('_')[1] for x in all_datasets if x.startswith('xm3600_')]
     concepts = [x for x in all_synsets if x not in child2parent]
     X = np.zeros((len(labels), len(concepts), 3600))
@@ -386,6 +385,14 @@ def plot_saliency_heatmap(sort_by_mean):
             for k, image_id in enumerate(all_images):
                 if image_id in synset2prob[synset]:
                     X[i, j, k] = synset2prob[synset][image_id]
+
+    return labels, concepts, X
+
+def plot_saliency_heatmap(sort_by_mean):
+    sns.set_style('whitegrid')
+    plt.rcParams["font.family"] = "Times New Roman"
+
+    labels, concepts, X = get_lang_root_synset_image_matrix()
 
     X = X.sum(axis=-1)
     X_mean = X.mean(axis=0, keepdims=True)
@@ -406,3 +413,53 @@ def plot_saliency_heatmap(sort_by_mean):
     ax = sns.heatmap(X, cmap="vlag",
                      center=0, annot=True, fmt=".1f", square=True, xticklabels=True, yticklabels=True, annot_kws={"fontsize":5})
     plt.savefig('saliency_heatmap.pdf', bbox_inches='tight')
+
+def run_saliency_similarity_correlation_test(langs):
+    labels, concepts, X = get_lang_root_synset_image_matrix()
+    X = np.reshape(X, (X.shape[0], -1))
+    X_sim = edist(X)
+
+    iso_639_2_to_639_3 = {
+        'ar': 'ara',
+        'bn': 'ben',
+        'cs': 'ces',
+        'da': 'dan',
+        'de': 'deu',
+        'el': 'ell',
+        'en': 'eng',
+        'es': 'spa',
+        'fa': 'fas',
+        'fi': 'fin',
+        'fil': 'fil',
+        'fr': 'fra',
+        'he': 'heb',
+        'hi': 'hin',
+        'hr': 'hrv',
+        'hu': 'hun',
+        'id': 'ind',
+        'it': 'ita',
+        'ja': 'jpn',
+        'ko': 'kor',
+        'mi': 'mri',
+        'nl': 'nld',
+        'no': 'nor',
+        'pl': 'pol',
+        'pt': 'por',
+        'quz': 'quz',
+        'ro': 'ron',
+        'ru': 'rus',
+        'sv': 'swe',
+        'sw': 'swa',
+        'te': 'tel',
+        'th': 'tha',
+        'tr': 'tur',
+        'uk': 'ukr',
+        'vi': 'vie',
+        'zh': 'zho'
+    }
+
+    labels = [iso_639_2_to_639_3[code] for code in labels]
+    for criterion in ["geographic", "genetic", "featural"]:
+        d = l2v.distance(criterion, labels)
+        res = mantel.test(X_sim, d)
+        print(criterion, res)
