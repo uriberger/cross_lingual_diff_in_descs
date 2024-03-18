@@ -12,3 +12,4 @@ wit/*
 wit.json
 multi30k_en.json
 del_me_*.json
+*.pdf
