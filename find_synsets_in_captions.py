@@ -89,20 +89,19 @@ def identify_synset(synset):
 def find_phrase_synsets(phrase):
     phrase = phrase.lower()
 
-    # First, preprocess:
+    # First, preprocess: if in plural, convert to singular
+    if phrase not in non_inflect_strs and inflect_engine.singular_noun(phrase) != False and inflect_engine.singular_noun(phrase) != phrase:
+        singular_phrase = inflect_engine.singular_noun(phrase)
+        singular_phrase_synsets = find_preprocessed_phrase_synsets(singular_phrase)
+        if singular_phrase_synsets is not None and len(singular_phrase_synsets) > 0 and len([x for x in singular_phrase_synsets if x[0] is not None]) > 0:
+            return singular_phrase_synsets
+
     # If ends with possessive s, remove and try
     if phrase.endswith("'s"):
         non_possessive_phrase = phrase[:-2]
         non_possessive_phrase_synsets = find_preprocessed_phrase_synsets(non_possessive_phrase)
         if non_possessive_phrase_synsets is not None and len(non_possessive_phrase_synsets) > 0 and len([x for x in non_possessive_phrase_synsets if x[0] is not None]) > 0:
             return non_possessive_phrase_synsets
-    
-    # If in plural, convert to singular
-    if phrase not in non_inflect_strs and inflect_engine.singular_noun(phrase) != False and inflect_engine.singular_noun(phrase) != phrase:
-        singular_phrase = inflect_engine.singular_noun(phrase)
-        singular_phrase_synsets = find_preprocessed_phrase_synsets(singular_phrase)
-        if singular_phrase_synsets is not None and len(singular_phrase_synsets) > 0 and len([x for x in singular_phrase_synsets if x[0] is not None]) > 0:
-            return singular_phrase_synsets
 
     return find_preprocessed_phrase_synsets(phrase)
 
@@ -251,6 +250,9 @@ def choose_synset_with_lm(token_list, start_ind, end_ind, synset_list, selection
     if orig_phrase not in non_inflect_strs and inflect_engine.singular_noun(orig_phrase) != False and inflect_engine.singular_noun(orig_phrase) != orig_phrase:
         orig_phrase = inflect_engine.singular_noun(orig_phrase)
         plural = True
+
+    if orig_phrase.endswith("'s"):
+        orig_phrase = orig_phrase[:-2]
     
     if orig_phrase in phrase2replace_str:
         synset_to_repr_phrase = deepcopy(phrase2replace_str[orig_phrase])
