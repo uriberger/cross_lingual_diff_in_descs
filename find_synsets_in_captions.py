@@ -89,19 +89,20 @@ def identify_synset(synset):
 def find_phrase_synsets(phrase):
     phrase = phrase.lower()
 
-    # First, preprocess: if in plural, convert to singular
-    if phrase not in non_inflect_strs and inflect_engine.singular_noun(phrase) != False and inflect_engine.singular_noun(phrase) != phrase:
-        singular_phrase = inflect_engine.singular_noun(phrase)
-        singular_phrase_synsets = find_preprocessed_phrase_synsets(singular_phrase)
-        if singular_phrase_synsets is not None and len(singular_phrase_synsets) > 0 and len([x for x in singular_phrase_synsets if x[0] is not None]) > 0:
-            return singular_phrase_synsets
-
+    # First, preprocess:
     # If ends with possessive s, remove and try
     if phrase.endswith("'s"):
         non_possessive_phrase = phrase[:-2]
         non_possessive_phrase_synsets = find_preprocessed_phrase_synsets(non_possessive_phrase)
         if non_possessive_phrase_synsets is not None and len(non_possessive_phrase_synsets) > 0 and len([x for x in non_possessive_phrase_synsets if x[0] is not None]) > 0:
             return non_possessive_phrase_synsets
+    
+    # If in plural, convert to singular
+    if phrase not in non_inflect_strs and inflect_engine.singular_noun(phrase) != False and inflect_engine.singular_noun(phrase) != phrase:
+        singular_phrase = inflect_engine.singular_noun(phrase)
+        singular_phrase_synsets = find_preprocessed_phrase_synsets(singular_phrase)
+        if singular_phrase_synsets is not None and len(singular_phrase_synsets) > 0 and len([x for x in singular_phrase_synsets if x[0] is not None]) > 0:
+            return singular_phrase_synsets
 
     return find_preprocessed_phrase_synsets(phrase)
 
