@@ -486,16 +486,17 @@ def granularity_analysis():
     sns.set_style('whitegrid')
     plt.rcParams["font.family"] = "Times New Roman"
 
-    languages = [x.split('_')[1] for x in all_datasets if x.startswith('xm3600_')]
-    l2gran = get_lang_to_gran_list(languages)
+    langs = [x.split('_')[1] for x in all_datasets if x.startswith('xm3600_')]
+    l2gran = get_lang_to_gran_list(langs)
     samples = [d for _, d in l2gran.items()]
     res = stats.kruskal(*samples)
     print(res)
 
+    langs_list = [l for l, d in l2gran.items() for _ in d]
     depths = [x for _, d in l2gran.items() for x in d]
 
     df = pd.DataFrame.from_dict({
-            "language": languages,
+            "language": langs_list,
             "depth": depths
         })
 
