@@ -414,8 +414,8 @@ def plot_saliency_heatmap(sort_by_mean):
                      center=0, annot=True, fmt=".1f", square=True, xticklabels=True, yticklabels=True, annot_kws={"fontsize":5})
     plt.savefig('saliency_heatmap.pdf', bbox_inches='tight')
 
-def run_saliency_similarity_correlation_test(langs):
-    labels, concepts, X = get_lang_root_synset_image_matrix()
+def run_saliency_similarity_correlation_test():
+    labels, _, X = get_lang_root_synset_image_matrix()
     X = np.reshape(X, (X.shape[0], -1))
     X_sim = edist(X)
 
@@ -463,3 +463,47 @@ def run_saliency_similarity_correlation_test(langs):
         d = l2v.distance(criterion, labels)
         res = mantel.test(X_sim, d)
         print(criterion, res)
+
+def get_vertical_depth(synset):
+	hypernyms = synset.hypernyms() + synset.instance_hypernyms()
+	if len(hypernyms) == 0:
+		return 0
+	return min([get_vertical_depth(x) for x in hypernyms]) + 1
+
+def get_lang_to_gran_list(langs):
+	l2gran = {}
+	for lang in tqdm(langs):
+		with open(f'datasets/xm3600_{lang}.json', 'r') as fp:
+			data = json.load(fp)
+		l2gran[lang] = []
+		for sample in data:
+			for synset in sample['synsets']:
+				l2gran[lang].append(get_vertical_depth(wn.synset(synset[3])) + synset[4])
+				
+	return l2gran
+
+def granularity_analysis():
+    sns.set_style('whitegrid')
+    plt.rcParams["font.family"] = "Times New Roman"
+
+    languages = [x.split('_')[1] for x in all_datasets if x.startswith('xm3600_')]
+    l2gran = get_lang_to_gran_list(languages)
+    samples = [d for _, d in l2gran.items()]
+    res = stats.kruskal(*samples)
+    print(res)
+
+    depths = [x for _, d in l2gran.items() for x in d]
+
+    df = pd.DataFrame.from_dict({
+            "language": languages,
+            "depth": depths
+        })
+
+    ax = sns.histplot(df, x="depth", hue="language", common_norm=False, 
+        binwidth=1, stat="probability", element="step", alpha=0.01)
+    ax.set_xticks(range(18))
+
+    sns.move_legend(
+        ax, "upper left", bbox_to_anchor=(1, 1), ncol=2, title=None, frameon=True,
+    )
+    plt.savefig('depths_dist.pdf', bbox_inches='tight')
