@@ -371,9 +371,12 @@ def plot_legend():
     
     plt.savefig('del_me.png')
 
-def get_lang_root_synset_image_matrix():
+def get_lang_synset_image_matrix(root_only):
     labels = [x.split('_')[1] for x in all_datasets if x.startswith('xm3600_')]
-    concepts = [x for x in all_synsets if x not in child2parent]
+    if root_only:
+        concepts = [x for x in all_synsets if x not in child2parent]
+    else:
+        concepts = list(all_synsets)
     X = np.zeros((len(labels), len(concepts), 3600))
 
     with open(f'datasets/xm3600_en.json', 'r') as fp:
@@ -392,7 +395,7 @@ def plot_saliency_heatmap(sort_by_mean):
     sns.set_style('whitegrid')
     plt.rcParams["font.family"] = "Times New Roman"
 
-    labels, concepts, X = get_lang_root_synset_image_matrix()
+    labels, concepts, X = get_lang_synset_image_matrix(True)
 
     X = X.sum(axis=-1)
     X_mean = X.mean(axis=0, keepdims=True)
@@ -415,7 +418,7 @@ def plot_saliency_heatmap(sort_by_mean):
     plt.savefig('saliency_heatmap.pdf', bbox_inches='tight')
 
 def run_saliency_similarity_correlation_test():
-    labels, _, X = get_lang_root_synset_image_matrix()
+    labels, _, X = get_lang_synset_image_matrix(False)
     X = np.reshape(X, (X.shape[0], -1))
     X_sim = edist(X)
 
