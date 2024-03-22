@@ -279,7 +279,7 @@ def plot_similarity_heatmap(langs):
     plt.savefig('del_me.png')
 
 def get_object_num_by_location(langs, synset):
-    with open('../datasets/xm3600/captions.jsonl', 'r') as fp:
+    with open('/cs/labs/oabend/uriber/datasets/crossmodal3600/captions.jsonl', 'r') as fp:
         jl = list(fp)
     data = [json.loads(x) for x in jl]
     iid2l = {int(x['image/key'], 16): x['image/locale'] for x in data}
