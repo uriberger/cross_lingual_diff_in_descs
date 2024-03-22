@@ -352,10 +352,16 @@ def plot_object_num(langs, synset_list, by_location):
             res = get_object_num_by_location(langs, synset_list[i])
         else:
             res = get_object_num_by_language(langs, synset_list[i])
-        axs[row, col].barh(range(36), width=[float(x[1]) for x in res])
-        axs[row, col].set_title(synset_list[i])
-        axs[row, col].set_yticks(ticks=range(36), labels=[x[0] for x in res])
-        axs[row, col].tick_params(axis='both', labelsize=10)
+        if len(synset_list) == 1:
+            axs[col].barh(range(36), width=[float(x[1]) for x in res])
+            axs[col].set_title(synset_list[i])
+            axs[col].set_yticks(ticks=range(36), labels=[x[0] for x in res])
+            axs[col].tick_params(axis='both', labelsize=10)
+        else:
+            axs[row, col].barh(range(36), width=[float(x[1]) for x in res])
+            axs[row, col].set_title(synset_list[i])
+            axs[row, col].set_yticks(ticks=range(36), labels=[x[0] for x in res])
+            axs[row, col].tick_params(axis='both', labelsize=10)
         col += 1
         if col == col_num:
             col = 0
