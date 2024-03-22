@@ -328,7 +328,7 @@ def plot_object_num(langs, synset_list, by_location):
         row_num = 2
     col_num = 2
     fig, axs = plt.subplots(row_num, col_num)
-    fig.set_size_inches(12,16)
+    fig.set_size_inches(12,8*row_num)
     
     if by_location:
         overall_res = get_object_num_by_location(langs, None)
