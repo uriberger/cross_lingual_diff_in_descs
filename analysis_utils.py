@@ -319,14 +319,13 @@ def get_object_num_by_language(langs, synset):
     return res
 
 def plot_object_num(langs, synset_list, by_location):
-    assert len(synset_list) == 3
-    
-    clusters = [['cs', 'da', 'de', 'el', 'es', 'fi', 'fr', 'hr', 'hu', 'it', 'nl', 'no', 'pl', 'pt', 'sv'], ['id', 'ja', 'ko', 'th', 'vi', 'zh'], ['ru', 'uk'], ['ar', 'en', 'fa', 'fil', 'hi', 'quz', 'sw', 'te', 'tr'], ['he', 'ro'], ['bn'], ['mi']]
-    l2c = {lang: [i for i in range(7) if lang in clusters[i]][0] for lang in langs}
-    colors = ['black', 'red', 'green', 'blue', 'orange', 'yellow', 'gray']
+    assert len(synset_list) in [1, 3]
     
     plt.clf()
-    row_num = 2
+    if len(synset_list) == 1:
+        row_num = 1
+    else:
+        row_num = 2
     col_num = 2
     fig, axs = plt.subplots(row_num, col_num)
     fig.set_size_inches(12,16)
@@ -336,18 +335,24 @@ def plot_object_num(langs, synset_list, by_location):
     else:
         overall_res = get_object_num_by_language(langs, None)
     
-    axs[0, 0].barh(range(36), width=[float(x[1]) for x in overall_res], color=[colors[l2c[x[0]]] for x in overall_res])
-    axs[0, 0].set_title('Overall')
-    axs[0, 0].set_yticks(ticks=range(36), labels=[x[0] for x in overall_res])
-    axs[0, 0].tick_params(axis='both', labelsize=10)
+    if len(synset_list) == 1:
+        axs[0].barh(range(36), width=[float(x[1]) for x in overall_res])
+        axs[0].set_title('Overall')
+        axs[0].set_yticks(ticks=range(36), labels=[x[0] for x in overall_res])
+        axs[0].tick_params(axis='both', labelsize=10)
+    else:
+        axs[0, 0].barh(range(36), width=[float(x[1]) for x in overall_res])
+        axs[0, 0].set_title('Overall')
+        axs[0, 0].set_yticks(ticks=range(36), labels=[x[0] for x in overall_res])
+        axs[0, 0].tick_params(axis='both', labelsize=10)
     row = 0
     col = 1
-    for i in range(3):
+    for i in range(len(synset_list)):
         if by_location:
             res = get_object_num_by_location(langs, synset_list[i])
         else:
             res = get_object_num_by_language(langs, synset_list[i])
-        axs[row, col].barh(range(36), width=[float(x[1]) for x in res], color=[colors[l2c[x[0]]] for x in res])
+        axs[row, col].barh(range(36), width=[float(x[1]) for x in res])
         axs[row, col].set_title(synset_list[i])
         axs[row, col].set_yticks(ticks=range(36), labels=[x[0] for x in res])
         axs[row, col].tick_params(axis='both', labelsize=10)
