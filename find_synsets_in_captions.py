@@ -385,6 +385,14 @@ def bed_handling(token_list, start_ind):
     
     return [('bed.n.01', 0)]
 
+def mount_handling(token_list, start_ind):
+    # Need to distinguish a name of a mountain from the object used to mount something to the wall
+    # If there's a determiner that is a direct child of the node, it is the object
+    if len([x for x in token_list if x[0]['head'] == start_ind + 1 and x[0]['upos'] == 'DET']) > 0:
+        return [(None, 0)]
+    
+    return [('mountain.n.01', 0)]
+
 def phrase_location_to_synset(token_list, start_ind, end_ind):
     phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
 
@@ -419,6 +427,10 @@ def phrase_location_to_synset(token_list, start_ind, end_ind):
     # 7. "bed": can be either a bed or a flower bed
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'bed':
         synsets = bed_handling(token_list, start_ind)
+
+    # 8. "mount" can be either before the name of a mountain or something that allow you to hang things on the wall
+    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'mount':
+        synsets = mount_handling(token_list, start_ind)
 
     else:
         synsets = find_phrase_synsets(phrase)
