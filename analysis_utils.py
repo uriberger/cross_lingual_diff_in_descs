@@ -484,17 +484,18 @@ def get_vertical_depth(synset):
 		return 0
 	return min([get_vertical_depth(x) for x in hypernyms]) + 1
 
-def get_lang_to_gran_list(langs):
-	l2gran = {}
-	for lang in tqdm(langs):
-		with open(f'datasets/xm3600_{lang}.json', 'r') as fp:
-			data = json.load(fp)
-		l2gran[lang] = []
-		for sample in data:
-			for synset in sample['synsets']:
-				l2gran[lang].append(get_vertical_depth(wn.synset(synset[3])) + synset[4])
-				
-	return l2gran
+def get_lang_to_gran_list(langs, root_synset=None):
+    l2gran = {}
+    for lang in tqdm(langs):
+        with open(f'datasets/xm3600_{lang}.json', 'r') as fp:
+            data = json.load(fp)
+        l2gran[lang] = []
+        for sample in data:
+            for synset in sample['synsets']:
+                if root_synset is None or is_hyponym_of(synset[3], root_synset):
+                    l2gran[lang].append(get_vertical_depth(wn.synset(synset[3])) + synset[4])
+	
+    return l2gran
 
 def granularity_analysis():
     sns.set_style('whitegrid')
