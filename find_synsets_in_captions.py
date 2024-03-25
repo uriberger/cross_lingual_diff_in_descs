@@ -111,7 +111,7 @@ def search_in_wordnet(phrase):
     identified_synsets = []
     all_synsets_count = sum([get_synset_count(x) for x in phrase_synsets])
     for synset in phrase_synsets:
-        if all_synsets_count == 0 or get_synset_count(synset)/all_synsets_count >= 0.1:
+        if all_synsets_count < 2 or get_synset_count(synset)/all_synsets_count >= 0.1:
             identified_synsets += identify_synset(synset)
 
     synset_to_lowest_num = {}
