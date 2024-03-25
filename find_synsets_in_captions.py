@@ -377,7 +377,7 @@ def water_handling(token_list, start_ind):
         return [('body_of_water.n.01', 0)]
     
     # If it's part of the phase "body of water" it's a body of water, otherwise let the llm handle it
-    if start_ind > 1 and token_list[start_ind - 2][0]['text'] == 'body' and token_list[start_ind - 2][0]['text'] == 'of':
+    if start_ind > 1 and token_list[start_ind - 2][0]['text'] == 'body' and token_list[start_ind - 1][0]['text'] == 'of':
         return [('body_of_water.n.01', 0)]
     
     return [('water.n.06', 0), ('body_of_water.n.01', 0)]
@@ -435,10 +435,6 @@ def phrase_location_to_synset(token_list, start_ind, end_ind):
     # 8. "mount" can be either before the name of a mountain or something that allow you to hang things on the wall
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'mount':
         synsets = mount_handling(token_list, start_ind)
-
-    # 9. "water" can be the liquid or a body of water
-    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'water':
-        synsets = water_handling(token_list, start_ind)
 
     else:
         synsets = find_phrase_synsets(phrase)
