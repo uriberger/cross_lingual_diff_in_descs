@@ -376,6 +376,10 @@ def water_handling(token_list, start_ind):
     if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'the':
         return [('body_of_water.n.01', 0)]
     
+    # If it's part of the phase "body of water" it's a body of water, otherwise let the llm handle it
+    if start_ind > 1 and token_list[start_ind - 2][0]['text'] == 'body' and token_list[start_ind - 2][0]['text'] == 'of':
+        return [('body_of_water.n.01', 0)]
+    
     return [('water.n.06', 0), ('body_of_water.n.01', 0)]
 
 def bed_handling(token_list, start_ind):
@@ -392,14 +396,6 @@ def mount_handling(token_list, start_ind):
         return [(None, 0)]
     
     return [('mountain.n.01', 0)]
-
-def water_handling(token_list, start_ind):
-    # Need to distinguish the liquid from a body of water
-    # If it's part of the phase "body of water" it's a body of water, otherwise let the llm handle it
-    if start_ind > 1 and token_list[start_ind - 2][0]['text'] == 'body' and token_list[start_ind - 2][0]['text'] == 'of':
-        return [('body_of_water.n.01', 0)]
-    
-    return [('water.n.06', 0), ('body_of_water.n.01', 0)]
 
 def phrase_location_to_synset(token_list, start_ind, end_ind):
     phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
