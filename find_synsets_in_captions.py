@@ -341,10 +341,14 @@ def ball_handling(token_list, ball_ind):
 def top_handling(token_list, start_ind):
     # Need to distinguish top as a preposition from the clothing
     if len([
-        x for x in token_list if x[0]['head'] == start_ind+1 and
-        x[0]['upos'] == 'DET' and
-        x[0]['text'].lower() in ['a', 'an']
-        ]) > 0:
+            x for x in token_list if x[0]['head'] == start_ind+1 and
+            x[0]['upos'] == 'DET' and
+            x[0]['text'].lower() in ['a', 'an']
+        ]) > 0 and \
+        len([
+            x for x in token_list if x[0]['head'] == start_ind+1 and
+            x[0]['deprel'] == 'compound'
+        ]) == 0:
         return [('top.n.10', 0)]
     
     return [(None, 0)]
