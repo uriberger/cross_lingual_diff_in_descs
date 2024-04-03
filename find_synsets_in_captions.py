@@ -384,8 +384,20 @@ def water_handling(token_list, start_ind):
     if start_ind > 1 and token_list[start_ind - 2][0]['text'] == 'body' and token_list[start_ind - 1][0]['text'] == 'of':
         return [('body_of_water.n.01', 0)]
     
+    # Pool/pond is body of water
+    if start_ind > 1 and token_list[start_ind - 2][0]['text'] in ['pool', 'pools', 'pond', 'ponds'] and token_list[start_ind - 1][0]['text'] == 'of':
+        return [('body_of_water.n.01', 0)]
+    
+    # Bottle/bottles is food
+    if start_ind > 1 and token_list[start_ind - 2][0]['text'] in ['bottle', 'bottles'] and token_list[start_ind - 1][0]['text'] == 'of':
+        return [('water.n.06', 0)]
+    
+    # Source is body of water
+    if start_ind < len(token_list) - 1 and token_list[start_ind + 1][0]['text'] == 'source':
+        return [('body_of_water.n.01', 0)]
+    
     # Some adjectives always mean the body of water meaning
-    if start_ind > 0 and token_list[start_ind - 1][0]['text'] in ['clear', 'shallow']:
+    if start_ind > 0 and token_list[start_ind - 1][0]['text'] in ['clear', 'shallow', 'greenish', 'bluish']:
         return [('body_of_water.n.01', 0)]
     
     return [('water.n.06', 0), ('body_of_water.n.01', 0)]
