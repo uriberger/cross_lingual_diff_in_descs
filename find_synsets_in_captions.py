@@ -421,6 +421,13 @@ def mount_handling(token_list, start_ind):
     
     return [('mountain.n.01', 0)]
 
+def wrap_handling(token_list, start_ind):
+    # If it's a plastic wrap it's not food
+    if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'plastic':
+        return [(None, 0)]
+    
+    return [('sandwich.n.01', 1)]
+
 def phrase_location_to_synset(token_list, start_ind, end_ind):
     phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
 
@@ -459,6 +466,10 @@ def phrase_location_to_synset(token_list, start_ind, end_ind):
     # 8. "mount" can be either before the name of a mountain or something that allow you to hang things on the wall
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'mount':
         synsets = mount_handling(token_list, start_ind)
+
+    # 9. "wrap" can be either the food or plastic wrap
+    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'wrap':
+        synsets = wrap_handling(token_list, start_ind)
 
     else:
         synsets = find_phrase_synsets(phrase)
