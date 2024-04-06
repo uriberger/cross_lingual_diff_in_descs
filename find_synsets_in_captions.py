@@ -436,16 +436,16 @@ def plate_handling(token_list, start_ind):
     return [('plate.n.04', 0)]
 
 def belt_handling(token_list, start_ind):
-    # If it's a conveyor plate it's not the clothing
-    if (start_ind < len(token_list) - 1 and token_list[start_ind + 1][0]['text'] == 'yellow') or \
-        (start_ind < len(token_list) - 2 and token_list[start_ind + 1][0]['text'] == '-' and token_list[start_ind + 2][0]['text'] == 'yellow'):
+    # People sometimes use it as a color
+    if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'conveyor':
         return [(None, 0)]
     
     return [('belt.n.02', 0)]
 
 def lemon_handling(token_list, start_ind):
-    # People sometimes use it as a color
-    if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'conveyor':
+    # If it's a conveyor plate it's not the clothing
+    if (start_ind < len(token_list) - 1 and token_list[start_ind + 1][0]['text'] == 'yellow') or \
+        (start_ind < len(token_list) - 2 and token_list[start_ind + 1][0]['text'] == '-' and token_list[start_ind + 2][0]['text'] == 'yellow'):
         return [(None, 0)]
     
     return [('lemon.n.01', 0)]
@@ -500,6 +500,10 @@ def phrase_location_to_synset(token_list, start_ind, end_ind):
     # 11. "belt" can be either the clothing object or other things
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'belt':
         synsets = belt_handling(token_list, start_ind)
+
+    # 12. "lemon" is sometimes used in the phrase "lemon-yellow"
+    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'lemon':
+        synsets = lemon_handling(token_list, start_ind)
 
     else:
         synsets = find_phrase_synsets(phrase)
