@@ -513,7 +513,7 @@ def phrase_location_to_synset(token_list, start_ind, end_ind):
         synsets = lemon_handling(token_list, start_ind)
 
     # 13. "fighter" may be a person or a plane
-    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'fighter':
+    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] in ['fighter', 'fighters']:
         synsets = fighter_handling(token_list, start_ind)
 
     else:
