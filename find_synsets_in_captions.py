@@ -435,6 +435,13 @@ def plate_handling(token_list, start_ind):
     
     return [('plate.n.04', 0)]
 
+def belt_handling(token_list, start_ind):
+    # If it's a conveyor plate it's not the clothing
+    if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'conveyor':
+        return [(None, 0)]
+    
+    return [('belt.n.02', 0)]
+
 def phrase_location_to_synset(token_list, start_ind, end_ind):
     phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
 
@@ -481,6 +488,10 @@ def phrase_location_to_synset(token_list, start_ind, end_ind):
     # 10. "plate" can be either the tableware or other things like license plate
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'plate':
         synsets = plate_handling(token_list, start_ind)
+
+    # 11. "belt" can be either the clothing object or other things
+    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'belt':
+        synsets = belt_handling(token_list, start_ind)
 
     else:
         synsets = find_phrase_synsets(phrase)
