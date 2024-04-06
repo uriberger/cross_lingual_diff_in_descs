@@ -450,6 +450,13 @@ def lemon_handling(token_list, start_ind):
     
     return [('lemon.n.01', 0)]
 
+def fighter_handling(token_list, start_ind):
+    # If it's a plane, the word jet/plane will follow
+    if (start_ind < len(token_list) - 1 and token_list[start_ind + 1][0]['text'] in ['jet', 'jets', 'plane', 'planes']):
+        return [('fighter.n.02', 0)]
+    
+    return [('person.n.01', 1)]
+
 def phrase_location_to_synset(token_list, start_ind, end_ind):
     phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
 
@@ -504,6 +511,10 @@ def phrase_location_to_synset(token_list, start_ind, end_ind):
     # 12. "lemon" is sometimes used in the phrase "lemon-yellow"
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'lemon':
         synsets = lemon_handling(token_list, start_ind)
+
+    # 13. "fighter" may be a person or a plane
+    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'fighter':
+        synsets = fighter_handling(token_list, start_ind)
 
     else:
         synsets = find_phrase_synsets(phrase)
