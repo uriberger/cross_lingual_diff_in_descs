@@ -437,6 +437,14 @@ def plate_handling(token_list, start_ind):
 
 def belt_handling(token_list, start_ind):
     # If it's a conveyor plate it's not the clothing
+    if (start_ind < len(token_list) - 1 and token_list[start_ind + 1][0]['text'] == 'yellow') or \
+        (start_ind < len(token_list) - 2 and token_list[start_ind + 1][0]['text'] == '-' and token_list[start_ind + 2][0]['text'] == 'yellow'):
+        return [(None, 0)]
+    
+    return [('lemon.n.01', 0)]
+
+def lemon_handling(token_list, start_ind):
+    # People sometimes use it as a color
     if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'conveyor':
         return [(None, 0)]
     
