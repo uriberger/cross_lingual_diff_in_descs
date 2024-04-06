@@ -428,6 +428,13 @@ def wrap_handling(token_list, start_ind):
     
     return [('sandwich.n.01', 1)]
 
+def plate_handling(token_list, start_ind):
+    # If it's a license plate it's not the tableware
+    if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'license':
+        return [(None, 0)]
+    
+    return [('plate.n.04', 0)]
+
 def phrase_location_to_synset(token_list, start_ind, end_ind):
     phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
 
@@ -470,6 +477,10 @@ def phrase_location_to_synset(token_list, start_ind, end_ind):
     # 9. "wrap" can be either the food or plastic wrap
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'wrap':
         synsets = wrap_handling(token_list, start_ind)
+
+    # 10. "plate" can be either the tableware or other things like license plate
+    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'plate':
+        synsets = plate_handling(token_list, start_ind)
 
     else:
         synsets = find_phrase_synsets(phrase)
