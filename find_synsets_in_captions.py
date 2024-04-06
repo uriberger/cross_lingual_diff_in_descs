@@ -441,14 +441,14 @@ def belt_handling(token_list, start_ind):
         (start_ind < len(token_list) - 2 and token_list[start_ind + 1][0]['text'] == '-' and token_list[start_ind + 2][0]['text'] == 'yellow'):
         return [(None, 0)]
     
-    return [('lemon.n.01', 0)]
+    return [('belt.n.02', 0)]
 
 def lemon_handling(token_list, start_ind):
     # People sometimes use it as a color
     if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'conveyor':
         return [(None, 0)]
     
-    return [('belt.n.02', 0)]
+    return [('lemon.n.01', 0)]
 
 def phrase_location_to_synset(token_list, start_ind, end_ind):
     phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
