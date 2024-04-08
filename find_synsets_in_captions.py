@@ -353,27 +353,12 @@ def top_handling(token_list, start_ind):
     
     return [(None, 0)]
 
-def couple_handling(token_list, ind):
-    # If we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
-    # we do want. Distinguish by checking if we have no "of" after it
-    if ind < (len(token_list) - 1) and token_list[ind+1][0]['text'].lower() == 'of':
-        return [(None, 0)]
-    
-    return [('couple.n.01', 0)]
-
 def plant_handling(token_list, start_ind, end_ind):
     # If we have a plant, it's the living thing- unless the word "power" is before it
     if end_ind - start_ind == 2 and token_list[start_ind][0]['text'] == 'power':
         return [('factory.n.01', 0)]
     
     return [('plant.n.02', 0)]
-
-def pool_handling(token_list, start_ind):
-    # It's a swimming pool only if the word swimming precedes the pool
-    if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'swimming':
-        return [(None, 0)]
-    
-    return [('pond.n.01', 0), ('pool.n.06', 0)]
 
 def water_handling(token_list, start_ind):
     # If there's a "the" before (e.g., "A dolphin swimming in the water") it's the body of water meaning
@@ -406,13 +391,6 @@ def water_handling(token_list, start_ind):
     
     return [('water.n.06', 0), ('body_of_water.n.01', 0)]
 
-def bed_handling(token_list, start_ind):
-    # If it's a flower bed, it's not a bed
-    if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'flower':
-        return [(None, 0)]
-    
-    return [('bed.n.01', 0)]
-
 def mount_handling(token_list, start_ind):
     # Need to distinguish a name of a mountain from the object used to mount something to the wall
     # If there's a determiner that is a direct child of the node, it is the object
@@ -420,27 +398,6 @@ def mount_handling(token_list, start_ind):
         return [(None, 0)]
     
     return [('mountain.n.01', 0)]
-
-def wrap_handling(token_list, start_ind):
-    # If it's a plastic wrap it's not food
-    if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'plastic':
-        return [(None, 0)]
-    
-    return [('sandwich.n.01', 1)]
-
-def plate_handling(token_list, start_ind):
-    # If it's a license plate it's not the tableware
-    if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'license':
-        return [(None, 0)]
-    
-    return [('plate.n.04', 0)]
-
-def belt_handling(token_list, start_ind):
-    # People sometimes use it as a color
-    if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'conveyor':
-        return [(None, 0)]
-    
-    return [('belt.n.02', 0)]
 
 def lemon_handling(token_list, start_ind):
     # If it's a conveyor plate it's not the clothing
@@ -450,82 +407,45 @@ def lemon_handling(token_list, start_ind):
     
     return [('lemon.n.01', 0)]
 
-def fighter_handling(token_list, start_ind):
-    # If it's a plane, the word jet/plane will follow
-    if (start_ind < len(token_list) - 1 and token_list[start_ind + 1][0]['text'] in ['jet', 'jets', 'plane', 'planes']):
-        return [('fighter.n.02', 0)]
+def preceding_word_handling_func(token_list, start_ind, preceding_words, synsets_if_applies, synsets_otherwise):
+    if start_ind > 0 and token_list[start_ind - 1][0]['text'] in preceding_words:
+        return synsets_if_applies
     
-    return [('person.n.01', 1)]
+    return synsets_otherwise
 
-def mouse_handling(token_list, start_ind):
-    # Either the animal or a computer mouse
-    if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'computer':
-        return [(None, 0)]
+def succeeding_word_handling_func(token_list, start_ind, succeeding_words, synsets_if_applies, synsets_otherwise):
+    if start_ind < len(token_list) - 1 and token_list[start_ind + 1][0]['text'] in succeeding_words:
+        return synsets_if_applies
     
-    return [('mouse.n.01', 0), (None, 0)]
+    return synsets_otherwise
+
+single_word_to_handling_func = {
+    'top': top_handling,
+    'couple': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['of'], [(None, 0)], [('couple.n.01', 0)]),
+    'couples': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['of'], [(None, 0)], [('couple.n.01', 0)]),
+    'pool': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['swimming'], [(None, 0)], [('pond.n.01', 0), ('pool.n.06', 0)]),
+    'water': water_handling,
+    'bed': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['flower'], [(None, 0)], [('bed.n.01', 0)]),
+    'mount': mount_handling,
+    'wrap': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['plastic'], [(None, 0)], [('sandwich.n.01', 1)]),
+    'plate': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['license'], [(None, 0)], [('plate.n.04', 0)]),
+    'belt': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['conveyor'], [(None, 0)], [('belt.n.02', 0)]),
+    'lemon': lemon_handling,
+    'fighter': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['jet', 'jets', 'plane', 'planes'], [('fighter.n.02', 0)], [('person.n.01', 1)]),
+    'fighters': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['jet', 'jets', 'plane', 'planes'], [('fighter.n.02', 0)], [('person.n.01', 1)]),
+    'mouse': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['computer'], [(None, 0)], [('mouse.n.01', 0), (None, 0)]),
+}
 
 def phrase_location_to_synset(token_list, start_ind, end_ind):
     phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
 
-    # 1. We have a problem when there's a sport named the same as its ball (baseball, basketball etc.).
-    # The more common synset is the game, and when someone talks about the ball the algorithm always thinks it's the game.
-    # We'll try identifying these cases
-    # if end_ind - start_ind == 1 and token_list[start_ind][0]['text'].endswith('ball') or token_list[start_ind][0]['text'].endswith('balls'):
-    #     phrase_class, exact_match = ball_handling(token_list, start_ind)
-
-    # 2. "top" is also a problem, as it might be clothing
-    if end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'top':
-        synsets = top_handling(token_list, start_ind)
-
-    # 3. "couple": if we have "a couple of..." we don't want it to have a class, if it's "A couple sitting on a bench"
-    # we do want. Distinguish by checking if we have a determiner (or this is the first phrase), and no "of" after it
-    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] in ['couple', 'couples']:
-        synsets = couple_handling(token_list, start_ind)
-
-    # 4. "plant": people almost always mean plants and not factories. We'll always chooce plants except if we see the
+    # 1. "plant": people almost always mean plants and not factories. We'll always chooce plants except if we see the
     # word "power" before
-    elif token_list[end_ind - 1][0]['text'] in ['plant', 'plants']:
+    if token_list[end_ind - 1][0]['text'] in ['plant', 'plants']:
         synsets = plant_handling(token_list, start_ind, end_ind)
 
-    # 5. "pool": can be either a swimming pool, in which case it's not in our classes, or a puddle, which is in our classes
-    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'pool':
-        synsets = pool_handling(token_list, start_ind)
-
-    # 6. "water": can be either a body of water or the liquid
-    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'water':
-        synsets = water_handling(token_list, start_ind)
-
-    # 7. "bed": can be either a bed or a flower bed
-    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'bed':
-        synsets = bed_handling(token_list, start_ind)
-
-    # 8. "mount" can be either before the name of a mountain or something that allow you to hang things on the wall
-    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'mount':
-        synsets = mount_handling(token_list, start_ind)
-
-    # 9. "wrap" can be either the food or plastic wrap
-    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'wrap':
-        synsets = wrap_handling(token_list, start_ind)
-
-    # 10. "plate" can be either the tableware or other things like license plate
-    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'plate':
-        synsets = plate_handling(token_list, start_ind)
-
-    # 11. "belt" can be either the clothing object or other things
-    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'belt':
-        synsets = belt_handling(token_list, start_ind)
-
-    # 12. "lemon" is sometimes used in the phrase "lemon-yellow"
-    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'lemon':
-        synsets = lemon_handling(token_list, start_ind)
-
-    # 13. "fighter" may be a person or a plane
-    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] in ['fighter', 'fighters']:
-        synsets = fighter_handling(token_list, start_ind)
-
-    # 13. "mouse" may be an animal or the computer mouse
-    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'mouse':
-        synsets = mouse_handling(token_list, start_ind)
+    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] in single_word_to_handling_func:
+        synsets = single_word_to_handling_func[token_list[start_ind][0]['text']](token_list, start_ind)
 
     else:
         synsets = find_phrase_synsets(phrase)
