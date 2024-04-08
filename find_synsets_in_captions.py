@@ -457,6 +457,13 @@ def fighter_handling(token_list, start_ind):
     
     return [('person.n.01', 1)]
 
+def mouse_handling(token_list, start_ind):
+    # Either the animal or a computer mouse
+    if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'computer':
+        return [(None, 0)]
+    
+    return [('mouse.n.01', 0), (None, 0)]
+
 def phrase_location_to_synset(token_list, start_ind, end_ind):
     phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
 
@@ -515,6 +522,10 @@ def phrase_location_to_synset(token_list, start_ind, end_ind):
     # 13. "fighter" may be a person or a plane
     elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] in ['fighter', 'fighters']:
         synsets = fighter_handling(token_list, start_ind)
+
+    # 13. "mouse" may be an animal or the computer mouse
+    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] == 'mouse':
+        synsets = mouse_handling(token_list, start_ind)
 
     else:
         synsets = find_phrase_synsets(phrase)
