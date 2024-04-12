@@ -519,19 +519,25 @@ def post_traverse_handling(token_list, start_ind, end_ind, synsets):
     return None, 0
 
 def postprocessing(synsets):
-    # In many cases we have two subsequent nouns referring to the same thing, where the first is a hyponym of the second
+    # In many cases we have two subsequent nouns referring to the same thing, where one is a hyponym of the second
     # (e.g., "ferry boat"). In this case we want to reduce the two to one
+    synsets.sort(key=lambda x:x[0])
     final_synsets = []
     prev_sample = None
     for sample in synsets:
-        if prev_sample is not None and \
-            prev_sample[0] == prev_sample[1] - 1 and \
-            prev_sample[1] == sample[0] and \
-            sample[0] == sample[1] - 1 and \
-            is_hyponym_of(prev_sample[3], sample[3]):
+        found_subseqent = False
+        if prev_sample is not None and prev_sample[1] == sample[0]:
+            if is_hyponym_of(prev_sample[3], sample[3]):
+                hyponym = prev_sample
+            elif is_hyponym_of(sample[3], prev_sample[3]):
+                hyponym = sample
+            else:
+                break
+            found_subseqent = True
             final_synsets = final_synsets[:-1]
-            final_synsets.append((prev_sample[0], sample[1], prev_sample[2], prev_sample[3], prev_sample[4]))
-        else:
+            final_synsets.append((prev_sample[0], sample[1], hyponym[2], hyponym[3], hyponym[4]))
+        
+        if not found_subseqent:
             final_synsets.append(sample)
         prev_sample = sample
 
