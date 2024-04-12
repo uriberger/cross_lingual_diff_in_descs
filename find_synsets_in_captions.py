@@ -526,7 +526,7 @@ def postprocessing(synsets):
     prev_sample = None
     for sample in synsets:
         found_subseqent = False
-        if prev_sample is not None and prev_sample[1] == sample[0]:
+        while prev_sample is not None and prev_sample[1] == sample[0]:
             if is_hyponym_of(prev_sample[3], sample[3]):
                 hyponym = prev_sample
             elif is_hyponym_of(sample[3], prev_sample[3]):
@@ -536,6 +536,7 @@ def postprocessing(synsets):
             found_subseqent = True
             final_synsets = final_synsets[:-1]
             final_synsets.append((prev_sample[0], sample[1], hyponym[2], hyponym[3], hyponym[4]))
+            break
         
         if not found_subseqent:
             final_synsets.append(sample)
