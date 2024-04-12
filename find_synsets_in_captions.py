@@ -390,7 +390,7 @@ def water_handling(token_list, start_ind):
         return [('body_of_water.n.01', 0)]
     
     # Some adjectives always mean the body of water meaning
-    if start_ind > 0 and token_list[start_ind - 1][0]['text'] in ['clear', 'shallow', 'greenish', 'bluish']:
+    if start_ind > 0 and token_list[start_ind - 1][0]['text'] in ['clear', 'shallow', 'greenish', 'bluish', 'blue', 'sea']:
         return [('body_of_water.n.01', 0)]
     
     return [('water.n.06', 0), ('body_of_water.n.01', 0)]
