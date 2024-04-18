@@ -354,8 +354,8 @@ def top_handling(token_list, start_ind):
     return [(None, 0)]
 
 def plant_handling(token_list, start_ind, end_ind):
-    # If we have a plant, it's the living thing- unless the word "power" is before it
-    if end_ind - start_ind == 2 and token_list[start_ind][0]['text'] == 'power':
+    # If we have a plant, it's the living thing- unless the words "power" or "industrial" is before it
+    if end_ind - start_ind == 2 and token_list[start_ind][0]['text'] in ['power', 'industrial']:
         return [('factory.n.01', 0)]
     
     return [('plant.n.02', 0)]
