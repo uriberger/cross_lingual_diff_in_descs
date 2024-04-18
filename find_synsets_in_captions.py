@@ -367,7 +367,7 @@ def water_handling(token_list, start_ind):
         return [('body_of_water.n.01', 0)]
     
     # Bottle/glass is food
-    if start_ind > 1 and token_list[start_ind - 2][0]['text'] in ['bottle', 'bottles', 'glass', 'glasses'] and token_list[start_ind - 1][0]['text'] == 'of':
+    if start_ind > 1 and token_list[start_ind - 2][0]['text'] in ['bottle', 'bottles', 'glass', 'glasses'] and token_list[start_ind - 1][0]['text'] in ['of', 'with']:
         return [('water.n.06', 0)]
     
      # Some post words is food
