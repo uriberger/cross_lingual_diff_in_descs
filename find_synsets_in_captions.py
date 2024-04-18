@@ -390,6 +390,10 @@ def water_handling(token_list, start_ind):
     if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'on':
         return [('body_of_water.n.01', 0)]
     
+    # Some post are actually nothing
+    if start_ind < len(token_list) - 1 and token_list[start_ind + 1][0]['text'] in ['slide']:
+        return [(None, 0)]
+    
     return [('water.n.06', 0), ('body_of_water.n.01', 0)]
 
 def mount_handling(token_list, start_ind):
@@ -420,6 +424,15 @@ def succeeding_word_handling_func(token_list, start_ind, succeeding_words, synse
     
     return synsets_otherwise
 
+def preceding_succeeding_word_handling_func(token_list, start_ind, preceding_words, synsets_if_pro_applies, succeeding_words, synsets_if_succ_applies, synsets_otherwise):
+    if start_ind > 0 and token_list[start_ind - 1][0]['text'] in preceding_words:
+        return synsets_if_pro_applies
+    
+    if start_ind < len(token_list) - 1 and token_list[start_ind + 1][0]['text'] in succeeding_words:
+        return synsets_if_succ_applies
+    
+    return synsets_otherwise
+
 single_word_to_handling_func = {
     'top': top_handling,
     'couple': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['of'], [(None, 0)], [('couple.n.01', 0)]),
@@ -439,6 +452,8 @@ single_word_to_handling_func = {
     'willow': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['house'], [(None, 0)], [('tree.n.01', 1)]),
     'hand': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['second'], [(None, 0)], [('hand.n.01', 0)]),
     'plant': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['power', 'industrial'], [('factory.n.01', 0)], [('plant.n.02', 0)]),
+    'plants': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['power', 'industrial'], [('factory.n.01', 0)], [('plant.n.02', 0)]),
+    'slide': lambda token_list, start_ind: preceding_succeeding_word_handling_func(token_list, start_ind, ['water'], [('plaything.n.01', 1)], ['projector'], [(None, 0)], [('plaything.n.01', 1), (None, 0)]),
 }
 
 def phrase_location_to_synset(token_list, start_ind, end_ind):
