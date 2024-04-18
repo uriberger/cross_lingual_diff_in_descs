@@ -353,13 +353,6 @@ def top_handling(token_list, start_ind):
     
     return [(None, 0)]
 
-def plant_handling(token_list, start_ind, end_ind):
-    # If we have a plant, it's the living thing- unless the words "power" or "industrial" is before it
-    if end_ind - start_ind == 2 and token_list[start_ind][0]['text'] in ['power', 'industrial']:
-        return [('factory.n.01', 0)]
-    
-    return [('plant.n.02', 0)]
-
 def water_handling(token_list, start_ind):
     # If there's a "the" before (e.g., "A dolphin swimming in the water") it's the body of water meaning
     if start_ind > 0 and token_list[start_ind - 1][0]['text'] == 'the':
@@ -445,17 +438,13 @@ single_word_to_handling_func = {
     'player': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['audio', 'music'], [(None, 0)], [('player.n.01', 0)]),
     'willow': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['house'], [(None, 0)], [('tree.n.01', 1)]),
     'hand': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['second'], [(None, 0)], [('hand.n.01', 0)]),
+    'plant': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['power', 'industrial'], [('factory.n.01', 0)], [('plant.n.02', 0)]),
 }
 
 def phrase_location_to_synset(token_list, start_ind, end_ind):
     phrase = ' '.join([token_list[i][0]['text'] for i in range(start_ind, end_ind)]).lower()
 
-    # 1. "plant": people almost always mean plants and not factories. We'll always chooce plants except if we see the
-    # word "power" before
-    if token_list[end_ind - 1][0]['text'] in ['plant', 'plants']:
-        synsets = plant_handling(token_list, start_ind, end_ind)
-
-    elif end_ind - start_ind == 1 and token_list[start_ind][0]['text'] in single_word_to_handling_func:
+    if end_ind - start_ind == 1 and token_list[start_ind][0]['text'] in single_word_to_handling_func:
         synsets = single_word_to_handling_func[token_list[start_ind][0]['text']](token_list, start_ind)
 
     else:
