@@ -435,6 +435,7 @@ def preceding_succeeding_word_handling_func(token_list, start_ind, preceding_wor
 
 single_word_to_handling_func = {
     'top': top_handling,
+    'tops': top_handling,
     'couple': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['of'], [(None, 0)], [('couple.n.01', 0)]),
     'couples': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['of'], [(None, 0)], [('couple.n.01', 0)]),
     'pool': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['swimming'], [(None, 0)], [('pond.n.01', 0), ('pool.n.06', 0)]),
