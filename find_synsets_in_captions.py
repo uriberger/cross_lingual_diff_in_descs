@@ -134,16 +134,16 @@ def search_in_wordnet(phrase):
         synsets = [synsets[i] for i in range(len(synsets)) if i not in to_remove]
 
         # If you have a word that can be refered to both as a fruit and as plant (e.g., 'raspberry') choose a fruit
-        strong_synsets = ['edible_fruit.n.01', 'vegetable.n.01']
+        strong_synsets = ['edible_fruit.n.01', 'vegetable.n.01', 'edible_nut.n.01', 'flavorer.n.01']
         def is_hyponym_of_strong_synset(phrase):
             for strong_synset in strong_synsets:
                 if is_hyponym_of(phrase, strong_synset):
                     return True
             return False
         
-        if len(synsets) == 2 and is_hyponym_of_strong_synset(synsets[0][0]) and is_hyponym_of(synsets[1][0], 'plant'):
+        if len(synsets) == 2 and is_hyponym_of_strong_synset(synsets[0][0]) and is_hyponym_of(synsets[1][0], 'plant.n.02'):
             synsets = [synsets[0]]
-        if len(synsets) == 2 and is_hyponym_of_strong_synset(synsets[1][0]) and is_hyponym_of(synsets[0][0], 'plant'):
+        if len(synsets) == 2 and is_hyponym_of_strong_synset(synsets[1][0]) and is_hyponym_of(synsets[0][0], 'plant.n.02'):
             synsets = [synsets[1]]
 
         # If we got 2 synsets, one of which is a hypernym of the other, we'll take the lower one
@@ -379,7 +379,7 @@ def water_handling(token_list, start_ind):
         return [('water.n.06', 0)]
     
     # Some post words is body of water
-    if start_ind < len(token_list) - 1 and token_list[start_ind + 1][0]['text'] in ['source', 'fountain', 'flowing']:
+    if start_ind < len(token_list) - 1 and token_list[start_ind + 1][0]['text'] in ['source', 'fountain', 'flowing', 'surface']:
         return [('body_of_water.n.01', 0)]
     
     # Some adjectives always mean the body of water meaning
