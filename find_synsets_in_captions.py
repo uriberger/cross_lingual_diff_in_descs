@@ -521,6 +521,10 @@ def is_noun(token_list, ind):
     if token_list[ind][0]['text'] == 'pad' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'thai':
         return True
     
+    # "mini" edge case: in "mini cooper" it is considered an adjective
+    if token_list[ind][0]['text'] == 'mini' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'cooper':
+        return True
+    
     return False
 
 def post_traverse_handling(token_list, start_ind, end_ind, synsets):
