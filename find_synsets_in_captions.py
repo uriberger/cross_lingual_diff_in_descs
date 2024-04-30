@@ -517,6 +517,10 @@ def is_noun(token_list, ind):
     if token_list[ind][0]['text'] == 'german' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'shepherd':
         return True
     
+    # pad thai edge case: if the word "thai" follows pad it's not a verb
+    if token_list[ind][0]['text'] == 'pad' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'thai':
+        return True
+    
     return False
 
 def post_traverse_handling(token_list, start_ind, end_ind, synsets):
