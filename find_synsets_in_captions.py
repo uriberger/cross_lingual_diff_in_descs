@@ -456,6 +456,7 @@ single_word_to_handling_func = {
     'plants': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['power', 'industrial'], [('factory.n.01', 0)], [('plant.n.02', 0)]),
     'slide': lambda token_list, start_ind: preceding_succeeding_word_handling_func(token_list, start_ind, ['water'], [('plaything.n.01', 1)], ['projector'], [(None, 0)], [('plaything.n.01', 1), (None, 0)]),
     'slides': lambda token_list, start_ind: preceding_succeeding_word_handling_func(token_list, start_ind, ['water'], [('plaything.n.01', 1)], ['projector'], [(None, 0)], [('plaything.n.01', 1), (None, 0)]),
+    'jam': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['traffic'], [(None, 0)], [('nutriment.n.01', 5)]),
 }
 
 def phrase_location_to_synset(token_list, start_ind, end_ind):
@@ -519,10 +520,6 @@ def is_noun(token_list, ind):
     
     # pad thai edge case: if the word "thai" follows pad it's not a verb
     if token_list[ind][0]['text'] == 'pad' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'thai':
-        return True
-    
-    # "mini" edge case: in "mini cooper" it is considered an adjective
-    if token_list[ind][0]['text'] == 'mini' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'cooper':
         return True
     
     return False
