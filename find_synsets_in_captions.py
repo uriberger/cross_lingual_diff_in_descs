@@ -524,7 +524,7 @@ def is_noun(token_list, ind):
         return True
     
     # hot dog: hot is not an adjective
-    if token_list[ind][0]['text'] == 'hot' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] == 'dog':
+    if token_list[ind][0]['text'] == 'hot' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] in ['dog', 'dogs']:
         return True
     
     return False
