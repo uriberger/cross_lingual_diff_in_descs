@@ -449,7 +449,7 @@ single_word_to_handling_func = {
     'fighter': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['jet', 'jets', 'plane', 'planes'], [('fighter.n.02', 0)], [('person.n.01', 1)]),
     'fighters': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['jet', 'jets', 'plane', 'planes'], [('fighter.n.02', 0)], [('person.n.01', 1)]),
     'mouse': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['computer'], [(None, 0)], [('mouse.n.01', 0), (None, 0)]),
-    'player': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['audio', 'music'], [(None, 0)], [('player.n.01', 0)]),
+    'player': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['audio', 'music', 'record'], [(None, 0)], [('player.n.01', 0)]),
     'willow': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['house'], [(None, 0)], [('tree.n.01', 1)]),
     'hand': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['second'], [(None, 0)], [('hand.n.01', 0)]),
     'plant': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['power', 'industrial'], [('factory.n.01', 0)], [('plant.n.02', 0)]),
