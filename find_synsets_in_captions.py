@@ -457,6 +457,7 @@ single_word_to_handling_func = {
     'slide': lambda token_list, start_ind: preceding_succeeding_word_handling_func(token_list, start_ind, ['water'], [('plaything.n.01', 1)], ['projector'], [(None, 0)], [('plaything.n.01', 1), (None, 0)]),
     'slides': lambda token_list, start_ind: preceding_succeeding_word_handling_func(token_list, start_ind, ['water'], [('plaything.n.01', 1)], ['projector'], [(None, 0)], [('plaything.n.01', 1), (None, 0)]),
     'jam': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['traffic'], [(None, 0)], [('nutriment.n.01', 5)]),
+    'hip': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['hop'], [(None, 0)], [('body_part.n.01', 1)]),
 }
 
 def phrase_location_to_synset(token_list, start_ind, end_ind):
