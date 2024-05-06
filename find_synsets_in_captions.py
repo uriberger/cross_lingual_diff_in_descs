@@ -442,7 +442,7 @@ single_word_to_handling_func = {
     'bed': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['flower'], [(None, 0)], [('bed.n.01', 0)]),
     'mount': mount_handling,
     'wrap': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['plastic'], [(None, 0)], [('sandwich.n.01', 1)]),
-    'plate': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['number', 'license'], [(None, 0)], [('plate.n.04', 0)]),
+    'plate': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['number', 'license'], [(None, 0)], [('plate.n.04', 0), (None, 0)]),
     'plates': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['number', 'license'], [(None, 0)], [('plate.n.04', 0)]),
     'belt': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['conveyor'], [(None, 0)], [('belt.n.02', 0)]),
     'lemon': lemon_handling,
