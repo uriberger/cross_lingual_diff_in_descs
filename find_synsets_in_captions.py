@@ -411,6 +411,13 @@ def lemon_handling(token_list, start_ind):
     
     return [('lemon.n.01', 0)]
 
+def knife_handling(token_list, start_ind):
+    if (start_ind > 1 and token_list[start_ind - 2][0]['text'] in ['fork', 'forks']) or \
+        (start_ind < len(token_list) - 2 and token_list[start_ind + 2][0]['text'] in ['fork', 'forks']):
+        return [('table_knife.n.01', 0)]
+    
+    return [('knife.n.02', 0), ('table_knife.n.01', 0)]
+
 def preceding_word_handling_func(token_list, start_ind, preceding_words, synsets_if_applies, synsets_otherwise):
     if start_ind > 0 and token_list[start_ind - 1][0]['text'] in preceding_words:
         return synsets_if_applies
@@ -458,6 +465,8 @@ single_word_to_handling_func = {
     'slides': lambda token_list, start_ind: preceding_succeeding_word_handling_func(token_list, start_ind, ['water'], [('plaything.n.01', 1)], ['projector'], [(None, 0)], [('plaything.n.01', 1), (None, 0)]),
     'jam': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['traffic'], [(None, 0)], [('nutriment.n.01', 5)]),
     'hip': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['hop'], [(None, 0)], [('body_part.n.01', 1)]),
+    'knife': knife_handling,
+    'knives': knife_handling,
 }
 
 def phrase_location_to_synset(token_list, start_ind, end_ind):
