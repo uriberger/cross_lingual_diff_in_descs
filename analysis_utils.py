@@ -16,6 +16,25 @@ import pandas as pd
 from sklearn.metrics.pairwise import euclidean_distances as edist
 import lang2vec.lang2vec as l2v
 import mantel
+import csv
+
+def get_image_id_to_root_synsets():
+    csv_path = 'xm3600_annotation.csv'
+    iid2root_synset = {}
+    with open(csv_path, 'r') as fp:
+        my_reader = csv.reader(fp)
+        res = list(my_reader)
+
+    for sample in res[1:]:
+        file_name = sample[0]
+        iid = int(file_name, 16)
+        assert iid not in iid2root_synset
+        iid2root_synset[iid] = []
+        for ind in range(1, len(sample)):
+            if sample[ind] == '1':
+                iid2root_synset[iid].append(res[0][ind])
+
+    return iid2root_synset
 
 def get_synset_to_image_prob(dataset):
     with open(f'datasets/{dataset}.json', 'r') as fp:
