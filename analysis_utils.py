@@ -36,6 +36,9 @@ def get_image_id_to_root_synsets():
 
     return iid2root_synset
 
+def verify_synset_in_image(synset, image_id, iid2root_synset):
+    return image_id not in iid2root_synset or len([root_synset for root_synset in iid2root_synset[image_id] if is_hyponym_of(synset, root_synset)]) > 0
+
 def get_synset_to_image_prob(dataset, filter_by_iid2root_dataset=True):
     iid2root_synset = get_image_id_to_root_synsets()
 
@@ -56,7 +59,7 @@ def get_synset_to_image_prob(dataset, filter_by_iid2root_dataset=True):
                 identified_synsets.append(inner_synset)
         identified_synsets = list(set(identified_synsets))
         if filter_by_iid2root_dataset and sample['image_id'] in iid2root_synset:
-            identified_synsets = [synset for synset in identified_synsets if len([root_synset for root_synset in iid2root_synset[sample['image_id']] if is_hyponym_of(synset, root_synset)]) > 0]
+            identified_synsets = [synset for synset in identified_synsets if verify_synset_in_image(synset, sample['image_id'], iid2root_synset)]
         for id_synset in identified_synsets:
             synset_to_image_count[id_synset][sample['image_id']] += 1
     synset_to_image_prob = {x[0]: {y[0]: y[1]/image_count[y[0]] for y in x[1].items()} for x in synset_to_image_count.items()}
@@ -508,6 +511,8 @@ def get_vertical_depth(synset):
 	return min([get_vertical_depth(x) for x in hypernyms]) + 1
 
 def get_lang_to_gran_list(langs, root_synset=None):
+    iid2root_synset = get_image_id_to_root_synsets()
+
     l2gran = {}
     for lang in tqdm(langs):
         with open(f'datasets/xm3600_{lang}.json', 'r') as fp:
@@ -515,8 +520,11 @@ def get_lang_to_gran_list(langs, root_synset=None):
         l2gran[lang] = []
         for sample in data:
             for synset in sample['synsets']:
-                if root_synset is None or is_hyponym_of(synset[3], root_synset):
-                    l2gran[lang].append(get_vertical_depth(wn.synset(synset[3])) + synset[4])
+                if (root_synset is not None) and (not is_hyponym_of(synset[3], root_synset)):
+                    continue
+                if not verify_synset_in_image(synset, sample['image_id'], iid2root_synset):
+                    continue
+                l2gran[lang].append(get_vertical_depth(wn.synset(synset[3])) + synset[4])
 	
     return l2gran
 
