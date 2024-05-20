@@ -57,7 +57,7 @@ def get_synset_to_image_prob(dataset, filter_by_iid2root_dataset=True):
         identified_synsets = list(set(identified_synsets))
         if filter_by_iid2root_dataset:
             identified_synsets = [synset for synset in identified_synsets if len([root_synset for root_synset in iid2root_synset[sample['image_id']] if is_hyponym_of(synset, root_synset)]) > 0]
-        for id_synset in identified_synsets:
+        for id_synset in identified_synsets and sample['image_id'] in iid2root_synset:
             synset_to_image_count[id_synset][sample['image_id']] += 1
     synset_to_image_prob = {x[0]: {y[0]: y[1]/image_count[y[0]] for y in x[1].items()} for x in synset_to_image_count.items()}
 
