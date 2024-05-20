@@ -522,7 +522,7 @@ def get_lang_to_gran_list(langs, root_synset=None):
             for synset in sample['synsets']:
                 if (root_synset is not None) and (not is_hyponym_of(synset[3], root_synset)):
                     continue
-                if not verify_synset_in_image(synset, sample['image_id'], iid2root_synset):
+                if not verify_synset_in_image(synset[3], sample['image_id'], iid2root_synset):
                     continue
                 l2gran[lang].append(get_vertical_depth(wn.synset(synset[3])) + synset[4])
 	
