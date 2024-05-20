@@ -36,7 +36,9 @@ def get_image_id_to_root_synsets():
 
     return iid2root_synset
 
-def get_synset_to_image_prob(dataset):
+def get_synset_to_image_prob(dataset, filter_by_iid2root_dataset=True):
+    iid2root_synset = get_image_id_to_root_synsets()
+
     with open(f'datasets/{dataset}.json', 'r') as fp:
         data = json.load(fp)
     synset_to_image_count = {x: defaultdict(int) for x in all_synsets}
@@ -53,6 +55,8 @@ def get_synset_to_image_prob(dataset):
                 inner_synset = child2parent[inner_synset]
                 identified_synsets.append(inner_synset)
         identified_synsets = list(set(identified_synsets))
+        if filter_by_iid2root_dataset:
+            identified_synsets = [synset for synset in identified_synsets if len([root_synset for root_synset in iid2root_synset[sample['image_id']] if is_hyponym_of(synset, root_synset)]) > 0]
         for id_synset in identified_synsets:
             synset_to_image_count[id_synset][sample['image_id']] += 1
     synset_to_image_prob = {x[0]: {y[0]: y[1]/image_count[y[0]] for y in x[1].items()} for x in synset_to_image_count.items()}
