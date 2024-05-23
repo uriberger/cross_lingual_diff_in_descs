@@ -67,6 +67,8 @@ def get_synset_to_image_prob(dataset, filter_by_iid2root_dataset=True):
     return synset_to_image_prob, synset_to_image_count, image_count
 
 def get_synset_to_image_prob_dataset_pair(datasets):
+    iid2root_synset = get_image_id_to_root_synsets()
+
     with open(f'datasets/{datasets[0]}.json', 'r') as fp:
         data1 = json.load(fp)
     with open(f'datasets/{datasets[1]}.json', 'r') as fp:
@@ -94,6 +96,7 @@ def get_synset_to_image_prob_dataset_pair(datasets):
                     inner_synset = child2parent[inner_synset]
                     identified_synsets.append(inner_synset)
             identified_synsets = list(set(identified_synsets))
+            identified_synsets = [synset for synset in identified_synsets if verify_synset_in_image(synset, cur_data[i]['image_id'], iid2root_synset)]
             for id_synset in identified_synsets:
                 synset_to_image_count[j][id_synset][cur_data[i]['image_id']] += 1
         synset_to_image_prob.append({x[0]: {y[0]: y[1]/image_count[j][y[0]] for y in x[1].items()} for x in synset_to_image_count[j].items()})
