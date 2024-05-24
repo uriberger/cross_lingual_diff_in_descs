@@ -17,6 +17,7 @@ from sklearn.metrics.pairwise import euclidean_distances as edist
 import lang2vec.lang2vec as l2v
 import mantel
 import csv
+import statistics
 
 def get_image_id_to_root_synsets():
     csv_path = 'xm3600_annotation.csv'
@@ -557,3 +558,69 @@ def granularity_analysis():
         ax, "upper left", bbox_to_anchor=(1, 1), ncol=2, title=None, frameon=True,
     )
     plt.savefig('depths_dist.pdf', bbox_inches='tight')
+
+def synset_agreement_analysis():
+    # Analyze on which synsets annotators from different languages tend to agree how salient they are
+    langs = [x.split('_')[1] for x in all_datasets if x.startswith('xm3600_')]
+    root_synsets = set([x for x in all_synsets if x not in child2parent])
+
+    # First, for each synset, compute the standard deviation of saliency across langauges in each image, and average over all images
+    iid2probs = {}
+    for lang in langs:
+        synset2prob, _, image_count = get_synset_to_image_prob(f'xm3600_{lang}')
+        image_ids = image_count.keys()
+        for image_id in image_ids:
+            for synset, synset_data in synset2prob.items():
+                if synset not in root_synsets:
+                    continue
+                if not image_id in iid2probs:
+                    iid2probs[image_id] = {}
+                if not synset in iid2probs[image_id]:
+                    iid2probs[image_id][synset] = []
+                if image_id in synset_data:
+                    iid2probs[image_id][synset].append(synset_data[image_id])
+                else:
+                    iid2probs[image_id][synset].append(0)
+    iid2std = {}
+    for image_id, synset2probs in iid2probs.items():
+        iid2std[image_id] = {}
+        for synset, prob_list in synset2probs.items():
+            if sum(prob_list) > 0:
+                iid2std[image_id][synset] = statistics.stdev(prob_list)
+    synset2stds = defaultdict(list)
+    for image_id, image_stds in iid2std.items():
+        for synset, std in image_stds.items():
+            synset2stds[synset].append(std)
+    synset2mean_std = {x[0]: statistics.mean(x[1]) for x in synset2stds.items()}
+    mean_of_stds = sorted(list(synset2mean_std.items()), key=lambda x:x[1])
+    print('Mean of stds'):
+    print(mean_of_stds)
+	
+    # Next, for each synset, compute the mean saliency over all images, and compute the standard deviation across langauges
+    root_synsets = set([x for x in all_synsets if x not in child2parent])
+    lang2probs = {}
+    for lang in tqdm(langs):
+        synset2prob, _, _ = get_synset_to_image_prob(f'xm3600_{lang}')
+        lang2probs[lang] = {synset: sum(synset2prob[synset].values())/3600 for synset in root_synsets}
+    synset2means = defaultdict(list)
+    for lang, synsets_data in lang2probs.items():
+        for synset, mean_prob in synsets_data.items():
+            synset2means[synset].append(mean_prob)
+    synset2std_of_means = {x[0]: statistics.stdev(x[1]) for x in synset2means.items()}
+    std_of_means = sorted(list(synset2std_of_means.items()), key=lambda x:x[1])
+    print('Std of means:')
+    print(std_of_means)
+	
+    # Now, compute correlation with how common each synset it
+    iid2root_synset = get_image_id_to_root_synsets()
+    synset2count = defaultdict(int)
+    for synset_list in iid2root_synset.values():
+        for synset in synset_list:
+            synset2count[synset] += 1
+    counts = [x[1] for x in sorted(list(synset2count.items()), key=lambda y:y[0])]
+    means = [x[1] for x in sorted(mean_of_stds, key=lambda y:y[0])]
+    stds = [x[1] for x in sorted(std_of_means, key=lambda y:y[0])]
+    print('Pearson correlation with means:')
+    print(stats.pearsonr(counts, means))
+    print('Pearson correlation with stds:')
+    print(stats.pearsonr(counts, stds))
