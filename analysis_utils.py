@@ -593,11 +593,10 @@ def synset_agreement_analysis():
             synset2stds[synset].append(std)
     synset2mean_std = {x[0]: statistics.mean(x[1]) for x in synset2stds.items()}
     mean_of_stds = sorted(list(synset2mean_std.items()), key=lambda x:x[1])
-    print('Mean of stds'):
+    print('Mean of stds')
     print(mean_of_stds)
 	
     # Next, for each synset, compute the mean saliency over all images, and compute the standard deviation across langauges
-    root_synsets = set([x for x in all_synsets if x not in child2parent])
     lang2probs = {}
     for lang in tqdm(langs):
         synset2prob, _, _ = get_synset_to_image_prob(f'xm3600_{lang}')
