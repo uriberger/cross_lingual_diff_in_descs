@@ -309,6 +309,7 @@ def plot_similarity_heatmap(langs):
     plt.savefig('del_me.png')
 
 def get_object_num_by_location(langs, synset):
+    iid2root_synset = get_image_id_to_root_synsets()
     with open('/cs/labs/oabend/uriber/datasets/crossmodal3600/captions.jsonl', 'r') as fp:
         jl = list(fp)
     data = [json.loads(x) for x in jl]
@@ -321,9 +322,9 @@ def get_object_num_by_location(langs, synset):
             data = json.load(fp)
         for sample in data:
             if synset is None:
-                l2iid2count[iid2l[sample['image_id']]][sample['image_id']].append(len(sample['synsets']))
+                l2iid2count[iid2l[sample['image_id']]][sample['image_id']].append(len([x for x in sample['synsets'] if verify_synset_in_image(x[3], sample['image_id'], iid2root_synset)]))
             else:
-                l2iid2count[iid2l[sample['image_id']]][sample['image_id']].append(len([x for x in sample['synsets'] if is_hyponym_of(x[3], synset)]))
+                l2iid2count[iid2l[sample['image_id']]][sample['image_id']].append(len([x for x in sample['synsets'] if is_hyponym_of(x[3], synset) and verify_synset_in_image(x[3], sample['image_id'], iid2root_synset)]))
     
     l2count = {x[0]: sum([sum(y)/len(y) for y in x[1].values()]) for x in l2iid2count.items()}
     res = sorted([(x[0], '%.2f' % (x[1]/image_num)) for x in l2count.items()], key=lambda x:x[1])
@@ -331,6 +332,7 @@ def get_object_num_by_location(langs, synset):
     return res
 
 def get_object_num_by_language(langs, synset):
+    iid2root_synset = get_image_id_to_root_synsets()
     image_num = 3600
     l2iid2count = {lang: defaultdict(list) for lang in langs}
     
@@ -339,9 +341,9 @@ def get_object_num_by_language(langs, synset):
             data = json.load(fp)
         for sample in data:
             if synset is None:
-                l2iid2count[lang][sample['image_id']].append(len(sample['synsets']))
+                l2iid2count[lang][sample['image_id']].append(len([x for x in sample['synsets'] if verify_synset_in_image(x[3], sample['image_id'], iid2root_synset)]))
             else:
-                l2iid2count[lang][sample['image_id']].append(len([x for x in sample['synsets'] if is_hyponym_of(x[3], synset)]))
+                l2iid2count[lang][sample['image_id']].append(len([x for x in sample['synsets'] if is_hyponym_of(x[3], synset) and verify_synset_in_image(x[3], sample['image_id'], iid2root_synset)]))
     
     l2count = {x[0]: sum([sum(y)/len(y) for y in x[1].values()]) for x in l2iid2count.items()}
     res = sorted([(x[0], '%.2f' % (x[1]/image_num)) for x in l2count.items()], key=lambda x:x[1])
@@ -563,6 +565,7 @@ def synset_agreement_analysis():
     # Analyze on which synsets annotators from different languages tend to agree how salient they are
     langs = [x.split('_')[1] for x in all_datasets if x.startswith('xm3600_')]
     root_synsets = set([x for x in all_synsets if x not in child2parent])
+    iid2root_synset = get_image_id_to_root_synsets()
 
     # First, for each synset, compute the standard deviation of saliency across langauges in each image, and average over all images
     iid2probs = {}
@@ -572,6 +575,10 @@ def synset_agreement_analysis():
         for image_id in image_ids:
             for synset, synset_data in synset2prob.items():
                 if synset not in root_synsets:
+                    continue
+                if image_id not in iid2root_synset:
+                    continue
+                if synset not in iid2root_synset[image_id]:
                     continue
                 if not image_id in iid2probs:
                     iid2probs[image_id] = {}
@@ -597,25 +604,24 @@ def synset_agreement_analysis():
     print(mean_of_stds)
 	
     # Next, for each synset, compute the mean saliency over all images, and compute the standard deviation across langauges
+    synset2count = defaultdict(int)
+    for synset_list in iid2root_synset.values():
+        for synset in synset_list:
+            synset2count[synset] += 1
     lang2probs = {}
     for lang in tqdm(langs):
         synset2prob, _, _ = get_synset_to_image_prob(f'xm3600_{lang}')
-        lang2probs[lang] = {synset: sum(synset2prob[synset].values())/3600 for synset in root_synsets}
+        lang2probs[lang] = {synset: sum([x[1] for x in synset2prob[synset].items() if x[0] in iid2root_synset and synset in iid2root_synset[x[0]]])/synset2count[synset] for synset in root_synsets}
     synset2means = defaultdict(list)
     for lang, synsets_data in lang2probs.items():
         for synset, mean_prob in synsets_data.items():
-            synset2means[synset].append(mean_prob)
-    synset2std_of_means = {x[0]: statistics.stdev(x[1]) for x in synset2means.items()}
+            synset2means[synset].append((lang, mean_prob))
+    synset2std_of_means = {x[0]: statistics.stdev([y[1] for y in x[1]]) for x in synset2means.items()}
     std_of_means = sorted(list(synset2std_of_means.items()), key=lambda x:x[1])
     print('Std of means:')
     print(std_of_means)
 	
     # Now, compute correlation with how common each synset it
-    iid2root_synset = get_image_id_to_root_synsets()
-    synset2count = defaultdict(int)
-    for synset_list in iid2root_synset.values():
-        for synset in synset_list:
-            synset2count[synset] += 1
     counts = [x[1] for x in sorted(list(synset2count.items()), key=lambda y:y[0])]
     means = [x[1] for x in sorted(mean_of_stds, key=lambda y:y[0])]
     stds = [x[1] for x in sorted(std_of_means, key=lambda y:y[0])]
