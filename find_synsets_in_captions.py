@@ -467,6 +467,8 @@ single_word_to_handling_func = {
     'hip': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['hop'], [(None, 0)], [('body_part.n.01', 1)]),
     'knife': knife_handling,
     'knives': knife_handling,
+    'leg': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['wooden', 'metal', 'iron'], [(None, 0)], [('leg.n.01', 0)]),
+    'legs': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['wooden', 'metal', 'iron'], [(None, 0)], [('leg.n.01', 0)]),
 }
 
 def phrase_location_to_synset(token_list, start_ind, end_ind):
