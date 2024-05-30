@@ -379,7 +379,7 @@ def water_handling(token_list, start_ind):
         return [('water.n.06', 0)]
     
     # Some post words is body of water
-    if start_ind < len(token_list) - 1 and token_list[start_ind + 1][0]['text'] in ['source', 'fountain', 'flowing', 'surface', 'channel', 'canal']:
+    if start_ind < len(token_list) - 1 and token_list[start_ind + 1][0]['text'] in ['source', 'fountain', 'flowing', 'surface', 'channel', 'canal', 'stream']:
         return [('body_of_water.n.01', 0)]
     
     # Some adjectives always mean the body of water meaning
