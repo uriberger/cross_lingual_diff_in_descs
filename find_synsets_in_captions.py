@@ -418,6 +418,18 @@ def knife_handling(token_list, start_ind):
     
     return [('knife.n.02', 0), ('table_knife.n.01', 0)]
 
+def mixer_handling(token_list, start_ind):
+    if start_ind > 0 and token_list[start_ind - 1][0]['text'] in ['cement', 'concrete']:
+        return [(None, 0)]
+    
+    if start_ind < len(token_list) - 1 and token_list[start_ind + 1][0]['text'] in ['truck', 'trucks']:
+        return [(None, 0)]
+    
+    if start_ind > 0 and token_list[start_ind - 1][0]['text'] in ['music', 'sound', 'dj', 'audio']:
+        return [('electronic_equipment.n.01', 1)]
+    
+    return [('electronic_equipment.n.01', 1), ('kitchen_utensil.n.01', 1)]
+
 def preceding_word_handling_func(token_list, start_ind, preceding_words, synsets_if_applies, synsets_otherwise):
     if start_ind > 0 and token_list[start_ind - 1][0]['text'] in preceding_words:
         return synsets_if_applies
@@ -442,6 +454,8 @@ def preceding_succeeding_word_handling_func(token_list, start_ind, preceding_wor
 single_word_to_handling_func = {
     'top': top_handling,
     'tops': top_handling,
+    'mixer': mixer_handling,
+    'mixers': mixer_handling,
     'couple': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['of'], [(None, 0)], [('couple.n.01', 0)]),
     'couples': lambda token_list, start_ind: succeeding_word_handling_func(token_list, start_ind, ['of'], [(None, 0)], [('couple.n.01', 0)]),
     'pool': lambda token_list, start_ind: preceding_word_handling_func(token_list, start_ind, ['swimming'], [(None, 0)], [('pond.n.01', 0), ('pool.n.06', 0)]),
