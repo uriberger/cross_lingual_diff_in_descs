@@ -558,6 +558,10 @@ def is_noun(token_list, ind):
     if token_list[ind][0]['text'] == 'hot' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] in ['dog', 'dogs']:
         return True
     
+    # rolling pin: rolling is a noun
+    if token_list[ind][0]['text'] == 'rolling' and ind < (len(token_list) - 1) and token_list[ind+1][0]['text'] in ['pin', 'pins']:
+        return True
+    
     return False
 
 def post_traverse_handling(token_list, start_ind, end_ind, synsets):
