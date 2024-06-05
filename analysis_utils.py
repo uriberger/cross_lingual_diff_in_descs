@@ -371,7 +371,7 @@ def plot_object_num(langs, synset_list, by_location):
     
     title_size = 25
     xlabels_size = 22
-    ylabels_size = 14
+    ylabels_size = 13
 
     if len(synset_list) == 1:
         axs[0].barh(range(36), width=[float(x[1]) for x in overall_res], color=['red' if x[0] in east_asian_langs else 'black' for x in overall_res])
