@@ -377,7 +377,7 @@ def plot_object_num(langs, synset_list, by_location):
         axs[0].barh(range(36), width=[float(x[1]) for x in overall_res], color=['red' if x[0] in east_asian_langs else 'black' for x in overall_res])
         axs[0].set_title('Overall', size=title_size, family='Times New Roman')
         axs[0].set_yticks(ticks=range(36), labels=[x[0] for x in overall_res], size=ylabels_size, family='Times New Roman')
-        axs[0, 0].tick_params(axis='x', labelsize=xlabels_size, labelfontfamily='Times New Roman')
+        axs[0].tick_params(axis='x', labelsize=xlabels_size, labelfontfamily='Times New Roman')
     else:
         axs[0, 0].barh(range(36), width=[float(x[1]) for x in overall_res], color=['red' if x[0] in east_asian_langs else 'black' for x in overall_res])
         axs[0, 0].set_title('Overall', size=title_size, family='Times New Roman')
