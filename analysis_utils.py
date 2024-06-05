@@ -370,15 +370,15 @@ def plot_object_num(langs, synset_list, by_location):
         overall_res = get_object_num_by_language(langs, None)
     
     if len(synset_list) == 1:
-        axs[0].barh(range(36), width=[float(x[1]) for x in overall_res], color=['red' if x[0] in east_asian_langs else 'black' for x in overall_res])
-        axs[0].set_title('Overall')
-        axs[0].set_yticks(ticks=range(36), labels=[x[0] for x in overall_res])
-        axs[0].tick_params(axis='both', labelsize=10)
+        axs[0].barh(range(36), width=[float(x[1]) for x in overall_res], color=['red' if x[0] in east_asian_langs else 'black' for x in overall_res], size=22, family='Times New Roman')
+        axs[0].set_title('Overall', size=22, family='Times New Roman')
+        axs[0].set_yticks(ticks=range(36), labels=[x[0] for x in overall_res], size=15, family='Times New Roman')
+        #axs[0].tick_params(axis='both', labelsize=10)
     else:
-        axs[0, 0].barh(range(36), width=[float(x[1]) for x in overall_res], color=['red' if x[0] in east_asian_langs else 'black' for x in overall_res])
-        axs[0, 0].set_title('Overall')
-        axs[0, 0].set_yticks(ticks=range(36), labels=[x[0] for x in overall_res])
-        axs[0, 0].tick_params(axis='both', labelsize=10)
+        axs[0, 0].barh(range(36), width=[float(x[1]) for x in overall_res], color=['red' if x[0] in east_asian_langs else 'black' for x in overall_res], size=22, family='Times New Roman')
+        axs[0, 0].set_title('Overall', size=22, family='Times New Roman')
+        axs[0, 0].set_yticks(ticks=range(36), labels=[x[0] for x in overall_res], size=15, family='Times New Roman')
+        #axs[0, 0].tick_params(axis='both', labelsize=10)
     row = 0
     col = 1
     for i in range(len(synset_list)):
