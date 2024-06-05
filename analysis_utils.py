@@ -369,16 +369,20 @@ def plot_object_num(langs, synset_list, by_location):
     else:
         overall_res = get_object_num_by_language(langs, None)
     
+    title_size = 25
+    xlabels_size = 22
+    ylabels_size = 14
+
     if len(synset_list) == 1:
         axs[0].barh(range(36), width=[float(x[1]) for x in overall_res], color=['red' if x[0] in east_asian_langs else 'black' for x in overall_res])
-        axs[0].set_title('Overall', size=22, family='Times New Roman')
-        axs[0].set_yticks(ticks=range(36), labels=[x[0] for x in overall_res], size=15, family='Times New Roman')
-        axs[0, 0].tick_params(axis='x', labelsize=22, labelfontfamily='Times New Roman')
+        axs[0].set_title('Overall', size=title_size, family='Times New Roman')
+        axs[0].set_yticks(ticks=range(36), labels=[x[0] for x in overall_res], size=ylabels_size, family='Times New Roman')
+        axs[0, 0].tick_params(axis='x', labelsize=xlabels_size, labelfontfamily='Times New Roman')
     else:
         axs[0, 0].barh(range(36), width=[float(x[1]) for x in overall_res], color=['red' if x[0] in east_asian_langs else 'black' for x in overall_res])
-        axs[0, 0].set_title('Overall', size=22, family='Times New Roman')
-        axs[0, 0].set_yticks(ticks=range(36), labels=[x[0] for x in overall_res], size=15, family='Times New Roman')
-        axs[0, 0].tick_params(axis='x', labelsize=22, labelfontfamily='Times New Roman')
+        axs[0, 0].set_title('Overall', size=title_size, family='Times New Roman')
+        axs[0, 0].set_yticks(ticks=range(36), labels=[x[0] for x in overall_res], size=ylabels_size, family='Times New Roman')
+        axs[0, 0].tick_params(axis='x', labelsize=xlabels_size, labelfontfamily='Times New Roman')
     row = 0
     col = 1
     for i in range(len(synset_list)):
@@ -388,14 +392,14 @@ def plot_object_num(langs, synset_list, by_location):
             res = get_object_num_by_language(langs, synset_list[i])
         if len(synset_list) == 1:
             axs[col].barh(range(36), width=[float(x[1]) for x in res], color=['red' if x[0] in east_asian_langs else 'black' for x in res])
-            axs[col].set_title(synset_list[i], size=22, family='Times New Roman')
-            axs[col].set_yticks(ticks=range(36), labels=[x[0] for x in res], size=15, family='Times New Roman')
-            axs[col].tick_params(axis='x', labelsize=22, labelfontfamily='Times New Roman')
+            axs[col].set_title(synset_list[i], size=title_size, family='Times New Roman')
+            axs[col].set_yticks(ticks=range(36), labels=[x[0] for x in res], size=ylabels_size, family='Times New Roman')
+            axs[col].tick_params(axis='x', labelsize=xlabels_size, labelfontfamily='Times New Roman')
         else:
             axs[row, col].barh(range(36), width=[float(x[1]) for x in res], color=['red' if x[0] in east_asian_langs else 'black' for x in res])
-            axs[row, col].set_title(synset_list[i], size=22, family='Times New Roman')
-            axs[row, col].set_yticks(ticks=range(36), labels=[x[0] for x in res], size=15, family='Times New Roman')
-            axs[row, col].tick_params(axis='x', labelsize=22, labelfontfamily='Times New Roman')
+            axs[row, col].set_title(synset_list[i], size=title_size, family='Times New Roman')
+            axs[row, col].set_yticks(ticks=range(36), labels=[x[0] for x in res], size=ylabels_size, family='Times New Roman')
+            axs[row, col].tick_params(axis='x', labelsize=xlabels_size, labelfontfamily='Times New Roman')
         col += 1
         if col == col_num:
             col = 0
