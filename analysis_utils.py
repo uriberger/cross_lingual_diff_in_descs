@@ -19,6 +19,9 @@ import mantel
 import csv
 import statistics
 
+east_asian_langs = ['zh', 'ja', 'ko', 'th', 'vi', 'fil', 'id']
+low_resource_langs = ['bn', 'te', 'sw', 'quz', 'mi']
+
 def get_image_id_to_root_synsets():
     csv_path = 'xm3600_annotation.csv'
     iid2root_synset = {}
@@ -308,8 +311,6 @@ def plot_similarity_heatmap(langs):
     plt.colorbar(heatmap)
     plt.savefig('del_me.png')
 
-east_asian_langs = ['zh', 'ja', 'ko', 'th', 'vi', 'fil', 'id']
-
 def get_object_num_by_location(langs, synset):
     iid2root_synset = get_image_id_to_root_synsets()
     with open('/cs/labs/oabend/uriber/datasets/crossmodal3600/captions.jsonl', 'r') as fp:
@@ -420,8 +421,10 @@ def plot_legend():
     
     plt.savefig('del_me.png')
 
-def get_lang_synset_image_matrix(root_only):
+def get_lang_synset_image_matrix(root_only, include_low_resource_langs=True):
     labels = [x.split('_')[1] for x in all_datasets if x.startswith('xm3600_')]
+    if not include_low_resource_langs:
+        labels = [x for x in labels if x not in low_resource_langs]
     if root_only:
         concepts = [x for x in all_synsets if x not in child2parent]
     else:
@@ -466,8 +469,8 @@ def plot_saliency_heatmap(sort_by_mean):
                      center=0, annot=True, fmt=".1f", square=True, xticklabels=True, yticklabels=True, annot_kws={"fontsize":5})
     plt.savefig('saliency_heatmap.pdf', bbox_inches='tight')
 
-def run_saliency_similarity_correlation_test():
-    labels, _, X = get_lang_synset_image_matrix(False)
+def run_saliency_similarity_correlation_test(include_low_resource_languages):
+    labels, _, X = get_lang_synset_image_matrix(False, include_low_resource_languages)
     X = np.reshape(X, (X.shape[0], -1))
     X_sim = edist(X)
 
