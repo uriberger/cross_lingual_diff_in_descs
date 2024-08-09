@@ -543,11 +543,13 @@ def get_lang_to_gran_list(langs, root_synset=None):
 	
     return l2gran
 
-def granularity_analysis():
+def granularity_analysis(include_low_resource_languages):
     sns.set_style('whitegrid')
     plt.rcParams["font.family"] = "Times New Roman"
 
     langs = [x.split('_')[1] for x in all_datasets if x.startswith('xm3600_')]
+    if not include_low_resource_languages:
+        langs = [x for x in langs if x not in low_resource_langs]
     l2gran = get_lang_to_gran_list(langs)
     samples = [d for _, d in l2gran.items()]
     res = stats.kruskal(*samples)
@@ -570,9 +572,11 @@ def granularity_analysis():
     )
     plt.savefig('depths_dist.pdf', bbox_inches='tight')
 
-def synset_agreement_analysis():
+def synset_agreement_analysis(include_low_resource_languages):
     # Analyze on which synsets annotators from different languages tend to agree how salient they are
     langs = [x.split('_')[1] for x in all_datasets if x.startswith('xm3600_')]
+    if not include_low_resource_languages:
+        langs = [x for x in langs if x not in low_resource_langs]
     root_synsets = set([x for x in all_synsets if x not in child2parent])
     iid2root_synset = get_image_id_to_root_synsets()
 
