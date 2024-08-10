@@ -7,29 +7,7 @@ from torch import nn
 import math
 import json
 from copy import deepcopy
-from collections import defaultdict
-
-# Root phrases:
-#   person, vehicle, furniture, animal, food, bag, clothing, tableware, plant, electronic_equipment, home_appliance,
-#   toy, building, mountain, kitchen_utensil, sky, sun, body_part, body_of_water, hand_tool, musical_instrument,
-#   writing_implement, jewelry, weapon, timepiece
-with open('phrase2synsets.json', 'r') as fp:
-    phrase2synsets = json.load(fp)
-
-with open('phrase2hypernym.json', 'r') as fp:
-    phrase2hypernym = json.load(fp)
-
-with open('synsets_c2p.json', 'r') as fp:
-    child2parent = json.load(fp)
-
-parent2children = defaultdict(list)
-for child, parent in child2parent.items():
-    parent2children[parent].append(child)
-
-with open('implicit_synsets.json', 'r') as fp:
-    implicit_synsets = json.load(fp)
-
-all_synsets = set([x for outer in phrase2synsets.values() for x in outer if x is not None]).union(implicit_synsets).union(child2parent)
+from utils.general_utils import all_synsets, phrase2hypernym, phrase2synsets, is_hyponym_of
 
 with open('phrase2replace_str.json', 'r') as fp:
     phrase2replace_str = json.load(fp)
@@ -37,13 +15,6 @@ with open('phrase2replace_str.json', 'r') as fp:
         if 'null' in y:
             phrase2replace_str[x][None] = phrase2replace_str[x]['null']
             del phrase2replace_str[x]['null']
-
-def is_hyponym_of(synset1, synset2):
-    if synset1 == synset2:
-        return True
-    if synset1 in child2parent:
-        return is_hyponym_of(child2parent[synset1], synset2)
-    return False
 
 with open('non_synset_phrases.json', 'r') as fp:
     non_synset_phrases = set(json.load(fp))
