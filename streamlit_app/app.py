@@ -11,7 +11,7 @@ from collections import OrderedDict
 debug = False
 def debug_print(my_str):
     if debug:
-        print(my_str)
+        print(my_str, flush=True)
 
 # Initalize
 state = st.session_state
@@ -30,44 +30,44 @@ if 'cur_page' not in state:
     state.concept = None
 
 def to_language_selection_page():
-    debug_print('In to_language_selection_page', flush=True)
+    debug_print('In to_language_selection_page')
     move_to(1)
 
 def to_root_concept_selection_page():
     if 'language_selection_box0' in state:
         state.languages = [state[f'language_selection_box{i}'] for i in range(state.language_num)]
-    debug_print('In to_root_concept_selection_page', flush=True)
+    debug_print('In to_root_concept_selection_page')
     move_to(2)
 
 def to_sub_concept_selection_page():
-    debug_print('In to_sub_concept_selection_page', flush=True)
+    debug_print('In to_sub_concept_selection_page')
     state.root_concept = state.root_concept_selection_box
     move_to(3)
 
 def to_language_by_concept_analysis_page():
     if 'language_selection_box0' in state:
         state.languages = [state[f'language_selection_box{i}'] for i in range(state.language_num)]
-    debug_print('In to_language_by_concept_analysis_page', flush=True)
+    debug_print('In to_language_by_concept_analysis_page')
     if state.concept is not None:
         move_to(4)
 
 def to_image_page():
-    debug_print('In to_image_page', flush=True)
+    debug_print('In to_image_page')
     move_to(5)
 
 def to_two_languages_selection_page():
-    debug_print('In to_two_languages_selection_page', flush=True)
+    debug_print('In to_two_languages_selection_page')
     move_to(6)
 
 def to_concept_across_all_languages_page():
-    debug_print('In to_concept_across_all_languages_page', flush=True)
+    debug_print('In to_concept_across_all_languages_page')
     move_to(7)
 
 def move_to(page_ind):
-    debug_print(f'In move_to with page_ind {page_ind}', flush=True)
-    debug_print(f'cur_page before: {state.cur_page}', flush=True)
+    debug_print(f'In move_to with page_ind {page_ind}')
+    debug_print(f'cur_page before: {state.cur_page}')
     state.cur_page = page_ind
-    debug_print(f'cur_page after: {state.cur_page}', flush=True)
+    debug_print(f'cur_page after: {state.cur_page}')
     if state.cur_page == 5:
         st.rerun()
 
@@ -259,7 +259,7 @@ def concept_analysis_across_all_languages_page():
     st.markdown(f'The saliency of {state.concept} in a specific image in language $L$ is the fraction of annotators of the image in $L$ mentioning {state.concept}.')
     st.markdown(f'The overall saliency in $L$ is computed by averaging across all 3600 images in the CrossModal3600 dataset.')
 
-debug_print(f'cur_page: {state.cur_page}', flush=True)
+debug_print(f'cur_page: {state.cur_page}')
 if state.cur_page == 0:
     menu_page()
 elif state.cur_page == 1:
