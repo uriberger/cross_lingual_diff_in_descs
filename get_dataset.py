@@ -8,7 +8,13 @@ datasets = ['COCO', 'flickr30k', 'pascal_sentences', 'xm3600_ar', 'xm3600_bn', '
             'xm3600_sw', 'xm3600_te', 'xm3600_th', 'xm3600_tr', 'xm3600_uk', 'xm3600_vi', 'xm3600_zh', 'multi30k',
             'STAIR-captions', 'YJCaptions', 'coco-cn', 'flickr8kcn', 'ai_challenger', 'wit_en']
 
-def get_dataset(dataset_name):
+def get_processed_dataset(dataset_name):
+    with open(f'datasets/{dataset_name}.json', 'r') as fp:
+        data = json.load(fp)
+
+    return data
+
+def get_orig_dataset(dataset_name):
     if dataset_name == 'COCO':
         with open('../CLIP_prefix_caption/dataset_coco.json', 'r') as fp:
             coco_data = json.load(fp)['images']
