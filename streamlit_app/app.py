@@ -236,7 +236,7 @@ def image_page():
         for sample in samples:
             with st.container(border=True):
                 if 'orig' in sample:
-                    st.markdown(f'Original caption: {sample["orig"]}')
+                    st.markdown(f'Original caption in {lang}: {sample["orig"]}')
                     st.markdown(f'English translated caption: {sample["caption"]}')
                 else:
                     st.markdown(f'Caption: {sample["caption"]}')
