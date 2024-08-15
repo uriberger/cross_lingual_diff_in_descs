@@ -1,2 +1,3 @@
 streamlit-agraph
 torch
+scipy
