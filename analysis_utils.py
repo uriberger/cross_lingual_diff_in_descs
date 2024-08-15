@@ -262,11 +262,71 @@ def plot_similarity_heatmap(langs):
     plt.colorbar(heatmap)
     plt.savefig('del_me.png')
 
-def get_object_num_by_location(langs, synset):
+def run_object_num_by_location_analysis(langs, include_low_resource_languages):
+	iid2root_synset = get_image_id_to_root_synsets()
+	with open('/cs/labs/oabend/uriber/datasets/crossmodal3600/captions.jsonl', 'r') as fp:
+		jl = list(fp)
+	data = [json.loads(x) for x in jl]
+	if not include_low_resource_languages:
+		data = [x for x in data if x['image/locale'] not in low_resource_langs]
+	iid2l = {int(x['image/key'], 16): x['image/locale'] for x in data}
+	image_num = 100
+	l2iid2count = {lang: defaultdict(list) for lang in langs}
+	
+	for lang in langs:
+		with open(f'datasets/xm3600_{lang}.json', 'r') as fp:
+			data = json.load(fp)
+		for sample in data:
+			if sample['image_id'] not in iid2l:
+				continue
+			l2iid2count[iid2l[sample['image_id']]][sample['image_id']].append(len([x for x in sample['synsets'] if verify_synset_in_image(x[3], sample['image_id'], iid2root_synset)]))
+				
+	l2iid2mean = {x[0]: {y[0]: sum(y[1])/len(y[1]) for y in x[1].items()} for x in l2iid2count.items()}
+	ea_list = []
+	for x in l2iid2mean.items():
+		if x[0] in east_asian_langs:
+			ea_list += list(x[1].values())
+	
+	other_list = []
+	for x in l2iid2mean.items():
+		if x[0] not in east_asian_langs:
+			other_list += list(x[1].values())
+	
+	return stats.mannwhitneyu(ea_list, other_list, alternative='greater')
+	
+def run_object_num_by_language_analysis(langs):
+	iid2root_synset = get_image_id_to_root_synsets()
+	l2iid2count = {lang: defaultdict(list) for lang in langs}
+	
+	for lang in langs:
+		with open(f'datasets/xm3600_{lang}.json', 'r') as fp:
+			data = json.load(fp)
+		for sample in data:
+			l2iid2count[lang][sample['image_id']].append(len([x for x in sample['synsets'] if verify_synset_in_image(x[3], sample['image_id'], iid2root_synset)]))
+				
+	l2iid2mean = {x[0]: {y[0]: sum(y[1])/len(y[1]) for y in x[1].items()} for x in l2iid2count.items()}
+	with open('datasets/xm3600_en.json', 'r') as fp:
+		en_data = json.load(fp)
+		iids = list(set([x['image_id'] for x in en_data]))
+	
+	ea_iid2mean = {iid: sum([l2iid2mean[lang][iid] for lang in east_asian_langs])/len(east_asian_langs) for iid in iids}
+	other_langs = [x for x in langs if x not in east_asian_langs]
+	other_iid2mean = {iid: sum([l2iid2mean[lang][iid] for lang in other_langs])/len(other_langs) for iid in iids}
+	
+	ea_list = sorted(list(ea_iid2mean.items()), key=lambda x:x[0])
+	ea_list = [x[1] for x in ea_list]
+	other_list = sorted(list(other_iid2mean.items()), key=lambda x:x[0])
+	other_list = [x[1] for x in other_list]
+	
+	return stats.wilcoxon(ea_list, other_list, zero_method='wilcox', alternative='greater')
+
+def get_object_num_by_location(langs, synset, include_low_resource_languages):
     iid2root_synset = get_image_id_to_root_synsets()
     with open('/cs/labs/oabend/uriber/datasets/crossmodal3600/captions.jsonl', 'r') as fp:
         jl = list(fp)
     data = [json.loads(x) for x in jl]
+    if not include_low_resource_languages:
+        data = [x for x in data if x['image/locale'] not in low_resource_langs]
     iid2l = {int(x['image/key'], 16): x['image/locale'] for x in data}
     image_num = 100
     l2iid2count = {lang: defaultdict(list) for lang in langs}
@@ -275,6 +335,8 @@ def get_object_num_by_location(langs, synset):
         with open(f'datasets/xm3600_{lang}.json', 'r') as fp:
             data = json.load(fp)
         for sample in data:
+            if sample['image_id'] not in iid2l:
+                continue
             if synset is None:
                 l2iid2count[iid2l[sample['image_id']]][sample['image_id']].append(len([x for x in sample['synsets'] if verify_synset_in_image(x[3], sample['image_id'], iid2root_synset)]))
             else:
@@ -304,58 +366,20 @@ def get_object_num_by_language(langs, synset):
     
     return res
 
-def plot_object_num(langs, synset_list, by_location):
-    assert len(synset_list) in [1, 3]
-    
+def plot_object_num(langs, by_location):
     plt.clf()
-    if len(synset_list) == 1:
-        row_num = 1
-    else:
-        row_num = 2
-    col_num = 2
-    fig, axs = plt.subplots(row_num, col_num)
-    fig.set_size_inches(12,8*row_num)
     
     if by_location:
-        overall_res = get_object_num_by_location(langs, None)
+        res = get_object_num_by_location(langs, None)
     else:
-        overall_res = get_object_num_by_language(langs, None)
+        res = get_object_num_by_language(langs, None)
     
-    title_size = 25
     xlabels_size = 22
     ylabels_size = 13
 
-    if len(synset_list) == 1:
-        axs[0].barh(range(36), width=[float(x[1]) for x in overall_res], color=['red' if x[0] in east_asian_langs else 'black' for x in overall_res])
-        axs[0].set_title('Overall', size=title_size, family='Times New Roman')
-        axs[0].set_yticks(ticks=range(36), labels=[x[0] for x in overall_res], size=ylabels_size, family='Times New Roman')
-        axs[0].tick_params(axis='x', labelsize=xlabels_size, labelfontfamily='Times New Roman')
-    else:
-        axs[0, 0].barh(range(36), width=[float(x[1]) for x in overall_res], color=['red' if x[0] in east_asian_langs else 'black' for x in overall_res])
-        axs[0, 0].set_title('Overall', size=title_size, family='Times New Roman')
-        axs[0, 0].set_yticks(ticks=range(36), labels=[x[0] for x in overall_res], size=ylabels_size, family='Times New Roman')
-        axs[0, 0].tick_params(axis='x', labelsize=xlabels_size, labelfontfamily='Times New Roman')
-    row = 0
-    col = 1
-    for i in range(len(synset_list)):
-        if by_location:
-            res = get_object_num_by_location(langs, synset_list[i])
-        else:
-            res = get_object_num_by_language(langs, synset_list[i])
-        if len(synset_list) == 1:
-            axs[col].barh(range(36), width=[float(x[1]) for x in res], color=['red' if x[0] in east_asian_langs else 'black' for x in res])
-            axs[col].set_title(synset_list[i], size=title_size, family='Times New Roman')
-            axs[col].set_yticks(ticks=range(36), labels=[x[0] for x in res], size=ylabels_size, family='Times New Roman')
-            axs[col].tick_params(axis='x', labelsize=xlabels_size, labelfontfamily='Times New Roman')
-        else:
-            axs[row, col].barh(range(36), width=[float(x[1]) for x in res], color=['red' if x[0] in east_asian_langs else 'black' for x in res])
-            axs[row, col].set_title(synset_list[i], size=title_size, family='Times New Roman')
-            axs[row, col].set_yticks(ticks=range(36), labels=[x[0] for x in res], size=ylabels_size, family='Times New Roman')
-            axs[row, col].tick_params(axis='x', labelsize=xlabels_size, labelfontfamily='Times New Roman')
-        col += 1
-        if col == col_num:
-            col = 0
-            row += 1
+    plt.barh(range(len(langs)), width=[float(x[1]) for x in res], color=['red' if x[0] in east_asian_langs else 'black' for x in res])
+    plt.yticks(ticks=range(len(langs)), labels=[x[0] for x in res], size=ylabels_size, family='Times New Roman')
+    plt.tick_params(axis='x', labelsize=xlabels_size, labelfontfamily='Times New Roman')
     
     plt.savefig('del_me.png')
 
@@ -519,7 +543,7 @@ def granularity_analysis(include_low_resource_languages):
     ax.set_xticks(range(18))
 
     sns.move_legend(
-        ax, "upper left", bbox_to_anchor=(1, 1), ncol=2, title=None, frameon=True,
+        ax, "upper left", bbox_to_anchor=(0, 1.4), ncol=6, title=None, frameon=True,
     )
     plt.savefig('depths_dist.pdf', bbox_inches='tight')
 
