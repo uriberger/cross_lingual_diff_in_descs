@@ -16,11 +16,10 @@ import pandas as pd
 from sklearn.metrics.pairwise import euclidean_distances as edist
 import lang2vec.lang2vec as l2v
 import mantel
-from utils.general_utils import get_image_id_to_root_synsets, verify_synset_in_image, is_hyponym_of
+from utils.general_utils import get_image_id_to_root_synsets, verify_synset_in_image, is_hyponym_of, low_resource_langs
 import statistics
 
 east_asian_langs = ['zh', 'ja', 'ko', 'th', 'vi', 'fil', 'id']
-low_resource_langs = ['bn', 'te', 'sw', 'quz', 'mi']
 
 def get_synset_to_image_prob_dataset_pair(datasets):
     iid2root_synset = get_image_id_to_root_synsets()

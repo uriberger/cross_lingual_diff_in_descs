@@ -6,7 +6,6 @@ image_id_to_logits
 *.jpg
 *.png
 venv/*
-datasets/*
 xm3600/*
 wit/*
 wit.json

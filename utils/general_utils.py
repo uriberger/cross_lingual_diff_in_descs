@@ -25,7 +25,6 @@ default_model_name = 'model'
 model_file_suffix = '.mdl'
 config_file_suffix = '.cfg'
 
-
 def set_write_to_log(output_dir):
     """ After calling this function, and file named 'log.txt' will be created in the provided output_dir, and the output
         will be redirected to this log. """
@@ -204,6 +203,8 @@ def fleiss_kappa(struct_data):
     # Now compute kappa
     kappa = (Pbar - Pbar_e)/(1 - Pbar_e)
     return kappa
+
+low_resource_langs = ['bn', 'te', 'sw', 'quz', 'mi']
 
 # Root phrases:
 #   person, vehicle, furniture, animal, food, bag, clothing, tableware, plant, electronic_equipment, home_appliance,
