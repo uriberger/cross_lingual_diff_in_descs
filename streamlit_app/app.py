@@ -146,7 +146,7 @@ def by_language_concept_analysis_page():
         by_two_languages_concept_analysis_page()
 
 def by_single_language_concept_analysis_page():
-    lang_code = state.languages[0].split('(')[1].split(')')[0]
+    lang_code = lang_name2code[state.languages[0]]
     synset_to_image_prob, _, _ = get_synset_to_image_prob(f'xm3600_{lang_code}')
     image_num = len([x for x in synset_to_image_prob[state.concept].values() if x > 0])
     st.subheader('Statistics')
