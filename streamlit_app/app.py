@@ -8,6 +8,11 @@ import scipy.stats as stats
 from streamlit_app.app_utils import plot_clickable_images
 from collections import OrderedDict
 
+debug = False
+def debug_print(my_str):
+    if debug:
+        print(my_str)
+
 # Initalize
 state = st.session_state
 lang_names_and_codes = ['Arabic (ar)', 'Chinese-Simplified (zh)', 'Croatian (hr)', 'Czech (cs)', 'Danish (da)', 'Dutch (nl)', 'English (en)', 'Filipino (fil)', 'Finnish (fi)', 'French (fr)', 'German (de)', 'Greek (el)', 'Hebrew (he)', 'Hindi (hi)', 'Hungarian (hu)', 'Indonesian (id)', 'Italian (it)', 'Japanese (ja)', 'Korean (ko)', 'Norwegian (no)', 'Persian (fa)', 'Polish (pl)', 'Portuguese (pt)', 'Romanian (ro)', 'Russian (ru)', 'Spanish (es)', 'Swedish (sv)', 'Thai (th)', 'Turkish (tr)', 'Ukrainian (uk)', 'Vietnamese (vi)']
@@ -25,44 +30,44 @@ if 'cur_page' not in state:
     state.concept = None
 
 def to_language_selection_page():
-    print('In to_language_selection_page', flush=True)
+    debug_print('In to_language_selection_page', flush=True)
     move_to(1)
 
 def to_root_concept_selection_page():
     if 'language_selection_box0' in state:
         state.languages = [state[f'language_selection_box{i}'] for i in range(state.language_num)]
-    print('In to_root_concept_selection_page', flush=True)
+    debug_print('In to_root_concept_selection_page', flush=True)
     move_to(2)
 
 def to_sub_concept_selection_page():
-    print('In to_sub_concept_selection_page', flush=True)
+    debug_print('In to_sub_concept_selection_page', flush=True)
     state.root_concept = state.root_concept_selection_box
     move_to(3)
 
 def to_language_by_concept_analysis_page():
     if 'language_selection_box0' in state:
         state.languages = [state[f'language_selection_box{i}'] for i in range(state.language_num)]
-    print('In to_language_by_concept_analysis_page', flush=True)
+    debug_print('In to_language_by_concept_analysis_page', flush=True)
     if state.concept is not None:
         move_to(4)
 
 def to_image_page():
-    print('In to_image_page', flush=True)
+    debug_print('In to_image_page', flush=True)
     move_to(5)
 
 def to_two_languages_selection_page():
-    print('In to_two_languages_selection_page', flush=True)
+    debug_print('In to_two_languages_selection_page', flush=True)
     move_to(6)
 
 def to_concept_across_all_languages_page():
-    print('In to_concept_across_all_languages_page', flush=True)
+    debug_print('In to_concept_across_all_languages_page', flush=True)
     move_to(7)
 
 def move_to(page_ind):
-    print(f'In move_to with page_ind {page_ind}', flush=True)
-    print(f'cur_page before: {state.cur_page}', flush=True)
+    debug_print(f'In move_to with page_ind {page_ind}', flush=True)
+    debug_print(f'cur_page before: {state.cur_page}', flush=True)
     state.cur_page = page_ind
-    print(f'cur_page after: {state.cur_page}', flush=True)
+    debug_print(f'cur_page after: {state.cur_page}', flush=True)
     if state.cur_page == 5:
         st.rerun()
 
@@ -243,7 +248,7 @@ def concept_analysis_across_all_languages_page():
     st.header(f'Mean {state.concept} saliency across languages')
     res = OrderedDict()
     for lang in lang_names:
-        print(lang)
+        debug_print(lang)
         lang_code = lang_name2code[lang]
         synset_to_image_prob, _, _ = get_synset_to_image_prob(f'xm3600_{lang_code}')
         # res[lang_code2name[lang]] = sum(synset_to_image_prob[state.concept].values())/3600
@@ -254,7 +259,7 @@ def concept_analysis_across_all_languages_page():
     st.markdown(f'The saliency of {state.concept} in a specific image in language $L$ is the fraction of annotators of the image in $L$ mentioning {state.concept}.')
     st.markdown(f'The overall saliency in $L$ is computed by averaging across all 3600 images in the CrossModal3600 dataset.')
 
-print(f'cur_page: {state.cur_page}', flush=True)
+debug_print(f'cur_page: {state.cur_page}', flush=True)
 if state.cur_page == 0:
     menu_page()
 elif state.cur_page == 1:
