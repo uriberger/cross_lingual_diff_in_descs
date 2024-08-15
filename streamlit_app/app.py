@@ -229,7 +229,7 @@ def image_page():
 
     st.subheader('Captions')
     for lang in state.languages:
-        lang_code = lang.split('(')[1].split(')')[0]
+        lang_code = lang_name2code[lang]
         with open(f'datasets/xm3600_{lang_code}.json', 'r') as fp:
             data = json.load(fp)
         samples = [x for x in data if x['image_id'] == state.iid]
