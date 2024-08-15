@@ -224,8 +224,8 @@ def by_two_languages_concept_analysis_page():
         to_image_page()
 
 def image_page():
-    image_file_path = f'/mnt/c/Users/uribe/PycharmProjects/datasets/crossmodal3600/images/{hex(state.iid)[2:].zfill(16)}.jpg'
-    st.image(image_file_path)
+    url = f'https://storage.googleapis.com/xm3600/{hex(state.iid)[2:].zfill(16)}.jpg'
+    st.image(url)
 
     st.subheader('Captions')
     for lang in state.languages:
