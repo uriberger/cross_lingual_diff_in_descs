@@ -1,3 +1,4 @@
 streamlit-agraph
 torch
 scipy
+st-clickable-images
