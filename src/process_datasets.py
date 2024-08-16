@@ -1,22 +1,11 @@
 from find_synsets_in_captions import find_synsets
-import random
 import json
-from get_dataset import get_dataset, datasets
+from get_dataset import get_orig_dataset, datasets
 from tqdm import tqdm
-import os
 for dataset in [x for x in datasets if x.startswith('xm3600_')]:
-#for dataset in ['COCO', 'STAIR-captions', 'YJCaptions', 'flickr8kcn', 'flickr30k', 'multi30k', 'coco-cn']:
-    data = []
-    if os.path.isfile(f'datasets/{dataset}.json'):
-        with open(f'datasets/{dataset}.json', 'r') as fp:
-            data = json.load(fp)
-    samples_done_so_far = len(data)
-    all_data = get_dataset(dataset)
-    data = data + all_data[samples_done_so_far:]
-    for i in tqdm(range(samples_done_so_far, len(data)), desc=dataset):
-        if i % 10000 == 0:
-            with open(f'datasets/{dataset}.json', 'w') as fp:
-                fp.write(json.dumps(data[:i]))
+#for dataset in ['COCO', 'STAIR-captions']:
+    data = get_orig_dataset(dataset)
+    for i in tqdm(range(len(data)), desc=dataset):
         try:
             res = find_synsets(data[i]['caption'])
         except:
