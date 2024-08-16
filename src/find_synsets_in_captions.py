@@ -5,27 +5,15 @@ from transformers import AutoModelForMaskedLM, AutoTokenizer
 import torch
 from torch import nn
 import math
-import json
 from copy import deepcopy
-from utils.general_utils import all_synsets, phrase2hypernym, phrase2synsets, is_hyponym_of
-
-with open('phrase2replace_str.json', 'r') as fp:
-    phrase2replace_str = json.load(fp)
-    for x,y in phrase2replace_str.items():
-        if 'null' in y:
-            phrase2replace_str[x][None] = phrase2replace_str[x]['null']
-            del phrase2replace_str[x]['null']
-
-with open('non_synset_phrases.json', 'r') as fp:
-    non_synset_phrases = set(json.load(fp))
-
-with open('identical_synsets_mapping.json', 'r') as fp:
-    identical_synsets_mapping = json.load(fp)
-
-# Inflect don't handle some strings well, ignore these
-non_inflect_strs = [
-    'dress', 'chess', 'lotus', 'cactus', 'asparagus', 'cross', 'gps'
-]
+from utils import all_synsets,\
+    phrase2hypernym,\
+    phrase2synsets,\
+    is_hyponym_of,\
+    phrase2replace_str,\
+    non_synset_phrases,\
+    identical_synsets_mapping,\
+    non_inflect_strs
 
 nlp = stanza.Pipeline('en', tokenize_no_ssplit=True)
 inflect_engine = inflect.engine()
@@ -289,25 +277,6 @@ def is_subtree_first(token_list, ind):
 
 def has_determiner(token_list, ind):
     return len([x for x in token_list if x[0]['head'] == ind+1 and x[0]['upos'] == 'DET']) > 0
-
-def ball_handling(token_list, ball_ind):
-    # Plural is always the ball, never the game
-    if token_list[ball_ind][0]['text'].endswith('balls'):
-        return 'ball', token_list[ball_ind][0]['text'] == 'balls'
-
-    # Paintball is not a ball
-    if token_list[ball_ind][0]['text'] == 'paintball':
-        return None, False
-    
-    # If it's a single word at the beginning of the sentence or with a determiner before it- it's the ball,
-    # otherwise it's the game
-    if is_subtree_first(token_list, ball_ind):
-        return 'ball', token_list[ball_ind][0]['text'] == 'ball'
-    
-    if has_determiner(token_list, ball_ind):
-        return 'ball', token_list[ball_ind][0]['text'] == 'ball'
-    
-    return None, False
 
 def top_handling(token_list, start_ind):
     # Need to distinguish top as a preposition from the clothing

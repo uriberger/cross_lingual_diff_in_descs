@@ -31,6 +31,24 @@ for child, parent in child2parent.items():
 with open('implicit_synsets.json', 'r') as fp:
     implicit_synsets = json.load(fp)
 
+with open('phrase2replace_str.json', 'r') as fp:
+    phrase2replace_str = json.load(fp)
+    for x,y in phrase2replace_str.items():
+        if 'null' in y:
+            phrase2replace_str[x][None] = phrase2replace_str[x]['null']
+            del phrase2replace_str[x]['null']
+
+with open('non_synset_phrases.json', 'r') as fp:
+    non_synset_phrases = set(json.load(fp))
+
+with open('identical_synsets_mapping.json', 'r') as fp:
+    identical_synsets_mapping = json.load(fp)
+
+# Inflect don't handle some strings well, ignore these
+non_inflect_strs = [
+    'dress', 'chess', 'lotus', 'cactus', 'asparagus', 'cross', 'gps'
+]
+
 all_synsets = set([x for outer in phrase2synsets.values() for x in outer if x is not None]).union(implicit_synsets).union(child2parent)
 
 def is_hyponym_of(synset1, synset2):
