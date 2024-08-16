@@ -1,0 +1,156 @@
+language,image id,caption,predicted,gt
+ar,5ec62779e62b2157,A baby panda walks on the grass and eats it in front of his mother,"carnivore.n.01, grass.n.01","carnivore.n.01, grass.n.01, carnivore.n.01"
+ar,eb5775daf469d75c,Sunset scene in the field,,
+ar,81215d676e654a93,1957 Corona car at an antique car show,"car.n.01, car.n.01",car.n.01
+ar,f37aae57252ee741,Small bag handwoven in purple wool on a white background,bag.n.01,bag.n.01
+ar,dbfd1612917faf4e,Singers on stage with red lights,musician.n.01,musician.n.01
+cs,17a82139883cba9c,Burning dry grass,grass.n.01,grass.n.01
+cs,fcd7bde25c97b165,Red flowering plant,angiosperm.n.01,angiosperm.n.01
+cs,7c4fa4889f79cace,Aerial view of the bay and island,bay.n.01,bay.n.01
+cs,c36548a85780a8e6,A red flower on a bush,"flower.n.01, shrub.n.01","flower.n.01, shrub.n.01"
+cs,df2af1afbe874ed2,Prow of white boat sailing on lake with rock and forest in background,"boat.n.01, lake.n.01","boat.n.01, lake.n.01"
+da,5f17229cfabf8419,Mountaineers sitting in their camp,athlete.n.01,athlete.n.01
+da,c9155955810c94b9,Close-up of polar bear in zoo facility.,bear.n.01,bear.n.01
+da,bdef907959dec752,Bamboo fence on beach which is broken.,bamboo.n.02,
+da,7f22a3fcaae9203f,Selfie of man with sunglasses and life jacket in boat with a local coxswain in the background by the outboard motor going down river,"man.n.01, jacket.n.01, boat.n.01, skilled_worker.n.01, boat.n.01, river.n.01","man.n.01, jacket.n.01, boat.n.01, skilled_worker.n.01, river.n.01"
+da,cd1230dbf6246628,Two gears on a floor,,
+de,d9fc6a3aac6463ba,"Evening, dark shot of a large building with cars, traffic lights and a person in front of it.","building.n.01, car.n.01, person.n.01","building.n.01, car.n.01, person.n.01"
+de,0cf98efa67d18dba,White shredded cabbage is served on a dark red plate,"cabbage.n.01, plate.n.04","cabbage.n.01, plate.n.04"
+de,41e1029c92552095,Close-up of an iron small device on a wooden table.,table.n.02,table.n.02
+de,d11512f30868814a,"Dark close-up of a white plate with different, colorful types of sushi.","plate.n.04, sushi.n.01","plate.n.04, sushi.n.01"
+de,9e169ab9c309948a,Small pictures of various spices in wooden plates with yellow plastic signs,"flavorer.n.01, plate.n.04","flavorer.n.01, plate.n.04"
+el,fcddef32fef227d3,Buildings of a city with cloudy sky background,"building.n.01, sky.n.01","building.n.01, sky.n.01"
+el,293c5cfe900c45de,Loudspeaker on wooden floor,,
+el,764fa8e413926f04,Showcase with various items such as military hats and mugs.,hat.n.01,hat.n.01
+el,f6fbfc894f496a88,View of an illuminated bridge with a piece of the city and sights in the background at dusk,,
+el,678e97efa0dcb55d,Huskies were resting tied to the sled,"working_dog.n.01, sled.n.01","working_dog.n.01, sled.n.01"
+en,94889e7611c0c9e9,An aerial view of cities separated by a river.,river.n.01,river.n.01
+en,88fcf69871c2e582,Wooden bridge in forest.,,
+en,552cf561f0ed2b52,Two glasses of beer on the table.,"beer.n.01, table.n.04","beer.n.01, table.n.04"
+en,9dd50a1d071ea61e,Two people discussing on stage in front of an audience at an event.,person.n.01,person.n.01
+en,7ba496c0a26e5e34,The white flowers in the garden.',flower.n.01,flower.n.01
+es,5f4ea7c0198aecd9,Mediterranean sea landscape seen from local vegetation.,sea.n.01,sea.n.01
+es,ad81166a817acf75,Two military tanks on a street parade in the sun,sun.n.01,"tank.n.01, sun.n.01"
+es,48acf954097905f6,Open hood of a yellow classic car with black lines parked on the pavement,car.n.01,car.n.01
+es,0591c19dfec6a487,Small wooden box with tin decorations on a table,table.n.02,table.n.02
+es,5596944df50f42ba,Man painting wall on ladder,man.n.01,man.n.01
+fa,9e2c1430d1452776,Old picture of Hitler and Nazi army commanders having lunch on the war front,"leader.n.01, meal.n.01","leader.n.01, meal.n.01"
+fa,db6c376cfd4626a2,A number of motorbikes parked on the side of the street,minibike.n.01,minibike.n.01
+fa,bda1ee4befcd0059,A picture of a giant tree in a forest area,tree.n.01,tree.n.01
+fa,eede41df6d7bba55,There are two big black boxes on the table,table.n.02,table.n.02
+fa,4f245e960edcb1c5,Paintings on canvas on the white wall of the exhibition and visitors,visitor.n.01,visitor.n.01
+fi,5c9c65a628e8f585,A collection of camera lenses on a wooden table in the garden,table.n.02,table.n.02
+fi,dee855992091344d,Asian man and woman in restaurant,"man.n.01, woman.n.01, restaurant.n.01","man.n.01, woman.n.01, restaurant.n.01"
+fi,85bb148dce72b48c,Dark shot of houses and street against the sun,"house.n.01, sun.n.01","house.n.01, sun.n.01"
+fi,eac90e04b286ec66,An Asian merchant with his moped carrying a big pile of toilet paper and other things to sell.,"businessperson.n.01, minibike.n.01","businessperson.n.01, minibike.n.01"
+fi,6812ecd0a463e5cf,The pitcher-like flower pots of a carnivorous plant hang in front of a rock in the jungle.,"flower.n.01, plant.n.02","flower.n.01, plant.n.02"
+fil,5e65b06b97ed874b,Old stone and cement structure on the edge of the forest with trees around,tree.n.01,tree.n.01
+fil,b17883814918e089,Tree with orange leaves in the forest,tree.n.01,tree.n.01
+fil,514a005c4fc9c132,Picture of stones,,
+fil,969e27cb5394c3d8,The big tree in the park and the big tent behind it.,tree.n.01,tree.n.01
+fil,e09ca2c1ed6e5145,A large castle can be seen from the street with cars and a light pole also with a cloud view,"palace.n.01, car.n.01","palace.n.01, car.n.01"
+fr,a917b38669bd7d71,"Three men, indoors, in a workshop, are at work.",man.n.01,man.n.01
+fr,951ac5ed4887e720,Green hedge surrounded by several plants outdoors during the day,plant.n.02,plant.n.02
+fr,2d48f380fe2bb808,Close-up of a woman's manicure with blue painted nails,"woman.n.01, nail.n.01","woman.n.01, nail.n.01"
+fr,96a91e569a10d10c,Close-up of two blue shoes worn by a person in jeans,"person.n.01, jean.n.01","person.n.01, jean.n.01"
+fr,7f405a1b50aee801,"A village above the rocks, a calm blue sea, during the day",sea.n.01,sea.n.01
+he,cb983a5aaa200e21,Top side view of a baked tart with strawberries on top,"tart.n.03, strawberry.n.01","tart.n.03, strawberry.n.01"
+he,7354a91ef1113d6c,An inverted image that is not understood,,
+he,b7275eba0606cdf3,A light green wall with glass doors on the right. The front door is open and leads to a square with trees .,tree.n.01,tree.n.01
+he,7b019af4cec24656,Side shot of an Indian businessman,businessman.n.01,businessman.n.01
+he,0f5f32f742a168ea,"Blue sea, pier, stones, bushes, boats, hills and a city on the horizon. The sky is blue with a few clouds .","sea.n.01, shrub.n.01, boat.n.01, sky.n.01","sea.n.01, shrub.n.01, boat.n.01, sky.n.01"
+hi,223127897b18910e,astronomical phenomenon of the sun,sun.n.01,sun.n.01
+hi,208c44ba960bfc82,View of an old fashioned blue car with some trees and blue sky in the background.,"car.n.01, tree.n.01, sky.n.01","car.n.01, tree.n.01, sky.n.01"
+hi,85bb148dce72b48c,"At sunset, there is a building on the side of the road and many green trees and plants where two vehicles are driving.","building.n.01, tree.n.01, plant.n.02, vehicle.n.01","building.n.01, tree.n.01, plant.n.02, vehicle.n.01"
+hi,d89030947d17b024,Close up of corn in a white container,corn.n.03,corn.n.03
+hi,de8fa347b9c9d874,Scene of a crowd of young people dressed as cooks present in the room.,"person.n.01, cook.n.01","person.n.01, cook.n.01"
+hr,7caba0f744026a00,"Panorama of a mountain landscape with a house, forests and mountains in the distance","mountain.n.01, house.n.01, mountain.n.01","mountain.n.01, house.n.01, mountain.n.01"
+hr,18958cb6f8523c8c,A large metal cross in the field,,
+hr,1a023cfa4e6b7129,Video game contestant score screen,,
+hr,f3d0a577ecc2b39c,"Women's bag in yellow, green and blue",bag.n.01,bag.n.01
+hr,ec960558d29e81be,A woman in a red jacket stands and holds a microphone next to her man and woman sitting at a long table in front of four flags and a colorful wall,"woman.n.01, jacket.n.01, man.n.01, woman.n.01, table.n.01","woman.n.01, jacket.n.01, man.n.01, woman.n.01, table.n.01"
+hu,819f8cbebc369ec0,Strange soup in a white plate with a blue pattern,"soup.n.01, plate.n.04","soup.n.01, plate.n.04"
+hu,b850e33be25c8bad,Purple bellflower close up,herb.n.01,herb.n.01
+hu,fd47e8aa6eabd88e,Tourists in an exhibition hall next to them a priest in black clothes in the background paintings on the wall,"tourist.n.01, priest.n.02, apparel.n.01","tourist.n.01, priest.n.02, apparel.n.01"
+hu,e19d26eae63f0806,Car brand Land Rover logo against a black background.,,
+hu,3d22eabbdc36b765,"Six pieces of pear-shaped, fur-covered food arranged in a circle on a plate, with red sauce in a small glass in the middle","food.n.01, plate.n.04, sauce.n.01","food.n.01, plate.n.04, sauce.n.01"
+id,bc28cff5b7b8c684,Blurry close up photo of transparent strands with ends that light up like lights,,
+id,f3177b110b9b5d38,2 arcade games with a drawing board of a TV show in a dark room,,
+id,7efd9c3dba023ee9,A brown cow grazing in a grass field,"cow.n.01, grass.n.01","cow.n.01, grass.n.01"
+id,7809a3b2a8482e1f,Close-up photo from the side of a walking donkey,domestic_ass.n.01,domestic_ass.n.01
+id,b9ec2cb9113c2749,"""The cruise ship ""Costa Deliziosa"" is docked at the pier""",cruise_ship.n.01,cruise_ship.n.01
+it,cdccdf75b3b8e98c,Group of workers in safety clothes standing in an underground tunnel,"worker.n.01, apparel.n.01","worker.n.01, apparel.n.01"
+it,724864ab6e213713,Pieces of wood on top of each other,,
+it,3411e0b5702f7daa,Apple tree branch with white flowers and green leaves and blue sky,"tree.n.01, flower.n.01, sky.n.01","tree.n.01, flower.n.01, sky.n.01"
+it,39a4cb342871bde0,Fresh fish on display on counter with ice,"fish.n.02, counter.n.01","fish.n.02, counter.n.01"
+it,8e975f69a8bf4d4f,"Green meadow with people paragliding, all green around with trees and crops, clear sky in the background","person.n.01, tree.n.01, sky.n.01","person.n.01, tree.n.01, sky.n.01"
+ja,d8ae3fe5ccff5e59,Two boxes with patterns of electrical cables and keychains on them are in a large box.,,
+ja,e06e413eeb132925,A blue sky with white clouds and a white signboard with numbers and letters written on the lawn area,sky.n.01,sky.n.01
+ja,9dbd853e7b288a4c,"Small items on the desk, envelopes, smartphones and handmade 3D glasses",desk.n.01,desk.n.01
+ja,b39a6eb78836a34e,"Cloudy sky, large gate with 5 flags on top, traditional pattern",sky.n.01,sky.n.01
+ja,54ea57b2f002f59b,A man in a red vest walking through the venue and the crowd watching,"man.n.01, vest.n.01","man.n.01, vest.n.01"
+ko,c9f1805b9b9c4496,A farm with all the trees dried out in winter with the mountains in the background,tree.n.01,mountain.n.01
+ko,8d3ae84066e39d0b,A beautiful building with a traditional Southeast Asian garden with a pond and pavilion,"building.n.01, pond.n.01","building.n.01, pond.n.01"
+ko,3a4b31bca6d0df2e,Green tea and bubble tea on the table,"tea.n.01, tea.n.01, table.n.02","tea.n.01, tea.n.01, table.n.02"
+ko,7d7f9f010b8d3059,A stone flower pot with yellow flowers placed in the middle of the lawn,"flower.n.01, flower.n.01",flower.n.01
+ko,49ee4ebe3dce3950,A European-style square with an old castle-shaped tower in the middle.,,
+nl,ed1216d77bc70d7a,Retro small blue and white car parked on the road,car.n.01,car.n.01
+nl,f684b8efdf29a6ab,5 men running on an athletics track in a stadium,man.n.01,man.n.01
+nl,091e747be8f80c04,White butterfly on a leaf,butterfly.n.01,butterfly.n.01
+nl,ec19783d30018f12,Aerial view of a city and mountain,mountain.n.01,mountain.n.01
+nl,f74aa96be1768f21,Sunset at a lake,lake.n.01,lake.n.01
+no,9c97158519400e3a,"Village with straw huts, people, animals and palm trees","person.n.01, animal.n.01, palm.n.03","person.n.01, animal.n.01, palm.n.03"
+no,0f1b59c94d60658c,Vintage wooden console with three circle adjustment on wooden floor,,
+no,747af27bee10e0c7,The riverbed between the mountains on a partly cloudy day,mountain.n.01,mountain.n.01
+no,cd646aa3bcdac8ba,Sailboat sailing at sea against a background of cloudy sky,"sailboat.n.01, sea.n.01, sky.n.01","sailboat.n.01, sea.n.01, sky.n.01"
+no,e8a80df9ea84fab2,Pink flowers in the garden,flower.n.01,flower.n.01
+pl,52003c3883b8e0ff,The Independence Monument on the Maidan in Kiev with demonstrators' tents visible,worker.n.01,worker.n.01
+pl,4e9f3deccce7ef53,An inscription made of clay on a stone wall,,
+pl,b5efaee3659f8ac6,Blurred shot of the deep sea with a school of fish,"sea.n.01, fish.n.01","sea.n.01, fish.n.01"
+pl,f9188d07b0a8d9ec,Young woman standing and posing for a photo in a narrow street at night,woman.n.01,woman.n.01
+pl,b728b44f8b70dcc6,Fancy blue neon,,
+pt,a9e04cef96829459,"Many people in warm clothing huddled together, holding empty bottles around a counter where men are filling them with liquid.","person.n.01, clothing.n.01, counter.n.01, man.n.01","person.n.01, clothing.n.01, counter.n.01, man.n.01"
+pt,1ed7034f23d49bbd,Dog looking at the camera,dog.n.01,dog.n.01
+pt,d5ce605ce04eeea8,"Apparently crooked street number signage, pipe on the right side, brick wall",,
+pt,3c83ee65c4b3adbc,Strawberry pie with sweets in the center on a black table,"strawberry.n.01, pie.n.01, dessert.n.01","strawberry.n.01, pie.n.01, dessert.n.01, table.n.02"
+pt,db0d8dbb68bc985d,A circular blue ornament hanging on the wall by a string.,,
+ro,12b3bf747239d5e4,Close-up of a glass bowl containing a rice salad with vegetables and flaked almonds on a table with other things to eat.,"dish.n.01, rice.n.01, salad.n.01, vegetable.n.01, edible_nut.n.01, table.n.02","dish.n.01, rice.n.01, salad.n.01, vegetable.n.01, edible_nut.n.01, table.n.02"
+ro,4cff3af1e869dd88,"Group of people in an amphitheater, small cinema hall, or theater, with brick-colored armchairs, on the stage of which a man standing next to a gray desk presents, with the help of a projector, a document, the page presented referring to Wikipedia, in Norwegian","person.n.01, theater.n.01, theater.n.01, armchair.n.01, man.n.01, desk.n.01, worker.n.01","person.n.01, theater.n.01, theater.n.01, armchair.n.01, man.n.01, desk.n.01"
+ro,3064de65bb02dc26,Boats parked in the port,boat.n.01,boat.n.01
+ro,9806b1a075589b66,The terrace of a traditional bar in rocky nature,,
+ro,0cf98efa67d18dba,Shredded white cabbage with sauce on top in red plate,"cabbage.n.01, sauce.n.01, plate.n.04","cabbage.n.01, sauce.n.01, plate.n.04"
+ru,7b91964d6b53d35d,A man washes a lying baby elephant in the river,"man.n.01, baby.n.01, elephant.n.01, river.n.01","man.n.01, elephant.n.01, river.n.01"
+ru,ca8e349135557add,Waving Turkish flag against the blue sky.,sky.n.01,sky.n.01
+ru,5399c9438e6d62be,A sign for a pastry shop on a house on a city street.,house.n.01,house.n.01
+ru,e3e35dcb7ec10d8a,A dark gray military helicopter on a metal pedestal on the lawn against the backdrop of houses.,"helicopter.n.01, house.n.01","helicopter.n.01, house.n.01"
+ru,bef3a09c584d3c9d,The setting sun breaks through the metal frame with large white letters and numbers 2013,sun.n.01,sun.n.01
+sv,23d851a0f92915f2,Green van with white roof parked on street in front of shops with gray car parked further away,"car.n.02, car.n.01","car.n.02, car.n.01"
+sv,5399c9438e6d62be,Patisserie sign,,
+sv,33ff0a9ec408a629,Red racing car on the track,racer.n.02,racer.n.02
+sv,b0a45b013283121f,Fuchsia flower,"fuchsia.n.01, flower.n.01","fuchsia.n.01, flower.n.01"
+sv,70f5feec38edf0b0,"A young man stands with a laptop in a hall and speaks, a man sits askew behind.","man.n.01, man.n.01","man.n.01, man.n.01"
+th,45f9e2c6f008f037,The brick walkway has benches next to it. And there is a pavilion in front.,bench.n.01,bench.n.01
+th,e8683b6f42c2dbf4,The cat sits with its eyes closed on a stand attached to the wall.,"domestic_cat.n.01, eye.n.01","domestic_cat.n.01, eye.n.01"
+th,c1d5dd8b38a5e706,Noodles with vegetables and spicy sauce in a bowl,"noodle.n.01, vegetable.n.01, sauce.n.01, dish.n.01","noodle.n.01, vegetable.n.01, sauce.n.01, dish.n.01"
+th,b99a84035c4b8877,Blue and white airplane parked in the snow,airplane.n.01,airplane.n.01
+th,cd646aa3bcdac8ba,Sailboat sailing on the lake Behind is a forest.,"sailboat.n.01, lake.n.01","sailboat.n.01, lake.n.01"
+tr,e1473c4f97f7548a,An old castle made of stone on a hill and green grass on the plain in front of it,"palace.n.01, grass.n.01","palace.n.01, grass.n.01"
+tr,d6359353f8e5035c,The shadow of a female dancer in a black dress rising from the ground on a red floor and a white wall,"dancer.n.01, attire.n.01","dancer.n.01, attire.n.01"
+tr,21298fe14c368392,Photo of a statue between buildings,building.n.01,building.n.01
+tr,c288ff67670f9aa1,Three men sitting side by side on a sofa in a nightclub with red and blue lighting,"man.n.01, sofa.n.01","man.n.01, sofa.n.01"
+tr,87b870791beab9c5,Beautiful coast of the blue sea and mountains next to it,,"sea.n.01, mountain.n.01"
+uk,d7f6f48f6304330e,"View from the river to the bank of tall branchy trees under an overcast sky, with the reflection of the trees in the water","river.n.01, tree.n.01, sky.n.01, tree.n.01, body_of_water.n.01","river.n.01, tree.n.01, sky.n.01, tree.n.01, body_of_water.n.01"
+uk,7c4fa4889f79cace,View from above on a cloudy day of a sea bay near a small settlement,"sea.n.01, bay.n.01","sea.n.01, bay.n.01"
+uk,c1999cb3387a2002,Two blue flowers on a background of blurred greenery,flower.n.01,flower.n.01
+uk,1a023cfa4e6b7129,Screen with score table of two girls bowling game,,
+uk,78d0acf9b9fddae1,"Looks like a conceptual drawing or an enlarged X-ray, something abstract and black and white",,
+vi,c2b3af5943e47f2a,A black wood-burning fireplace is placed in the house with a stack of firewood next to it,house.n.01,house.n.01
+vi,2424f519111f08ab,"From a distance, a large yellow building appears to be a church","building.n.01, church.n.02","building.n.01, church.n.02"
+vi,98fbd215aeaf27e7,Two men sat on chairs with many other people,"man.n.01, chair.n.01, person.n.01","man.n.01, chair.n.01, person.n.01"
+vi,f7b6575f68e1891b,"Natural scene with palm branches, forests and majestic mountains, clear blue sky","palm.n.03, mountain.n.01, sky.n.01","palm.n.03, mountain.n.01, sky.n.01"
+vi,1f5cf6e96f0e0690,Working game console with screen and controller.,,
+zh,7e7f4d365c0603e0,"Close-up of a vegetable salad with bell peppers, green peppers, onions, cucumbers and lettuce","vegetable.n.01, salad.n.01, pepper.n.04, pepper.n.04, onion.n.03, cucumber.n.02","vegetable.n.01, salad.n.01, pepper.n.04, pepper.n.04, onion.n.03, cucumber.n.02, lettuce.n.03"
+zh,0c96676d3cc5df27,"As far as the eye can see, there are low green mountains and terraced fields mixed in them. The terraced fields are covered with golden rice, and the green and golden colors are particularly obvious.","mountain.n.01, rice.n.01","mountain.n.01, rice.n.01"
+zh,87a8d6a64a5ebff2,An upside-down picture of two black men and two women sitting at a table smiling and looking at the camera. Behind them there is a black woman sitting at the table.,"man.n.01, woman.n.01, table.n.02, woman.n.01, table.n.02","man.n.01, woman.n.01, table.n.02, woman.n.01, table.n.02"
+zh,21656bca9d83702f,Digged a scoop of smoothie,beverage.n.01,beverage.n.01
+zh,846864181ee04350,The silver two-seater open-top racing car parked on the roadside attracted the attention of several people.,"racing_car.n.01, person.n.01","racing_car.n.01, person.n.01"
