@@ -59,7 +59,7 @@ def is_hyponym_of(synset1, synset2):
     return False
 
 def get_image_id_to_root_synsets():
-    csv_path = 'xm3600_annotation.csv'
+    csv_path = 'data/xm3600_annotation.csv'
     iid2root_synset = {}
     with open(csv_path, 'r') as fp:
         my_reader = csv.reader(fp)
