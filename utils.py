@@ -1,7 +1,7 @@
 from collections import defaultdict
 import csv
 import json
-from get_dataset import datasets
+from get_dataset import datasets, get_processed_dataset
 from config import use_low_resource_langs
 
 langs = [x.split('_')[1] for x in datasets if x.startswith('xm3600_')]
@@ -15,33 +15,33 @@ east_asian_langs = ['zh', 'ja', 'ko', 'th', 'vi', 'fil', 'id']
 #   person, vehicle, furniture, animal, food, bag, clothing, tableware, plant, electronic_equipment, home_appliance,
 #   toy, building, mountain, kitchen_utensil, sky, sun, body_part, body_of_water, hand_tool, musical_instrument,
 #   writing_implement, jewelry, weapon, timepiece
-with open('phrase2synsets.json', 'r') as fp:
+with open('data/phrase2synsets.json', 'r') as fp:
     phrase2synsets = json.load(fp)
 
-with open('phrase2hypernym.json', 'r') as fp:
+with open('data/phrase2hypernym.json', 'r') as fp:
     phrase2hypernym = json.load(fp)
 
-with open('synsets_c2p.json', 'r') as fp:
+with open('data/synsets_c2p.json', 'r') as fp:
     child2parent = json.load(fp)
 
 parent2children = defaultdict(list)
 for child, parent in child2parent.items():
     parent2children[parent].append(child)
 
-with open('implicit_synsets.json', 'r') as fp:
+with open('data/implicit_synsets.json', 'r') as fp:
     implicit_synsets = json.load(fp)
 
-with open('phrase2replace_str.json', 'r') as fp:
+with open('data/phrase2replace_str.json', 'r') as fp:
     phrase2replace_str = json.load(fp)
     for x,y in phrase2replace_str.items():
         if 'null' in y:
             phrase2replace_str[x][None] = phrase2replace_str[x]['null']
             del phrase2replace_str[x]['null']
 
-with open('non_synset_phrases.json', 'r') as fp:
+with open('data/non_synset_phrases.json', 'r') as fp:
     non_synset_phrases = set(json.load(fp))
 
-with open('identical_synsets_mapping.json', 'r') as fp:
+with open('data/identical_synsets_mapping.json', 'r') as fp:
     identical_synsets_mapping = json.load(fp)
 
 # Inflect don't handle some strings well, ignore these
@@ -79,11 +79,10 @@ def get_image_id_to_root_synsets():
 def verify_synset_in_image(synset, image_id, iid2root_synset):
     return image_id not in iid2root_synset or len([root_synset for root_synset in iid2root_synset[image_id] if is_hyponym_of(synset, root_synset)]) > 0
 
-def get_synset_to_image_prob(dataset, filter_by_iid2root_dataset=True):
+def get_synset_to_image_prob(dataset):
     iid2root_synset = get_image_id_to_root_synsets()
 
-    with open(f'datasets/{dataset}.json', 'r') as fp:
-        data = json.load(fp)
+    data = get_processed_dataset(dataset)
     synset_to_image_count = {x: defaultdict(int) for x in all_synsets}
     image_count = defaultdict(int)
     for sample in data:
@@ -98,7 +97,7 @@ def get_synset_to_image_prob(dataset, filter_by_iid2root_dataset=True):
                 inner_synset = child2parent[inner_synset]
                 identified_synsets.append(inner_synset)
         identified_synsets = list(set(identified_synsets))
-        if filter_by_iid2root_dataset and sample['image_id'] in iid2root_synset:
+        if sample['image_id'] in iid2root_synset:
             identified_synsets = [synset for synset in identified_synsets if verify_synset_in_image(synset, sample['image_id'], iid2root_synset)]
         for id_synset in identified_synsets:
             synset_to_image_count[id_synset][sample['image_id']] += 1

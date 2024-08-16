@@ -20,35 +20,10 @@ from utils import get_image_id_to_root_synsets,\
     east_asian_langs,\
     low_resource_langs,\
     child2parent,\
-    all_synsets
+    all_synsets,\
+    get_synset_to_image_prob
 from config import xm3600_json_path, use_low_resource_langs
 from get_dataset import get_processed_dataset
-
-def get_synset_to_image_prob(dataset):
-    iid2root_synset = get_image_id_to_root_synsets()
-
-    data = get_processed_dataset(dataset)
-    synset_to_image_count = {x: defaultdict(int) for x in all_synsets}
-    image_count = defaultdict(int)
-    for sample in data:
-        if 'synsets' not in sample or sample['synsets'] is None:
-            continue
-        image_count[sample['image_id']] += 1
-        identified_synsets = []
-        for synset in list(set([x[3] for x in sample['synsets']])):
-            identified_synsets.append(synset)
-            inner_synset = synset
-            while inner_synset in child2parent:
-                inner_synset = child2parent[inner_synset]
-                identified_synsets.append(inner_synset)
-        identified_synsets = list(set(identified_synsets))
-        if sample['image_id'] in iid2root_synset:
-            identified_synsets = [synset for synset in identified_synsets if verify_synset_in_image(synset, sample['image_id'], iid2root_synset)]
-        for id_synset in identified_synsets:
-            synset_to_image_count[id_synset][sample['image_id']] += 1
-    synset_to_image_prob = {x[0]: {y[0]: y[1]/image_count[y[0]] for y in x[1].items()} for x in synset_to_image_count.items()}
-
-    return synset_to_image_prob, synset_to_image_count, image_count
     
 def get_object_num_by_location(synset):
     iid2root_synset = get_image_id_to_root_synsets()

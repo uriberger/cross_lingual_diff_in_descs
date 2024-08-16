@@ -3,7 +3,7 @@ from streamlit_agraph import agraph, Node, Edge, Config
 import sys
 import json
 sys.path.append('.')
-from utils.general_utils import all_synsets, child2parent, get_synset_to_image_prob, parent2children
+from utils import all_synsets, child2parent, get_synset_to_image_prob, parent2children
 import scipy.stats as stats
 from streamlit_app.app_utils import plot_clickable_images
 from collections import OrderedDict
