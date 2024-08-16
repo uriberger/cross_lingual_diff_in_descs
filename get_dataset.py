@@ -1,5 +1,5 @@
 import json
-from config import coco_json_path, coco_image_dir, xm3600_image_dir, stair_json_path, stair_translated_json_path
+from config import coco_json_path, stair_json_path, stair_translated_json_path
 
 datasets = ['COCO', 'xm3600_ar', 'xm3600_bn', 'xm3600_cs', 'xm3600_da', 'xm3600_de', 'xm3600_el', 'xm3600_en',
             'xm3600_es', 'xm3600_fa', 'xm3600_fi', 'xm3600_fil', 'xm3600_fr', 'xm3600_he', 'xm3600_hi', 'xm3600_hr',
@@ -22,7 +22,6 @@ def get_orig_dataset(dataset_name):
             for y in x['sentences']:
                 data.append({
                     'image_id': x['cocoid'],
-                    'image_path': f'{coco_image_dir}/{x["filepath"]}/{x["filename"]}',
                     'caption': y['raw']
                     })
     elif dataset_name.startswith('xm3600'):
@@ -38,8 +37,6 @@ def get_orig_dataset(dataset_name):
             assert len(data) == len(orig_data)
             for i in range(len(data)):
                 data[i]['orig'] = orig_data[i]['caption']
-        for i in range(len(data)):
-            data[i]['image_path'] = f'{xm3600_image_dir}/{hex(data[i]["image_id"])[2:].zfill(16)}.jpg'
     elif dataset_name == 'STAIR-captions':
         with open(coco_json_path, 'r') as fp:
             coco_data = json.load(fp)['images']
@@ -56,7 +53,6 @@ def get_orig_dataset(dataset_name):
                 'image_id': image_id,
                 'caption': tran_data[i]['translatedText'],
                 'orig': orig_data[i]['caption'],
-                'image_path': f'/cs/labs/oabend/uriber/datasets/COCO/{split}2014/COCO_{split}2014_{str(image_id).zfill(12)}.jpg'
             })
     else:
         assert False, f'Unknown dataset {dataset_name}'
