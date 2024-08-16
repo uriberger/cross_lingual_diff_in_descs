@@ -23,6 +23,22 @@ Each language's dataset is a json file containing a list of samples, where each 
 - source: the name of the dataset.
 - synsets: the identified list of synsets. Each element in this list is a tuple of representing a phrase identified as a synset, with the following fields: ```(<phrase starting token index>, <phrase ending token index>, <phrase string>, <synset>, <depth from synset>)```. Some phrases are identified as synsets which are descendents of one of our predefined synsets, in this case the ```depth from synset``` is the vertical distance between the identified synset and the sysnet mentioned in the tuple.
 
+### Synset filtering
+
+We manually annotated the root synsets instantiated in each image in the CrossModal3600 dataset (this annotation is available under data/xm3600_annotation.csv). For a more accurate corpus, we recommend to filter out synsets for which the corresponding root synset is not instantiated in the image. This can be done using our ```verify_synset_in_image``` method:
+
+```
+from utils import get_image_id_to_root_synsets, verify_synset_in_image
+from get_dataset import get_processed_dataset
+
+iid2root_synset = get_image_id_to_root_synsets() # Loads the annotation data from data/xm3600_annotation.csv
+data = get_processed_dataset('xm3600_he') # Loads the CrossModal3600 Hebrew dataset from the datasets/xm3600_he.json file
+filtered_data = []
+for sample in data:
+    sample['synsets'] = [synset_tuple for synset_tuple in sample['synsets'] if verify_synset_in_image(synset_tuple[3], sample['image_id'], iid2root_synset)]
+    filtered_data.append(sample)
+```
+
 ## Using our code
 
 ### Installation
@@ -41,19 +57,3 @@ python src/process_dataset.py <dataset name>
 ```
 Currently available datasets are CrossModal3600 datasets (xm3600 + language code, e.g. ```xm3600_he```), COCO, STAIR-captions.
 To add a new dataset to be processed, add a relevant if clause in the get_orig_dataset method in the get_dataset.py file.
-
-### Synset filtering (available only for CrossModal3600)
-
-We manually annotated the root synsets instantiated in each image in the CrossModal3600 dataset (this annotation is available under data/xm3600_annotation.csv). For a more accurate corpus, we recommend to filter out synsets for which the corresponding root synset is not instantiated in the image. This can be done using our ```verify_synset_in_image``` method:
-
-```
-from utils import get_image_id_to_root_synsets, verify_synset_in_image
-from get_dataset import get_processed_dataset
-
-iid2root_synset = get_image_id_to_root_synsets() # Loads the annotation data from data/xm3600_annotation.csv
-data = get_processed_dataset('xm3600_he') # Loads the CrossModal3600 Hebrew dataset from the datasets/xm3600_he.json file
-filtered_data = []
-for sample in data:
-    sample['synsets'] = [synset_tuple for synset_tuple in sample['synsets'] if verify_synset_in_image(synset_tuple[3], sample['image_id'], iid2root_synset)]
-    filtered_data.append(sample)
-```
