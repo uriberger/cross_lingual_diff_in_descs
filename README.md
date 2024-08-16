@@ -40,3 +40,20 @@ for sample in data:
 ```
 
 ## Using our code
+
+### Installation
+Python version: 3.9.2
+```
+pip install -r requirements.txt
+```
+
+### Download translated datasets
+Go to [this link](https://drive.google.com/drive/folders/1JtpCaGhFh30rpX8pfvFti0dlzChWceVJ?usp=sharing) and download the xm3600 folder. Place the folder under the project root. In case you want to use STAIR-captions, download both the original and the translated json files, and update their path in the config.py file.
+
+### Create the object mentions dataset
+Run:
+```
+python src/process_dataset.py <dataset name>
+```
+Currently available datasets are CrossModal3600 datasets (xm3600 + language code, e.g. ```xm3600_he```), COCO, STAIR-captions.
+To add a new dataset to be processed, add a relevant if clause in the get_orig_dataset method in the get_dataset.py file.
