@@ -1,8 +1,9 @@
+import sys
+sys.path.append('.')
 from find_synsets_in_captions import find_synsets
 import json
 from get_dataset import get_orig_dataset
 from tqdm import tqdm
-import sys
 
 dataset = sys.argv[1]
 
