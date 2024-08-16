@@ -1,11 +1,9 @@
-from find_classes_in_caption import find_classes
-from find_classes_in_caption2 import find_classes2
 from find_synsets_in_captions import find_synsets
 from regression import RegressionHandler
 import time
 
-def run_regression(method='final'):
-    reg_obj = RegressionHandler(method)
+def run_regression():
+    reg_obj = RegressionHandler()
     failed = []
     waived_and_passed = []
     waived_and_failed = []
@@ -16,15 +14,8 @@ def run_regression(method='final'):
             print(f'\tStarting sample {i} out of {len(reg_obj.reg)}, time from prev {time.time() - t}', flush=True)
             t = time.time()
         sample, gt = reg_obj.reg[i]
-        if method == 'orig':
-            res = find_classes(sample['caption'])
-            pred = [x[2] for x in res if x[2] is not None]
-        elif method =='alternative':
-            res = find_classes2(sample['caption'])
-            pred = [x[3] for x in res if x[3] is not None]
-        elif method =='final':
-            res = find_synsets(sample['caption'])
-            pred = [x[3] for x in res if x[3] is not None]
+        res = find_synsets(sample['caption'])
+        pred = [x[3] for x in res if x[3] is not None]
         if sorted(gt) != sorted(pred):
             if str(i) in reg_obj.waivers:
                 waived_and_failed.append(i)
