@@ -1,5 +1,5 @@
 streamlit-agraph==0.0.45
-torch==2.1.0
+torch==2.2.0
 scipy==1.11.4
 st-clickable-images==0.0.3
 stanza==1.6.1
