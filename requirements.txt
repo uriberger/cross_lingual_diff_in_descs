@@ -1,4 +1,4 @@
-streamlit-agraph
+streamlit-agraph==0.0.45
 torch==2.1.0
 scipy==1.11.4
-st-clickable-images
+st-clickable-images==0.0.3
