@@ -122,6 +122,7 @@ def run_object_num_by_language_analysis():
 
 def plot_object_num(by_location):
     plt.clf()
+    plt.figure().set_figwidth(3)
     
     if by_location:
         l2iid2count = get_object_num_by_location(None)
@@ -132,15 +133,14 @@ def plot_object_num(by_location):
     l2count = {x[0]: sum([sum(y)/len(y) for y in x[1].values()]) for x in l2iid2count.items()}
     res = sorted([(x[0], '%.2f' % (x[1]/image_num)) for x in l2count.items()], key=lambda x:x[1])
     
-    xlabels_size = 22
-    ylabels_size = 13
+    ylabels_size = 8
 
     plt.barh(range(len(langs)), width=[float(x[1]) for x in res], color=['red' if x[0] in east_asian_langs else 'black' for x in res])
     plt.yticks(ticks=range(len(langs)), labels=[x[0] for x in res], size=ylabels_size, family='Times New Roman')
-    plt.tick_params(axis='x', labelsize=xlabels_size, labelfontfamily='Times New Roman')
+    plt.tick_params(axis='x', labelfontfamily='Times New Roman')
     
     by_str = 'location' if by_location else 'language'
-    plt.savefig(f'object_num_by_{by_str}.png')
+    plt.savefig(f'object_num_by_{by_str}.png', dpi=200)
 
 def get_lang_synset_image_matrix(root_only):
     if root_only:
