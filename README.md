@@ -32,7 +32,7 @@ pip install -r requirements.txt
 ```
 
 ### Download translated datasets
-Go to [this link](https://drive.google.com/drive/folders/1JtpCaGhFh30rpX8pfvFti0dlzChWceVJ?usp=sharing) and download the xm3600 folder. Place the folder under the project root. In case you want to use STAIR-captions, download both the original and the translated json files, and update their path in the config.py file.
+Go to \<anonymized link\> and download the xm3600 folder. Place the folder under the project root. In case you want to use STAIR-captions, download both the original and the translated json files, and update their path in the config.py file.
 
 ### Create the object mentions dataset
 Run:
