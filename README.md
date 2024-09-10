@@ -5,6 +5,10 @@
 Do speakers of different languages talk differently about images? We analyze the CrossModal3600 dataset and develop a method to accurately identify entities mentioned in captions and present in the images.
 We publish our object mentions dataset for future use, as well as our code for entity identification.
 
+## Online interface
+
+We create an online interface allowing users to inspect our object mentions dataset. The app is publicly available in [this link](https://crosslingualdiffindescs-cnk2orzzudxdicqwmssaqm.streamlit.app/).
+
 ## Object mentions dataset
 
 Our dataset files are all under the datasets folder. Each file corresponds to a single language. The language codes are:
@@ -48,7 +52,7 @@ pip install -r requirements.txt
 ```
 
 ### Download translated datasets
-Go to \<anonymized link\> and download the xm3600 folder. Place the folder under the project root. In case you want to use STAIR-captions, download both the original and the translated json files, and update their path in the config.py file.
+Go to [this link](https://drive.google.com/drive/folders/1JtpCaGhFh30rpX8pfvFti0dlzChWceVJ?usp=sharing) and download the xm3600 folder. Place the folder under the project root. In case you want to use STAIR-captions, download both the original and the translated json files, and update their path in the config.py file.
 
 ### Create the object mentions dataset
 Run:
