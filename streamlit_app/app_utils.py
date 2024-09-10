@@ -9,7 +9,7 @@ def plot_clickable_images(iids):
     global download_images_button_ind
 
     image_names = [f'{hex(iid)[2:].zfill(16)}.jpg' for iid in iids]
-    st.download_button('List of names of the images', '\n'.join(image_names), key=f'download_images{download_images_button_ind}')
+    st.download_button('List of filenames of the images', '\n'.join(image_names), key=f'download_images{download_images_button_ind}')
     download_images_button_ind += 1
     image_file_urls = [f'https://storage.googleapis.com/xm3600/{hex(iid)[2:].zfill(16)}.jpg' for iid in iids]
     images = []

@@ -24,19 +24,28 @@ lang_code2name = {lang_codes[i]: lang_names[i] for i in range(len(lang_names))}
 root_synsets = set([x for x in all_synsets if x not in child2parent])
 
 # Each new time someone enters the app, the state is re initialized. So we need to reload the worksheet and data
-if 'cur_page' not in state:
+def initialize():
     state.cur_page = 0
     state.languages = None
     state.concept = None
 
+if 'cur_page' not in state:
+    initialize()
+
+def to_menu_page():
+    debug_print('In to_menu_page')
+    initialize()
+
 def to_language_selection_page():
     debug_print('In to_language_selection_page')
+    if 'concept_selection_box' in state:
+        state.concept = state.concept_selection_box
     move_to(1)
 
-def to_root_concept_selection_page():
+def to_concept_selection_page():
     if 'language_selection_box0' in state:
         state.languages = [state[f'language_selection_box{i}'] for i in range(state.language_num)]
-    debug_print('In to_root_concept_selection_page')
+    debug_print('In to_concept_selection_page')
     move_to(2)
 
 def to_sub_concept_selection_page():
@@ -48,6 +57,8 @@ def to_language_by_concept_analysis_page():
     if 'language_selection_box0' in state:
         state.languages = [state[f'language_selection_box{i}'] for i in range(state.language_num)]
     debug_print('In to_language_by_concept_analysis_page')
+    if 'concept_selection_box' in state:
+        state.concept = state.concept_selection_box
     if state.concept is not None:
         move_to(4)
 
@@ -84,7 +95,7 @@ def menu_page():
     st.markdown('You can use this tool to analyze the data and examine specific data points.')
 
     st.button('Analyze by language', key='by_language_button', on_click=to_language_selection_page)
-    st.button('Analyze by concept', key='by_concept_button', on_click=to_root_concept_selection_page)
+    st.button('Analyze by concept', key='by_concept_button', on_click=to_concept_selection_page)
     st.button('Compare languages', key='compare_languages_button', on_click=to_two_languages_selection_page)
 
 def language_selection_page(language_num=1):
@@ -97,17 +108,30 @@ def language_selection_page(language_num=1):
             button_text = f'Please select language {i+1}:'
         st.selectbox(label=button_text, key=f'language_selection_box{i}', options=lang_names)
     if state.concept is None:
-        st.button('Continue', key='language_page_continue_button', on_click=to_root_concept_selection_page)
+        st.button('Continue', key='language_page_continue_button', on_click=to_concept_selection_page)
     else:
         st.button('Continue', key='language_page_continue_button', on_click=to_language_by_concept_analysis_page)
         st.markdown('OR')
         st.button(f'Press here to analyze {state.concept} across all languages', key='analyze_concept_across_all_languages_button', on_click=to_concept_across_all_languages_page)
 
-def root_concept_selection_page():
+def apply_concept_selection():
+    state.concept = state.concept_selection_box
+
+def concept_selection_page():
     if state.languages is not None:
         st.header(f'Analyze by languages: {",".join(state.languages)}')
-    st.selectbox(label='Please select root concept:', key='root_concept_selection_box', options=root_synsets)
-    st.button('Continue', key='language_analysis_page_continue_button', on_click=to_sub_concept_selection_page)
+    st.markdown('Please select a concept from the list. If subconcepts are available for this concept, you may select one of the subconcepts.')
+    if state.concept is None:
+        concept_options = root_synsets
+    else:
+        concept_options = parent2children[state.concept]
+    st.selectbox(label='', key='concept_selection_box', options=concept_options)
+    if state.languages is None:
+        st.button('Select concept', key='concept_selection_button', on_click=to_language_selection_page)
+    else:
+        st.button('Select concept', key='concept_selection_button', on_click=to_language_by_concept_analysis_page)
+    if len(parent2children[state.concept_selection_box]) > 0:
+        st.button('Select a sub concept', key='subconcept_selection_button', on_click=apply_concept_selection)
 
 def sub_concept_selection_page():
     language_str = '' if state.languages is None else f', languages: {",".join(state.languages)}'
@@ -265,7 +289,7 @@ if state.cur_page == 0:
 elif state.cur_page == 1:
     language_selection_page()
 elif state.cur_page == 2:
-    root_concept_selection_page()
+    concept_selection_page()
 elif state.cur_page == 3:
     sub_concept_selection_page()
 elif state.cur_page == 4:
@@ -276,3 +300,7 @@ elif state.cur_page == 6:
     language_selection_page(2)
 elif state.cur_page == 7:
     concept_analysis_across_all_languages_page()
+
+if state.cur_page != 0:
+    sideb = st.sidebar
+    sideb.button("Return to homepage", on_click=to_menu_page)
