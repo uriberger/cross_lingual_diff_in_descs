@@ -1,5 +1,5 @@
 import streamlit as st
-from st_lazy_clickable_images import clickable_images
+from st_clickable_images import clickable_images
 import base64
 import aiohttp
 import asyncio
