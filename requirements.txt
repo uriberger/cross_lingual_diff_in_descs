@@ -11,3 +11,4 @@ seaborn==0.13.2
 scikit-learn==1.3.2
 lang2vec
 mantel==2.2.1
+aiohttp
