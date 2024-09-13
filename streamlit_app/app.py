@@ -149,16 +149,16 @@ def menu_page():
     )
     st.markdown("The concepts are WordNet synsets.")
     st.markdown(
-        "You can use this tool to analyze the data and examine specific data points."
+        "You can use this tool to analyse the data and examine specific data points."
     )
 
     st.button(
-        "Analyze by language",
+        "Analyse by language",
         key="by_language_button",
         on_click=to_language_selection_page,
     )
     st.button(
-        "Analyze by concept",
+        "Analyse by concept",
         key="by_concept_button",
         on_click=to_concept_selection_page,
     )
@@ -194,8 +194,8 @@ def language_selection_page(language_num=1):
         )
         st.markdown("OR")
         st.button(
-            f"Press here to analyze {state.concept} across all languages",
-            key="analyze_concept_across_all_languages_button",
+            f"Press here to analyse {state.concept} across all languages",
+            key="analyse_concept_across_all_languages_button",
             on_click=to_concept_across_all_languages_page,
         )
 
@@ -206,7 +206,7 @@ def apply_concept_selection():
 
 def concept_selection_page():
     if state.languages is not None:
-        st.header(f'Analyze by languages: {",".join(state.languages)}')
+        st.header(f'Analyse by languages: {",".join(state.languages)}')
     st.markdown(
         "Please select a concept from the list. If subconcepts are available for this concept, you may select one of the subconcepts."
     )
@@ -279,7 +279,7 @@ def sub_concept_selection_page():
 def by_language_concept_analysis_page():
     st.header("Analysis")
     st.markdown(
-        f'Analyzing: {state.concept} in captions in {",".join(state.languages)}'
+        f'Analysing: {state.concept} in captions in {",".join(state.languages)}'
     )
     if len(state.languages) == 1:
         by_single_language_concept_analysis_page()
