@@ -142,6 +142,7 @@ def menu_page():
         "This tool allows you to inspect variations in image descriptions across languages, locations and concepts. For more information read our paper."
     )
     st.markdown("If you use this tool please cite:")
+    st.markdown("Berger, Uri, and Edoardo M. Ponti. \"Cross-Lingual and Cross-Cultural Variation in Image Descriptions.\" arXiv preprint arXiv:2409.16646 (2024).")
 
     st.subheader("Preliminaries")
     st.markdown(
